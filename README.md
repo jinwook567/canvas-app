@@ -1,4 +1,4 @@
-# Yarn Berry를 활용한 CRA
+# Yarn Berry를 활용한 리액트 템플릿
 
 - yarn이 없다면 `npm install -g yarn` 명령어를 실행해주세요.
 - Zero install로 클론하여 바로 사용할 수 있습니다.
