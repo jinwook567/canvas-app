@@ -4954,6 +4954,7 @@ __metadata:
     eslint-plugin-react: ^7.28.0
     eslint-plugin-react-hooks: ^4.3.0
     jest: ^29.3.1
+    konva: ^8.3.14
     react: ^18.2.0
     react-dom: ^18.2.0
     react-konva: ^18.2.3
@@ -9574,6 +9575,13 @@ __metadata:
   version: 2.0.5
   resolution: "klona@npm:2.0.5"
   checksum: 8c976126ea252b766e648a4866e1bccff9d3b08432474ad80c559f6c7265cf7caede2498d463754d8c88c4759895edd8210c85c0d3155e6aae4968362889466f
+  languageName: node
+  linkType: hard
+
+"konva@npm:^8.3.14":
+  version: 8.3.14
+  resolution: "konva@npm:8.3.14"
+  checksum: a14ace4b62a86796c0b060470fd215d24a8ba0f784a465edfe2f3a87358866343a583519378b5eb8a9d65948218bd4789a696683fa72874fc0f1b732ce7fd3ee
   languageName: node
   linkType: hard
 

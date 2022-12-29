@@ -1,10 +1,10 @@
 import React from 'react';
-import ImageList from './components/ImageAssets/ImageAssets';
+import ImageAssests from './components/ImageAssets/ImageAssets';
 
 function App() {
   return (
     <div>
-      <ImageList />
+      <ImageAssests />
     </div>
   );
 }

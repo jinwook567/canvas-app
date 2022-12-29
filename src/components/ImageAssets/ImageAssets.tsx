@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AppendForm from './AppendForm/AppendForm';
 
-function ImageList() {
+function ImageAssets() {
   const [images, setImages] = useState<{ url: string }[]>([]);
 
   const handleSubmit = (imageUrl: string) => {
@@ -13,6 +13,8 @@ function ImageList() {
     }
   };
 
+  // onClick, onDrag event
+
   return (
     <div>
       <AppendForm handleSubmit={handleSubmit} />
@@ -23,4 +25,4 @@ function ImageList() {
   );
 }
 
-export default ImageList;
+export default ImageAssets;
