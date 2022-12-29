@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { IconButton } from '@mui/material';
+import useEditor from '../../hooks/useEditor';
 import AppendForm from './AppendForm/AppendForm';
 
 function ImageAssets() {
@@ -13,13 +15,21 @@ function ImageAssets() {
     }
   };
 
-  // onClick, onDrag event
+  // onDragEvent
+
+  const { handleAppendAssest } = useEditor();
+
+  const handleClick = (url: string) => {
+    handleAppendAssest({ type: 'image', url });
+  };
 
   return (
     <div>
       <AppendForm handleSubmit={handleSubmit} />
       {images.map(({ url }) => (
-        <img key={url} src={url} alt="user-images" />
+        <IconButton key={url} onClick={() => handleClick(url)}>
+          <img src={url} alt="user-images" />
+        </IconButton>
       ))}
     </div>
   );

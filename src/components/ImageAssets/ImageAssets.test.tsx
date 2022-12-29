@@ -1,9 +1,14 @@
 import React from 'react';
+import { RecoilRoot } from 'recoil';
 import { fireEvent, render, screen } from '@testing-library/react';
-import ImageList from './ImageAssets';
+import ImageAssets from './ImageAssets';
 
-test('test ImageList component', async () => {
-  render(<ImageList />);
+test('ImageAssets 컴포넌트 테스트', async () => {
+  render(
+    <RecoilRoot>
+      <ImageAssets />
+    </RecoilRoot>
+  );
 
   const input = (await screen.findByTestId('image-input')).querySelector(
     'input'
@@ -35,4 +40,6 @@ test('test ImageList component', async () => {
 
   const addedImages = await screen.findAllByRole('img');
   expect(addedImages[0].getAttribute('src')).toBe(inputValue2);
+
+  // recoil 관련 테스트 로직 추가하기.
 });
