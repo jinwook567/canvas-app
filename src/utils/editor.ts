@@ -1,4 +1,4 @@
-import { KonvaNode, ImageNodeArg, NodeArg, KonvaStages } from '../types/editor';
+import { KonvaNode, ImageNodeArg, NodeArg } from '../types/editor';
 import { createUniqueId } from './unit';
 
 const width = 500;

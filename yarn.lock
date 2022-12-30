@@ -4969,6 +4969,7 @@ __metadata:
     react-scripts: 5.0.1
     recoil: ^0.7.6
     typescript: 4.9.3
+    use-image: ^1.1.0
     uuid: ^9.0.0
     web-vitals: ^2.1.4
   languageName: unknown
@@ -13695,6 +13696,16 @@ __metadata:
     querystringify: ^2.1.1
     requires-port: ^1.0.0
   checksum: fbdba6b1d83336aca2216bbdc38ba658d9cfb8fc7f665eb8b17852de638ff7d1a162c198a8e4ed66001ddbf6c9888d41e4798912c62b4fd777a31657989f7bdf
+  languageName: node
+  linkType: hard
+
+"use-image@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "use-image@npm:1.1.0"
+  peerDependencies:
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: ed0a6fe4976c18f72a379c69b06b4032d331bcdca9b3c149c27b5f88c4947ff3d4d73d53ab638bd2293ee83ae23adfab9ba2d0ce9b64efc9721ca28c4aa3f3bc
   languageName: node
   linkType: hard
 

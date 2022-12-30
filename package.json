@@ -20,6 +20,7 @@
     "react-konva": "^18.2.3",
     "react-scripts": "5.0.1",
     "recoil": "^0.7.6",
+    "use-image": "^1.1.0",
     "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },
