@@ -1,19 +1,19 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, renderHook, screen, act } from '@testing-library/react';
 import ImageAssets from './ImageAssets';
-import { RecoilObserver } from '../../utils/test';
-import { stagesState } from '../../recoil/editor';
 import { createNode } from '../../utils/editor';
+import useEditor from '../../hooks/useEditor';
 
 function renderImageAssets() {
-  const onChange = jest.fn();
-  render(
+  const wrapper = ({ children }: { children: React.ReactNode }) => (
     <RecoilRoot>
-      <RecoilObserver node={stagesState} onChange={onChange} />
+      {children}
       <ImageAssets />
     </RecoilRoot>
   );
+
+  const { result } = renderHook(useEditor, { wrapper });
 
   const Input = () => screen.getByTestId('image-input').querySelector('input');
 
@@ -38,11 +38,11 @@ function renderImageAssets() {
     Images,
     changeInput,
     clickSubmit,
-    onChange,
+    result,
   };
 }
 
-test('Image Asset url로 추가 테스트', async () => {
+test('Image Asset url로 추가 테스트', () => {
   const { Input, SubmitButton, changeInput, clickSubmit, Images } =
     renderImageAssets();
 
@@ -78,7 +78,7 @@ test('Image Assest 동일한 url이 주입될 경우 순서 변경 테스트', (
 });
 
 test('Image 클릭 시 Stage로 추가가 잘 되는지 테스트', () => {
-  const { Images, changeInput, clickSubmit, onChange } = renderImageAssets();
+  const { Images, changeInput, clickSubmit, result } = renderImageAssets();
 
   changeInput('value1');
   clickSubmit();
@@ -95,8 +95,26 @@ test('Image 클릭 시 Stage로 추가가 잘 되는지 테스트', () => {
 
   const { id, ...rest } = node;
 
-  expect(onChange).toBeCalledWith([[]]);
-  expect(onChange).toBeCalledWith(
-    expect.arrayContaining([[expect.objectContaining(rest)]])
-  );
+  expect(result.current.stages).toEqual([[expect.objectContaining(rest)]]);
+
+  act(() => result.current.handleAppendStage(0));
+
+  fireEvent.click(Images()[0]);
+  expect(result.current.stages).toEqual([
+    [expect.objectContaining(rest)],
+    [expect.objectContaining(rest)],
+  ]);
+
+  fireEvent.click(Images()[0]);
+  expect(result.current.stages).toEqual([
+    [expect.objectContaining(rest)],
+    [expect.objectContaining(rest), expect.objectContaining(rest)],
+  ]);
+
+  act(() => result.current.selectStage(0));
+  fireEvent.click(Images()[0]);
+  expect(result.current.stages).toEqual([
+    [expect.objectContaining(rest), expect.objectContaining(rest)],
+    [expect.objectContaining(rest), expect.objectContaining(rest)],
+  ]);
 });
