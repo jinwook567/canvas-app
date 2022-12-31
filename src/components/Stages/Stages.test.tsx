@@ -1,47 +1,62 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
-import { stagesState, workingStageIndexState } from '../../recoil/editor';
-import { RecoilObserver } from '../../utils/test';
 import useEditor from '../../hooks/useEditor';
 
 // Stages 파트만 커스텀 훅으로 테스트한다.
 
 function setupRenderUseEditorHook() {
-  const onChangeStage = jest.fn();
-  const onChangeStageIndex = jest.fn();
-
   const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <RecoilRoot>
-      <RecoilObserver node={stagesState} onChange={onChangeStage} />
-      <RecoilObserver
-        node={workingStageIndexState}
-        onChange={onChangeStageIndex}
-      />
-      {children}
-    </RecoilRoot>
+    <RecoilRoot>{children}</RecoilRoot>
   );
 
-  const { result } = renderHook(() => useEditor(), {
+  return renderHook(() => useEditor(), {
     wrapper,
   });
-
-  return { onChangeStage, onChangeStageIndex, result };
 }
 
+test('Stage 추가 예외 테스트', () => {
+  const { result } = setupRenderUseEditorHook();
+  expect(() => act(() => result.current.handleAppendStage(1))).toThrow();
+});
+
 test('Stage 추가 테스트', () => {
-  const { result, onChangeStage, onChangeStageIndex } =
-    setupRenderUseEditorHook();
+  const { result } = setupRenderUseEditorHook();
 
-  const { handleAppendStage } = result.current;
+  act(() => result.current.handleAppendStage(0));
+  expect(result.current.stages).toEqual([[], []]);
+  expect(result.current.stageIndex).toBe(1);
 
-  expect(onChangeStage.mock.calls[0][0]).toEqual([[]]);
-  expect(onChangeStageIndex.mock.calls[0][0]).toEqual(0);
+  act(() => result.current.handleAppendStage(1));
+  expect(result.current.stages).toEqual([[], [], []]);
+  expect(result.current.stageIndex).toBe(2);
 
-  act(() => handleAppendStage(0));
+  act(() => result.current.handleAppendStage(0));
+  expect(result.current.stages).toEqual([[], [], [], []]);
+  expect(result.current.stageIndex).toBe(1);
+});
 
-  expect(onChangeStage.mock.calls[1][0]).toEqual([[], []]);
-  expect(onChangeStageIndex.mock.calls[1][0]).toEqual(1);
+test('Stage 제거 테스트 예외 케이스', () => {
+  const { result } = setupRenderUseEditorHook();
+
+  act(() => result.current.handleDeleteStage(0));
+  expect(result.current.stages).toEqual([[]]);
+  expect(result.current.stageIndex).toBe(0);
+});
+
+test('Stage 제거 테스트', () => {
+  const { result } = setupRenderUseEditorHook();
+
+  act(() => result.current.handleAppendStage(0));
+  act(() => result.current.handleAppendStage(1));
+
+  act(() => result.current.handleDeleteStage(2));
+  expect(result.current.stageIndex).toBe(1);
+  expect(result.current.stages).toEqual([[], []]);
+
+  act(() => result.current.handleDeleteStage(1));
+  expect(result.current.stageIndex).toBe(0);
+  expect(result.current.stages).toEqual([[]]);
 });
 
 export default {};

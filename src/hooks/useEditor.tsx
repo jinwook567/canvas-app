@@ -42,6 +42,9 @@ function useEditor() {
   return {
     handleAppendAssest,
     handleAppendStage,
+    handleDeleteStage,
+    stages,
+    stageIndex,
   };
 }
 

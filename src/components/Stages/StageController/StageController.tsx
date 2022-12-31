@@ -6,7 +6,7 @@ type Props = {
 };
 
 function StageController({ index }: Props) {
-  const { handleAppendStage } = useEditor();
+  const { handleAppendStage, handleDeleteStage } = useEditor();
   return (
     <div>
       <button
@@ -15,6 +15,13 @@ function StageController({ index }: Props) {
         data-testid={`add-stage-${index}`}
       >
         Stage 추가
+      </button>
+      <button
+        onClick={() => handleDeleteStage(index)}
+        type="button"
+        data-testid={`delete-stage-${index}`}
+      >
+        Stage 제거
       </button>
     </div>
   );
