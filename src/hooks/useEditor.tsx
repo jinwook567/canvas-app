@@ -1,11 +1,13 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { stagesState, workingStageIndexState } from '../recoil/editor';
-import { NodeArg } from '../types/editor';
+import { KonvaStages, NodeArg } from '../types/editor';
 import { createNode } from '../utils/editor';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
-  const stageIndex = useRecoilValue(workingStageIndexState);
+  const [stageIndex, setStageIndex] = useRecoilState(workingStageIndexState);
+
+  type StageIndex = typeof stageIndex;
 
   const handleAppendAssest = (nodeArg: NodeArg) => {
     const node = createNode(nodeArg);
@@ -15,8 +17,20 @@ function useEditor() {
     setStages(newAttrs);
   };
 
+  const handleAppendStage = (targetIndex: StageIndex) => {
+    const appendedStages = stages.reduce(
+      (acc, cur, index) =>
+        index === targetIndex ? [...acc, cur, []] : [...acc, cur],
+      [] as KonvaStages
+    );
+
+    setStages(appendedStages);
+    setStageIndex(targetIndex + 1);
+  };
+
   return {
     handleAppendAssest,
+    handleAppendStage,
   };
 }
 

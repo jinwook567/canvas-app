@@ -5,12 +5,11 @@ import Stage from './Stage/Stage';
 
 function Stages() {
   const stages = useRecoilValue(stagesState);
-  console.log({ stages });
 
   return (
     <div>
       {stages.map((stage, index) => (
-        <Stage nodes={stage} key={`${stages.length + index}`} />
+        <Stage nodes={stage} key={`${stages.length + index}`} index={index} />
       ))}
     </div>
   );
