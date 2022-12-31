@@ -16,7 +16,7 @@ function Stage({ nodes, index }: Props) {
   return (
     <>
       <StageController index={index} />
-      <Konva.Stage width={1000} height={1000}>
+      <Konva.Stage width={500} height={500}>
         <Konva.Layer>
           {nodes.map(node => (
             <Node node={node} key={node.id} />

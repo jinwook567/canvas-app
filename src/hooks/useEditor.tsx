@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { stagesState, workingStageIndexState } from '../recoil/editor';
 import { KonvaStages, NodeArg } from '../types/editor';
 import { createNode } from '../utils/editor';
@@ -18,6 +18,8 @@ function useEditor() {
   };
 
   const handleAppendStage = (targetIndex: StageIndex) => {
+    // if (targetIndex > stageIndex || targetIndex < 0) return;
+
     const appendedStages = stages.reduce(
       (acc, cur, index) =>
         index === targetIndex ? [...acc, cur, []] : [...acc, cur],
