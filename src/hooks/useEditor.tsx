@@ -32,6 +32,13 @@ function useEditor() {
     setStageIndex(targetIndex + 1);
   };
 
+  const handleDeleteStage = (targetIndex: StageIndex) => {
+    if (targetIndex === 0 && stages.length === 1) return;
+
+    setStages(stages.filter((_, index) => index !== targetIndex));
+    setStageIndex(targetIndex === stageIndex ? stageIndex - 1 : stageIndex);
+  };
+
   return {
     handleAppendAssest,
     handleAppendStage,
