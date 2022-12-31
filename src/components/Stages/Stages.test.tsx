@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
 import { stagesState, workingStageIndexState } from '../../recoil/editor';
 import { RecoilObserver } from '../../utils/test';

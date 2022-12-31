@@ -18,7 +18,9 @@ function useEditor() {
   };
 
   const handleAppendStage = (targetIndex: StageIndex) => {
-    // if (targetIndex > stageIndex || targetIndex < 0) return;
+    if (targetIndex > stageIndex || targetIndex < 0) {
+      throw new Error('wrong stageIndex');
+    }
 
     const appendedStages = stages.reduce(
       (acc, cur, index) =>
