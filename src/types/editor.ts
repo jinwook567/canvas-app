@@ -23,4 +23,6 @@ export type ImageNodeArg = {
 
 export type NodeArg = ImageNodeArg;
 
+export type StageIndex = number;
+
 export default {};
