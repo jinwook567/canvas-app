@@ -1,12 +1,9 @@
 import { KonvaNode, ImageNodeArg, NodeArg } from '../types/editor';
 import { createUniqueId } from './unit';
 
-const width = 500;
-const height = 500;
-
 const createImageNode = (node: ImageNodeArg) => ({
-  width,
-  height,
+  width: node.width,
+  height: node.height,
   url: node.url,
   type: 'image' as const,
   x: 0,

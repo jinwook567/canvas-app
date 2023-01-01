@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { IconButton } from '@mui/material';
 import useEditor from '../../hooks/useEditor';
 import AppendForm from './AppendForm/AppendForm';
+import ImageAsset from './ImageAsset/ImageAsset';
+import { KonvaImageNode } from '../../types/editor';
 
 function ImageAssets() {
   const [images, setImages] = useState<{ url: string }[]>([]);
@@ -19,17 +21,19 @@ function ImageAssets() {
 
   const { handleAppendAssest } = useEditor();
 
-  const handleClick = (url: string) => {
-    handleAppendAssest({ type: 'image', url });
+  const handleClick = ({
+    url,
+    width,
+    height,
+  }: Pick<KonvaImageNode, 'url' | 'width' | 'height'>) => {
+    handleAppendAssest({ type: 'image', url, width, height });
   };
 
   return (
     <div>
       <AppendForm handleSubmit={handleSubmit} />
       {images.map(({ url }) => (
-        <IconButton key={url} onClick={() => handleClick(url)}>
-          <img src={url} alt="user-images" />
-        </IconButton>
+        <ImageAsset key={url} url={url} onClick={handleClick} />
       ))}
     </div>
   );

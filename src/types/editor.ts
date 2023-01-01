@@ -18,7 +18,9 @@ export type KonvaStages = KonvaStage[];
 
 export type ImageNodeArg = {
   type: 'image';
-  url: string;
+  url: KonvaImageNode['url'];
+  width: KonvaImageNode['width'];
+  height: KonvaImageNode['height'];
 };
 
 export type NodeArg = ImageNodeArg;

@@ -83,13 +83,20 @@ test('Image 클릭 시 Stage로 추가가 잘 되는지 테스트', () => {
   changeInput('value1');
   clickSubmit();
 
-  fireEvent.click(Images()[0]);
+  const firstImage = Images()[0] as HTMLImageElement;
 
-  const url = Images()[0].getAttribute('src');
+  fireEvent.click(firstImage);
+
+  const url = firstImage.getAttribute('src');
+  const width = firstImage.offsetWidth;
+  const height = firstImage.offsetHeight;
+
   const node = url
     ? createNode({
         type: 'image',
         url,
+        width,
+        height,
       })
     : { id: 1 };
 
