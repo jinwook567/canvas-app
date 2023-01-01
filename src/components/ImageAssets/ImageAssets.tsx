@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { IconButton } from '@mui/material';
 import useEditor from '../../hooks/useEditor';
 import AppendForm from './AppendForm/AppendForm';
 import ImageAsset from './ImageAsset/ImageAsset';
