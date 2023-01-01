@@ -7,6 +7,7 @@ type Props = KonvaImageNode;
 
 function Image({ type, url, ...rest }: Props) {
   const [image] = useImage(url);
+
   // eslint-disable-next-line react/jsx-props-no-spreading
   return <Konva.Image image={image} {...rest} />;
 }

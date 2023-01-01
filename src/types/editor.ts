@@ -25,4 +25,9 @@ export type NodeArg = ImageNodeArg;
 
 export type StageIndex = number;
 
+export type StageSize = {
+  width: number;
+  height: number;
+};
+
 export default {};
