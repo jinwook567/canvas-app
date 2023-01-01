@@ -9,6 +9,9 @@ type Props = {
 function StagesContainer({ children }: Props) {
   const refContainer = useRef<HTMLDivElement>(null);
   const setStageSize = useSetRecoilState(stageSizeState);
+  const time = 500;
+
+  const timer = useRef<NodeJS.Timeout | null>(null);
 
   const getSize = () =>
     refContainer.current
@@ -23,10 +26,19 @@ function StagesContainer({ children }: Props) {
     if (size) setStageSize(size);
   }, []);
 
-  window.addEventListener('resize', () => {
-    const size = getSize();
-    if (size) setStageSize(size);
-  });
+  const handleResize = () => {
+    if (!timer.current) {
+      const size = getSize();
+      if (size) setStageSize(size);
+
+      const newTimer = setTimeout(() => {
+        timer.current = null;
+      }, time);
+      timer.current = newTimer;
+    }
+  };
+
+  window.addEventListener('resize', handleResize);
 
   return <Style.Container ref={refContainer}>{children}</Style.Container>;
 }
