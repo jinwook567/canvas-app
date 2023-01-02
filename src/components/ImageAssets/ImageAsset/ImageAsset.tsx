@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { css } from '@emotion/react';
 import { IconButton } from '@mui/material';
 import { KonvaImageNode } from '../../../types/editor';
+import * as Style from './ImageAsset.styles';
 
 type Props = {
   url: KonvaImageNode['url'];
@@ -26,16 +26,8 @@ function ImageAsset({ url, onClick }: Props) {
   };
 
   return (
-    <IconButton
-      key={url}
-      onClick={handleClick}
-      css={css`
-        & > img {
-          width: 100%;
-        }
-      `}
-    >
-      <img src={url} alt="user-images" ref={refImage} />
+    <IconButton key={url} onClick={handleClick}>
+      <Style.Image src={url} alt="user-images" ref={refImage} />
     </IconButton>
   );
 }
