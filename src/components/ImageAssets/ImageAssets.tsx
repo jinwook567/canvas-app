@@ -3,9 +3,10 @@ import useEditor from '../../hooks/useEditor';
 import AppendForm from './AppendForm/AppendForm';
 import ImageAsset from './ImageAsset/ImageAsset';
 import { KonvaImageNode } from '../../types/editor';
+import { imageAssets } from '../../fixtures/editor';
 
 function ImageAssets() {
-  const [images, setImages] = useState<{ url: string }[]>([]);
+  const [images, setImages] = useState<{ url: string }[]>(imageAssets);
 
   const handleSubmit = (imageUrl: string) => {
     const existImage = images.find(({ url }) => url === imageUrl);
