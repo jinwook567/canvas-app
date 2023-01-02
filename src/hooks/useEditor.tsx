@@ -1,11 +1,16 @@
-import { useRecoilState } from 'recoil';
-import { stagesState, workingStageIndexState } from '../recoil/editor';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  stageSizeState,
+  stagesState,
+  workingStageIndexState,
+} from '../recoil/editor';
 import { KonvaStages, NodeArg, StageIndex } from '../types/editor';
 import { createNode } from '../utils/editor';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
   const [stageIndex, setStageIndex] = useRecoilState(workingStageIndexState);
+  const stageSize = useRecoilValue(stageSizeState);
 
   const handleAppendAssest = (nodeArg: NodeArg) => {
     const node = createNode(nodeArg);
