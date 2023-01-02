@@ -41,11 +41,12 @@ function useEditor() {
   };
 
   const handleDeleteStage = (targetIndex: StageIndex) => {
-    if (targetIndex === 0 && stages.length === 1) return;
+    if (stages.length === 1 && targetIndex === 0) return;
     checkTargetIndexInRange(targetIndex);
 
     setStages(stages.filter((_, index) => index !== targetIndex));
-    setStageIndex(targetIndex === stageIndex ? stageIndex - 1 : stageIndex);
+
+    setStageIndex(stageIndex === 0 ? 0 : stageIndex - 1);
   };
 
   const selectStage = (targetIndex: StageIndex) => {

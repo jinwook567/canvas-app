@@ -114,20 +114,20 @@ test('Image 클릭 시 Stage로 추가가 잘 되는지 테스트', () => {
 
   act(() => result.current.handleAppendStage(0));
 
-  fireEvent.click(Images()[0]);
+  fireEvent.click(firstImage);
   expect(result.current.stages).toEqual([
     [expect.objectContaining(rest)],
     [expect.objectContaining(rest)],
   ]);
 
-  fireEvent.click(Images()[0]);
+  fireEvent.click(firstImage);
   expect(result.current.stages).toEqual([
     [expect.objectContaining(rest)],
     [expect.objectContaining(rest), expect.objectContaining(rest)],
   ]);
 
   act(() => result.current.selectStage(0));
-  fireEvent.click(Images()[0]);
+  fireEvent.click(firstImage);
   expect(result.current.stages).toEqual([
     [expect.objectContaining(rest), expect.objectContaining(rest)],
     [expect.objectContaining(rest), expect.objectContaining(rest)],
