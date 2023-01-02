@@ -21,6 +21,8 @@ export type ImageNodeArg = {
   url: KonvaImageNode['url'];
   width: KonvaImageNode['width'];
   height: KonvaImageNode['height'];
+  x: KonvaImageNode['x'];
+  y: KonvaImageNode['y'];
 };
 
 export type NodeArg = ImageNodeArg;
