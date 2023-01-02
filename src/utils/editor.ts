@@ -2,37 +2,35 @@ import { KonvaNode, ImageNodeArg, NodeArg, StageSize } from '../types/editor';
 import { createUniqueId } from './unit';
 
 type PositionArg = {
-  stageWidth: StageSize['width'];
-  stageHeight: StageSize['height'];
-  nodeWidth: NodeArg['width'];
-  nodeHeight: NodeArg['height'];
+  stageSize: {
+    width: StageSize['width'];
+    height: StageSize['height'];
+  };
+  nodeSize: {
+    width: NodeArg['width'];
+    height: NodeArg['height'];
+  };
 };
 
-export const getCenterPosition = ({
-  stageWidth,
-  stageHeight,
-  nodeWidth,
-  nodeHeight,
-}: PositionArg) => {
-  const x = stageWidth / 2 - nodeWidth / 2;
-  const y = stageHeight / 2 - nodeHeight / 2;
+export const getCenterPosition = ({ stageSize, nodeSize }: PositionArg) => {
+  const x = stageSize.width / 2 - nodeSize.width / 2;
+  const y = stageSize.height / 2 - nodeSize.height / 2;
   return { x, y };
 };
 
 export const getInitialPosition = ({
-  stageWidth,
-  stageHeight,
-  nodeWidth,
-  nodeHeight,
+  stageSize,
+  nodeSize,
   ratio,
 }: PositionArg & { ratio: number }) => {
-  const width = stageWidth * ratio;
-  const height = (width * nodeHeight) / nodeWidth;
+  const width = stageSize.width * ratio;
+  const height = (width * nodeSize.height) / nodeSize.width;
   const { x, y } = getCenterPosition({
-    stageWidth,
-    stageHeight,
-    nodeWidth: width,
-    nodeHeight: height,
+    stageSize,
+    nodeSize: {
+      width,
+      height,
+    },
   });
   return { width, height, x, y };
 };
@@ -42,8 +40,8 @@ const createImageNode = (node: ImageNodeArg) => ({
   height: node.height,
   url: node.url,
   type: 'image' as const,
-  x: 0,
-  y: 0,
+  x: node.x,
+  y: node.y,
 });
 
 export const createNode = (nodeArg: NodeArg): KonvaNode => {
