@@ -1,12 +1,11 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { initialImageStageRatio } from '../constants/editor';
 import {
   stageSizeState,
   stagesState,
   workingStageIndexState,
 } from '../recoil/editor';
 import { KonvaStages, NodeArg, StageIndex } from '../types/editor';
-import { createNode, getInitialPosition } from '../utils/editor';
+import { createNode } from '../utils/editor';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
@@ -14,12 +13,7 @@ function useEditor() {
   const stageSize = useRecoilValue(stageSizeState);
 
   const handleAppendAssest = (nodeArg: NodeArg) => {
-    const { x, y, width, height } = getInitialPosition({
-      stageSize,
-      nodeSize: { width: nodeArg.width, height: nodeArg.height },
-      ratio: initialImageStageRatio,
-    });
-    const node = createNode({ ...nodeArg, x, y, width, height });
+    const node = createNode({ nodeArg, stageSize });
     const newAttrs = stages.map((nodes, index) =>
       index === stageIndex ? [...nodes, node] : nodes
     );

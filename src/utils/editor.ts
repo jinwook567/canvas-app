@@ -1,3 +1,4 @@
+import { initialImageStageRatio } from '../constants/editor';
 import { KonvaNode, ImageNodeArg, NodeArg, StageSize } from '../types/editor';
 import { createUniqueId } from './unit';
 
@@ -35,18 +36,31 @@ export const getInitialPosition = ({
   return { width, height, x, y };
 };
 
-const createImageNode = (node: ImageNodeArg) => ({
-  width: node.width,
-  height: node.height,
-  url: node.url,
+const createImageNode = (nodeArg: ImageNodeArg) => ({
+  width: nodeArg.width,
+  height: nodeArg.height,
+  url: nodeArg.url,
   type: 'image' as const,
-  x: node.x,
-  y: node.y,
 });
 
-export const createNode = (nodeArg: NodeArg): KonvaNode => {
+export const createNode = ({
+  nodeArg,
+  stageSize,
+}: {
+  nodeArg: NodeArg;
+  stageSize: StageSize;
+}): KonvaNode => {
   const id = createUniqueId();
 
   const node = createImageNode(nodeArg);
-  return { ...node, id };
+
+  const { x, y, width, height } = getInitialPosition({
+    stageSize,
+    nodeSize: {
+      width: nodeArg.width,
+      height: nodeArg.height,
+    },
+    ratio: initialImageStageRatio,
+  });
+  return { ...node, id, x, y, width, height };
 };
