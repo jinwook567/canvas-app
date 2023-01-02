@@ -1,4 +1,5 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { initialImageStageRatio } from '../constants/editor';
 import {
   stageSizeState,
   stagesState,
@@ -16,7 +17,7 @@ function useEditor() {
     const { x, y, width, height } = getInitialPosition({
       stageSize,
       nodeSize: { width: nodeArg.width, height: nodeArg.height },
-      ratio: 0.3,
+      ratio: initialImageStageRatio,
     });
     const node = createNode({ ...nodeArg, x, y, width, height });
     const newAttrs = stages.map((nodes, index) =>
@@ -65,6 +66,7 @@ function useEditor() {
     stages,
     stageIndex,
     selectStage,
+    stageSize,
   };
 }
 
