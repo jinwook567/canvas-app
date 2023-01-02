@@ -2,8 +2,9 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { fireEvent, renderHook, screen, act } from '@testing-library/react';
 import ImageAssets from './ImageAssets';
-import { createNode } from '../../utils/editor';
+import { createNode, getInitialPosition } from '../../utils/editor';
 import useEditor from '../../hooks/useEditor';
+import { initialImageStageRatio } from '../../constants/editor';
 
 function renderImageAssets() {
   const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -91,12 +92,26 @@ test('Image 클릭 시 Stage로 추가가 잘 되는지 테스트', () => {
   const width = firstImage.offsetWidth;
   const height = firstImage.offsetHeight;
 
+  const { stageSize } = result.current;
+  const {
+    x,
+    y,
+    width: nodeWidth,
+    height: nodeHeight,
+  } = getInitialPosition({
+    stageSize,
+    nodeSize: { width, height },
+    ratio: initialImageStageRatio,
+  });
+
   const node = url
     ? createNode({
         type: 'image',
         url,
-        width,
-        height,
+        width: nodeWidth,
+        height: nodeHeight,
+        x,
+        y,
       })
     : { id: 1 };
 
