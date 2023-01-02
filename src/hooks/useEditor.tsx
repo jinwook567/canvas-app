@@ -20,10 +20,13 @@ function useEditor() {
     setStages(newAttrs);
   };
 
-  const handleAppendStage = (targetIndex: StageIndex) => {
-    if (targetIndex > stageIndex || targetIndex < 0) {
+  const checkTargetIndexInRange = (targetIndex: StageIndex) => {
+    if (targetIndex >= stages.length || targetIndex < 0)
       throw new Error('wrong targetIndex range');
-    }
+  };
+
+  const handleAppendStage = (targetIndex: StageIndex) => {
+    checkTargetIndexInRange(targetIndex);
 
     const appendedStages = stages.reduce(
       (acc, cur, index) =>
@@ -33,11 +36,6 @@ function useEditor() {
 
     setStages(appendedStages);
     setStageIndex(targetIndex + 1);
-  };
-
-  const checkTargetIndexInRange = (targetIndex: StageIndex) => {
-    if (targetIndex >= stages.length || targetIndex < 0)
-      throw new Error('wrong targetIndex range');
   };
 
   const handleDeleteStage = (targetIndex: StageIndex) => {
