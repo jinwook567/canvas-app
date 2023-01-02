@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { stageSizeState } from '../../recoil/editor';
-import * as Style from './StagesContainer.styles';
+import * as Styled from './StagesContainer.styles';
 
 type Props = {
   children: React.ReactNode;
@@ -40,7 +40,7 @@ function StagesContainer({ children }: Props) {
 
   window.addEventListener('resize', handleResize);
 
-  return <Style.Container ref={refContainer}>{children}</Style.Container>;
+  return <Styled.Container ref={refContainer}>{children}</Styled.Container>;
 }
 
 export default StagesContainer;
