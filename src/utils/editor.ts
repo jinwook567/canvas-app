@@ -1,5 +1,11 @@
 import { initialImageStageRatio } from '../constants/editor';
-import { KonvaNode, ImageNodeArg, NodeArg, StageSize } from '../types/editor';
+import {
+  KonvaNode,
+  ImageNodeArg,
+  NodeArg,
+  StageSize,
+  KonvaStage,
+} from '../types/editor';
 import { createUniqueId } from './unit';
 
 type PositionArg = {
@@ -64,3 +70,19 @@ export const createNode = ({
   });
   return { ...node, id, x, y, width, height };
 };
+
+export const findSameShapeNode = ({
+  currentStage,
+  node,
+}: {
+  currentStage: KonvaStage;
+  node: KonvaNode;
+}) =>
+  currentStage.find(
+    ({ x, y, width, height, type }) =>
+      x === node.x &&
+      y === node.y &&
+      width === node.width &&
+      height === node.height &&
+      type === node.type
+  );

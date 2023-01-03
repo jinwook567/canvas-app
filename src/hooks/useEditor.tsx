@@ -5,9 +5,10 @@ import {
   stageSizeState,
   stagesState,
   currentStageIndexState,
+  currentStageState,
 } from '../recoil/editor';
 import { KonvaNode, KonvaStages, NodeArg, StageIndex } from '../types/editor';
-import { createNode } from '../utils/editor';
+import { createNode, findSameShapeNode } from '../utils/editor';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
@@ -16,13 +17,22 @@ function useEditor() {
   );
   const stageSize = useRecoilValue(stageSizeState);
   const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
+  const currentStage = useRecoilValue(currentStageState);
 
   const handleAppendAssest = (nodeArg: NodeArg) => {
     const node = createNode({ nodeArg, stageSize });
 
     const newAttrs = stages.map((nodes, index) =>
-      index === currentStageIndex ? [...nodes, node] : nodes
+      index === currentStageIndex
+        ? [
+            ...nodes,
+            findSameShapeNode({ currentStage, node })
+              ? { ...node, x: node.x + 15, y: node.y + 15 }
+              : node,
+          ]
+        : nodes
     );
+
     setStages(newAttrs);
   };
 
