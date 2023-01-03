@@ -61,7 +61,9 @@ function useEditor() {
     id: KonvaNode['id'];
     type: 'append' | 'change';
   }) => {
-    setSelectedIds(type === 'append' ? ids => [...ids, id] : [id]);
+    setSelectedIds(
+      type === 'append' ? ids => [...new Set([...ids, id])] : [id]
+    );
   };
 
   const deselect = () => {
