@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   selectedIdsState,
@@ -27,6 +28,11 @@ function useEditor() {
       throw new Error('wrong targetIndex range');
   };
 
+  const selectStage = (targetIndex: StageIndex) => {
+    checkTargetIndexInRange(targetIndex);
+    setStageIndex(targetIndex);
+  };
+
   const handleAppendStage = (targetIndex: StageIndex) => {
     checkTargetIndexInRange(targetIndex);
 
@@ -45,13 +51,7 @@ function useEditor() {
     checkTargetIndexInRange(targetIndex);
 
     setStages(stages.filter((_, index) => index !== targetIndex));
-
     setStageIndex(stageIndex === 0 ? 0 : stageIndex - 1);
-  };
-
-  const selectStage = (targetIndex: StageIndex) => {
-    checkTargetIndexInRange(targetIndex);
-    setStageIndex(targetIndex);
   };
 
   const selectShape = ({
@@ -69,6 +69,10 @@ function useEditor() {
   const deselect = () => {
     setSelectedIds([]);
   };
+
+  useEffect(() => {
+    deselect();
+  }, [stageIndex]);
 
   return {
     handleAppendAssest,
