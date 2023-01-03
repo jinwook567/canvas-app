@@ -1,16 +1,18 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
+  selectedIdsState,
   stageSizeState,
   stagesState,
   workingStageIndexState,
 } from '../recoil/editor';
-import { KonvaStages, NodeArg, StageIndex } from '../types/editor';
+import { KonvaNode, KonvaStages, NodeArg, StageIndex } from '../types/editor';
 import { createNode } from '../utils/editor';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
   const [stageIndex, setStageIndex] = useRecoilState(workingStageIndexState);
   const stageSize = useRecoilValue(stageSizeState);
+  const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
 
   const handleAppendAssest = (nodeArg: NodeArg) => {
     const node = createNode({ nodeArg, stageSize });
@@ -52,6 +54,20 @@ function useEditor() {
     setStageIndex(targetIndex);
   };
 
+  const selectShape = ({
+    id,
+    type,
+  }: {
+    id: KonvaNode['id'];
+    type: 'append' | 'change';
+  }) => {
+    setSelectedIds(type === 'append' ? ids => [...ids, id] : [id]);
+  };
+
+  const deselect = () => {
+    setSelectedIds([]);
+  };
+
   return {
     handleAppendAssest,
     handleAppendStage,
@@ -60,6 +76,9 @@ function useEditor() {
     stageIndex,
     selectStage,
     stageSize,
+    selectedIds,
+    selectShape,
+    deselect,
   };
 }
 

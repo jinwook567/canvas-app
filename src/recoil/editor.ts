@@ -1,6 +1,11 @@
 // atoms
 import { atom } from 'recoil';
-import { KonvaStages, StageIndex, StageSize } from '../types/editor';
+import {
+  KonvaStages,
+  SelectedIds,
+  StageIndex,
+  StageSize,
+} from '../types/editor';
 
 export const stagesState = atom<KonvaStages>({
   key: 'stagesState',
@@ -18,6 +23,11 @@ export const stageSizeState = atom<StageSize>({
     width: 0,
     height: 0,
   },
+});
+
+export const selectedIdsState = atom<SelectedIds>({
+  key: 'selectedIdsState',
+  default: [],
 });
 
 export default {};
