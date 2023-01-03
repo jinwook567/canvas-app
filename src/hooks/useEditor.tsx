@@ -4,21 +4,24 @@ import {
   selectedIdsState,
   stageSizeState,
   stagesState,
-  workingStageIndexState,
+  currentStageIndexState,
 } from '../recoil/editor';
 import { KonvaNode, KonvaStages, NodeArg, StageIndex } from '../types/editor';
 import { createNode } from '../utils/editor';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
-  const [stageIndex, setStageIndex] = useRecoilState(workingStageIndexState);
+  const [currentStageIndex, setCurrentStageIndex] = useRecoilState(
+    currentStageIndexState
+  );
   const stageSize = useRecoilValue(stageSizeState);
   const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
 
   const handleAppendAssest = (nodeArg: NodeArg) => {
     const node = createNode({ nodeArg, stageSize });
+
     const newAttrs = stages.map((nodes, index) =>
-      index === stageIndex ? [...nodes, node] : nodes
+      index === currentStageIndex ? [...nodes, node] : nodes
     );
     setStages(newAttrs);
   };
@@ -30,7 +33,7 @@ function useEditor() {
 
   const selectStage = (targetIndex: StageIndex) => {
     checkTargetIndexInRange(targetIndex);
-    setStageIndex(targetIndex);
+    setCurrentStageIndex(targetIndex);
   };
 
   const handleAppendStage = (targetIndex: StageIndex) => {
@@ -43,7 +46,7 @@ function useEditor() {
     );
 
     setStages(appendedStages);
-    setStageIndex(targetIndex + 1);
+    setCurrentStageIndex(targetIndex + 1);
   };
 
   const handleDeleteStage = (targetIndex: StageIndex) => {
@@ -51,7 +54,7 @@ function useEditor() {
     checkTargetIndexInRange(targetIndex);
 
     setStages(stages.filter((_, index) => index !== targetIndex));
-    setStageIndex(stageIndex === 0 ? 0 : stageIndex - 1);
+    setCurrentStageIndex(currentStageIndex === 0 ? 0 : currentStageIndex - 1);
   };
 
   const selectShape = ({
@@ -72,14 +75,14 @@ function useEditor() {
 
   useEffect(() => {
     deselect();
-  }, [stageIndex]);
+  }, [currentStageIndex]);
 
   return {
     handleAppendAssest,
     handleAppendStage,
     handleDeleteStage,
     stages,
-    stageIndex,
+    stageIndex: currentStageIndex,
     selectStage,
     stageSize,
     selectedIds,
