@@ -28,7 +28,9 @@ function AppendForm({ handleSubmit }: Props) {
         value={url}
         placeholder="이미지 url을 넣어주세요."
       />
-      <Button type="submit">이미지 추가</Button>
+      <Button type="submit" disabled={url.length === 0}>
+        이미지 추가
+      </Button>
     </form>
   );
 }

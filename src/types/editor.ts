@@ -27,4 +27,6 @@ export type StageSize = {
   height: number;
 };
 
+export type SelectedIds = KonvaNode['id'][];
+
 export default {};

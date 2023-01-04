@@ -1,28 +1,50 @@
+import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
+  selectedIdsState,
   stageSizeState,
   stagesState,
-  workingStageIndexState,
+  currentStageIndexState,
+  currentStageState,
 } from '../recoil/editor';
-import { KonvaStages, NodeArg, StageIndex } from '../types/editor';
-import { createNode } from '../utils/editor';
+import { KonvaNode, KonvaStages, NodeArg, StageIndex } from '../types/editor';
+import { createNode, findSameShapeNode } from '../utils/editor';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
-  const [stageIndex, setStageIndex] = useRecoilState(workingStageIndexState);
-  const stageSize = useRecoilValue(stageSizeState);
+  const [currentStageIndex, setCurrentStageIndex] = useRecoilState(
+    currentStageIndexState
+  );
+  const [stageSize, setStageSize] = useRecoilState(stageSizeState);
+
+  const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
+  const currentStage = useRecoilValue(currentStageState);
 
   const handleAppendAssest = (nodeArg: NodeArg) => {
     const node = createNode({ nodeArg, stageSize });
+
     const newAttrs = stages.map((nodes, index) =>
-      index === stageIndex ? [...nodes, node] : nodes
+      index === currentStageIndex
+        ? [
+            ...nodes,
+            findSameShapeNode({ currentStage, node })
+              ? { ...node, x: node.x + 15, y: node.y + 15 }
+              : node,
+          ]
+        : nodes
     );
+
     setStages(newAttrs);
   };
 
   const checkTargetIndexInRange = (targetIndex: StageIndex) => {
     if (targetIndex >= stages.length || targetIndex < 0)
       throw new Error('wrong targetIndex range');
+  };
+
+  const selectStage = (targetIndex: StageIndex) => {
+    checkTargetIndexInRange(targetIndex);
+    setCurrentStageIndex(targetIndex);
   };
 
   const handleAppendStage = (targetIndex: StageIndex) => {
@@ -35,7 +57,7 @@ function useEditor() {
     );
 
     setStages(appendedStages);
-    setStageIndex(targetIndex + 1);
+    setCurrentStageIndex(targetIndex + 1);
   };
 
   const handleDeleteStage = (targetIndex: StageIndex) => {
@@ -43,23 +65,42 @@ function useEditor() {
     checkTargetIndexInRange(targetIndex);
 
     setStages(stages.filter((_, index) => index !== targetIndex));
-
-    setStageIndex(stageIndex === 0 ? 0 : stageIndex - 1);
+    setCurrentStageIndex(currentStageIndex === 0 ? 0 : currentStageIndex - 1);
   };
 
-  const selectStage = (targetIndex: StageIndex) => {
-    checkTargetIndexInRange(targetIndex);
-    setStageIndex(targetIndex);
+  const selectShape = ({
+    id,
+    type,
+  }: {
+    id: KonvaNode['id'];
+    type: 'append' | 'change';
+  }) => {
+    setSelectedIds(
+      type === 'append' ? ids => [...new Set([...ids, id])] : [id]
+    );
   };
+
+  const deselect = () => {
+    setSelectedIds([]);
+  };
+
+  useEffect(() => {
+    deselect();
+  }, [currentStageIndex]);
 
   return {
     handleAppendAssest,
     handleAppendStage,
     handleDeleteStage,
     stages,
-    stageIndex,
+    setStages,
+    stageIndex: currentStageIndex,
     selectStage,
     stageSize,
+    setStageSize,
+    selectedIds,
+    selectShape,
+    deselect,
   };
 }
 
