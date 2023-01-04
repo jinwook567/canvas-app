@@ -15,7 +15,8 @@ function useEditor() {
   const [currentStageIndex, setCurrentStageIndex] = useRecoilState(
     currentStageIndexState
   );
-  const stageSize = useRecoilValue(stageSizeState);
+  const [stageSize, setStageSize] = useRecoilState(stageSizeState);
+
   const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
   const currentStage = useRecoilValue(currentStageState);
 
@@ -92,9 +93,11 @@ function useEditor() {
     handleAppendStage,
     handleDeleteStage,
     stages,
+    setStages,
     stageIndex: currentStageIndex,
     selectStage,
     stageSize,
+    setStageSize,
     selectedIds,
     selectShape,
     deselect,
