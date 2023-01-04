@@ -8,11 +8,7 @@ import {
   currentStageState,
 } from '../recoil/editor';
 import { KonvaNode, KonvaStages, NodeArg, StageIndex } from '../types/editor';
-import {
-  arrangeSameShapeNode,
-  createNode,
-  findSameShapeNode,
-} from '../utils/editor';
+import { arrangeSameShapeNode, createNode } from '../utils/editor';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
