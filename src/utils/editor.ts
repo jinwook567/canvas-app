@@ -86,3 +86,22 @@ export const findSameShapeNode = ({
       height === node.height &&
       type === node.type
   );
+
+export const arrangeSameShapeNode = ({
+  currentStage,
+  node,
+}: {
+  currentStage: KonvaStage;
+  node: KonvaNode;
+}): KonvaNode => {
+  const sameShapeNode = findSameShapeNode({ currentStage, node });
+  if (!sameShapeNode) return node;
+  return arrangeSameShapeNode({
+    currentStage,
+    node: {
+      ...node,
+      x: sameShapeNode.x + 15,
+      y: sameShapeNode.y + 15,
+    },
+  });
+};

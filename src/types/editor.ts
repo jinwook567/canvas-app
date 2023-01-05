@@ -10,7 +10,16 @@ export interface KonvaImageNode extends Omit<Konva.ImageConfig, 'image'> {
   url: string;
 }
 
-export type KonvaNode = KonvaImageNode;
+export interface KonvaTextNode extends Konva.TextConfig {
+  type: 'text';
+  width: number;
+  height: number;
+  x: number;
+  y: number;
+  id: string;
+}
+
+export type KonvaNode = KonvaImageNode | KonvaTextNode;
 
 export type KonvaStage = KonvaNode[];
 
@@ -29,4 +38,8 @@ export type StageSize = {
 
 export type SelectedIds = KonvaNode['id'][];
 
-export default {};
+export type KonvaRef = Konva.Image | Konva.Text | null;
+
+export type IsPressedKey = {
+  Shift: boolean;
+};
