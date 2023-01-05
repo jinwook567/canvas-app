@@ -7,11 +7,11 @@ import StagesContainer from '../components/StagesContainer/StagesContainer';
 function Editor() {
   return (
     <Grid container>
-      <Grid lg={2}>
+      <Grid item lg={2}>
         <ImageAssets />
       </Grid>
 
-      <Grid lg={10}>
+      <Grid item lg={10}>
         <StagesContainer>
           <Stages />
         </StagesContainer>
