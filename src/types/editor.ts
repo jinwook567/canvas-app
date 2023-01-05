@@ -38,4 +38,4 @@ export type StageSize = {
 
 export type SelectedIds = KonvaNode['id'][];
 
-export default {};
+export type KonvaRef = Konva.Image | Konva.Text | null;
