@@ -18,6 +18,7 @@ function ShapePicker({ node, nodeEvents, nodeRef }: Props) {
     ref: (instance: KonvaRef) => {
       nodeRef.current = instance;
     },
+    draggable: true,
   };
 
   switch (node.type) {
