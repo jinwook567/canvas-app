@@ -1,5 +1,5 @@
 import React, { MutableRefObject } from 'react';
-import * as Konva from 'react-konva';
+import * as ReactKonva from 'react-konva';
 import { useRecoilValue } from 'recoil';
 import { stageSizeState } from '../../../recoil/editor';
 import { IsPressedKey, KonvaStage } from '../../../types/editor';
@@ -19,8 +19,8 @@ function Stage({ nodes, index, isPressedKeyRef }: Props) {
     <>
       <StageController index={index} />
       <StageContainer index={index}>
-        <Konva.Stage width={width} height={height}>
-          <Konva.Layer>
+        <ReactKonva.Stage width={width} height={height}>
+          <ReactKonva.Layer>
             {nodes.map(node => (
               <Node
                 node={node}
@@ -28,8 +28,8 @@ function Stage({ nodes, index, isPressedKeyRef }: Props) {
                 isPressedKeyRef={isPressedKeyRef}
               />
             ))}
-          </Konva.Layer>
-        </Konva.Stage>
+          </ReactKonva.Layer>
+        </ReactKonva.Stage>
       </StageContainer>
     </>
   );
