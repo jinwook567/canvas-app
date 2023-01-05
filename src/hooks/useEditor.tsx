@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { MutableRefObject, useEffect, useRef } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   selectedIdsState,
@@ -7,7 +7,13 @@ import {
   currentStageIndexState,
   currentStageState,
 } from '../recoil/editor';
-import { KonvaNode, KonvaStages, NodeArg, StageIndex } from '../types/editor';
+import {
+  IsPressedKey,
+  KonvaNode,
+  KonvaStages,
+  NodeArg,
+  StageIndex,
+} from '../types/editor';
 import { arrangeSameShapeNode, createNode } from '../utils/editor';
 
 function useEditor() {
@@ -97,6 +103,38 @@ function useEditor() {
     selectShape,
     deselect,
   };
+}
+
+export function usePressedKey() {
+  const initialValue: IsPressedKey = {
+    Shift: false,
+  };
+
+  const isPressedKeyRef = useRef<{ [key in string]: boolean }>(initialValue);
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (isPressedKeyRef.current[e.key] !== undefined) {
+      isPressedKeyRef.current[e.key] = true;
+    }
+  };
+
+  const handleKeyUp = (e: KeyboardEvent) => {
+    if (isPressedKeyRef.current[e.key] !== undefined) {
+      isPressedKeyRef.current[e.key] = false;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
+  return isPressedKeyRef as MutableRefObject<IsPressedKey>;
 }
 
 export default useEditor;

@@ -39,3 +39,7 @@ export type StageSize = {
 export type SelectedIds = KonvaNode['id'][];
 
 export type KonvaRef = Konva.Image | Konva.Text | null;
+
+export type IsPressedKey = {
+  Shift: boolean;
+};
