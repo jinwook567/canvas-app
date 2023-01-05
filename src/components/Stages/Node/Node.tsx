@@ -1,17 +1,18 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
-import { KonvaNode } from '../../../types/editor';
-import Image from '../Image/Image';
+import React, { useRef } from 'react';
+import { KonvaNodeEvents } from 'react-konva';
+import ShapePicker from '../ShapePicker/ShapePicker';
+import { KonvaNode, KonvaRef } from '../../../types/editor';
 
 type Props = {
   node: KonvaNode;
 };
 
 function Node({ node }: Props) {
-  const map = {
-    image: <Image {...node} />,
-  };
-  return map[node.type];
+  const nodeRef = useRef<KonvaRef>(null);
+
+  const nodeEvents: KonvaNodeEvents = {};
+
+  return <ShapePicker node={node} nodeEvents={nodeEvents} nodeRef={nodeRef} />;
 }
 
 export default Node;
