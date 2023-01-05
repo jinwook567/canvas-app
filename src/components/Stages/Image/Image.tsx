@@ -1,15 +1,16 @@
-import React from 'react';
-import * as Konva from 'react-konva';
+/* eslint-disable react/jsx-props-no-spreading */
+import Konva from 'konva';
+import React, { ForwardedRef } from 'react';
+import * as ReactKonva from 'react-konva';
 import useImage from 'use-image';
 import { KonvaImageNode } from '../../../types/editor';
 
 type Props = KonvaImageNode;
 
-function Image({ type, url, ...rest }: Props) {
+function Image({ type, url, ...rest }: Props, ref: ForwardedRef<Konva.Image>) {
   const [image] = useImage(url);
 
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Konva.Image image={image} {...rest} />;
+  return <ReactKonva.Image image={image} {...rest} ref={ref} />;
 }
 
-export default Image;
+export default React.forwardRef(Image);
