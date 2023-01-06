@@ -25,7 +25,10 @@ export type KonvaStage = KonvaNode[];
 
 export type KonvaStages = KonvaStage[];
 
-export type ImageNodeArg = Omit<KonvaImageNode, 'id' | 'x' | 'y'>;
+export type ImageNodeArg = Pick<
+  KonvaImageNode,
+  'type' | 'width' | 'height' | 'url'
+>;
 
 export type NodeArg = ImageNodeArg;
 
