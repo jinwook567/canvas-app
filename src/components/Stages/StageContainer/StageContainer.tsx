@@ -8,7 +8,7 @@ type Props = {
 };
 
 function StageContainer({ children, index }: Props) {
-  const { selectStage, stageIndex } = useEditor();
+  const { selectStage, currentStageIndex: stageIndex } = useEditor();
 
   return (
     <Styled.Container
