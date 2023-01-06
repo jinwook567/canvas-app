@@ -10,6 +10,7 @@ import {
 import {
   IsPressedKey,
   KonvaNode,
+  KonvaStage,
   KonvaStages,
   NodeArg,
   StageIndex,
@@ -89,19 +90,41 @@ function useEditor() {
     deselect();
   }, [currentStageIndex]);
 
+  const handleChangeCurrentStage = (newStage: KonvaStage) => {
+    const newStages = stages.map((stage, index) =>
+      index === currentStageIndex ? newStage : stage
+    );
+    setStages(newStages);
+  };
+
+  type TransformedNodes =
+    | Pick<KonvaNode, 'id' | 'width' | 'height' | 'x' | 'y'>
+    | Pick<KonvaNode, 'id' | 'x' | 'y'>;
+  const handleTransformNodes = (transformedNodes: TransformedNodes[]) => {
+    const newStage = currentStage.map(node => {
+      const transformedNode = transformedNodes.find(
+        trNode => trNode.id === node.id
+      );
+      return transformedNode ? { ...node, ...transformedNode } : node;
+    });
+    handleChangeCurrentStage(newStage);
+  };
+
   return {
     handleAppendAssest,
     handleAppendStage,
     handleDeleteStage,
     stages,
     setStages,
-    stageIndex: currentStageIndex,
+    currentStageIndex,
+    currentStage,
     selectStage,
     stageSize,
     setStageSize,
     selectedIds,
     selectShape,
     deselect,
+    handleTransformNodes,
   };
 }
 

@@ -111,3 +111,37 @@ test('deselect shape', () => {
 
   expect(result.current.selectedIds).toEqual([]);
 });
+
+test('handleTransformNodes', () => {
+  const result = setupRenderUseEditorHook();
+
+  act(() =>
+    result.current.handleAppendAssest({
+      url: '1',
+      width: 300,
+      height: 300,
+      type: 'image',
+    })
+  );
+  act(() =>
+    result.current.handleAppendAssest({
+      url: '1',
+      width: 300,
+      height: 300,
+      type: 'image',
+    })
+  );
+
+  const transformedNodes = result.current.currentStage.map(node => ({
+    id: node.id,
+    width: node.width * 1.5,
+    height: node.height * 1.5,
+    x: node.x + 100,
+    y: node.y + 200,
+  }));
+
+  act(() => result.current.handleTransformNodes(transformedNodes));
+  expect(result.current.currentStage).toEqual(
+    transformedNodes.map(node => ({ ...node, type: 'image', url: '1' }))
+  );
+});
