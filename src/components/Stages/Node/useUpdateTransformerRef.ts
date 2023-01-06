@@ -17,9 +17,7 @@ function useUpdateTransformerRef({ isSelected, trRef, nodeRef }: Props) {
     const currentTransformerNodes = trRef.current.nodes();
     const newTransformerNodes = isSelected
       ? [...currentTransformerNodes, node]
-      : currentTransformerNodes.filter(
-          trNode => trNode.attrs.id !== node.attrs.id
-        );
+      : currentTransformerNodes.filter(trNode => trNode.attrs.id !== node.id());
 
     trRef.current.nodes(newTransformerNodes);
     trRef.current.getLayer()?.batchDraw();
