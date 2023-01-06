@@ -17,7 +17,7 @@ type Props = {
 
 function Stage({ nodes, index, isPressedKeyRef }: Props) {
   const { width, height } = useRecoilValue(stageSizeState);
-  const { selectedIds, deselect } = useEditor();
+  const { selectedIds, deselect, handleTransformNodes } = useEditor();
   const trRef = useRef<Konva.Transformer>(null);
 
   return (
@@ -40,8 +40,39 @@ function Stage({ nodes, index, isPressedKeyRef }: Props) {
                 isSelected={!!selectedIds.find(id => node.id === id)}
               />
             ))}
-            {/* {selectedIds.length > 0 && <ReactKonva.Transformer ref={trRef} />} */}
-            <ReactKonva.Transformer ref={trRef} />
+
+            <ReactKonva.Transformer
+              ref={trRef}
+              onTransformEnd={() => {
+                if (!trRef.current) return;
+
+                const transformedNodes = trRef.current.nodes().map(trNode => ({
+                  id: trNode.id(),
+                  x: trNode.x(),
+                  y: trNode.y(),
+                  width: trNode.width() * trNode.scaleX(),
+                  height: trNode.height() * trNode.scaleY(),
+                }));
+
+                trRef.current.nodes().forEach(trNode => {
+                  trNode.scaleX(1);
+                  trNode.scaleY(1);
+                });
+
+                handleTransformNodes(transformedNodes);
+              }}
+              onDragEnd={() => {
+                if (!trRef.current) return;
+
+                const transformedNodes = trRef.current.nodes().map(trNode => ({
+                  id: trNode.id(),
+                  x: trNode.x(),
+                  y: trNode.y(),
+                }));
+
+                handleTransformNodes(transformedNodes);
+              }}
+            />
           </ReactKonva.Layer>
         </ReactKonva.Stage>
       </StageContainer>
