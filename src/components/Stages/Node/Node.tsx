@@ -18,13 +18,15 @@ function Node({ node, isPressedKeyRef, trRef, isSelected }: Props) {
   const { selectShape } = useEditor();
 
   useEffect(() => {
-    if (isSelected && trRef.current) {
-      trRef.current.nodes([
-        ...trRef.current.nodes(),
-        nodeRef.current as Konva.Node,
-      ]);
-      trRef.current.getLayer()?.batchDraw();
-    }
+    if (!trRef.current) return;
+
+    const currentTransformerNodes = trRef.current.nodes();
+    const newTransformerNodes = isSelected
+      ? [...currentTransformerNodes, nodeRef.current as Konva.Node]
+      : currentTransformerNodes.filter(trNode => trNode.attrs.id !== node.id);
+
+    trRef.current.nodes(newTransformerNodes);
+    trRef.current.getLayer()?.batchDraw();
   }, [isSelected]);
 
   const nodeEvents: KonvaNodeEvents = {
@@ -34,9 +36,8 @@ function Node({ node, isPressedKeyRef, trRef, isSelected }: Props) {
         type: isPressedKeyRef.current.Shift ? 'append' : 'change',
       });
     },
-    onTransformEnd: () => {
-      console.log('hi');
-    },
+    onTransformEnd: () => {},
+    onDragEnd: () => {},
   };
 
   return <ShapePicker node={node} nodeEvents={nodeEvents} nodeRef={nodeRef} />;

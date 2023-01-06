@@ -40,7 +40,8 @@ function Stage({ nodes, index, isPressedKeyRef }: Props) {
                 isSelected={!!selectedIds.find(id => node.id === id)}
               />
             ))}
-            {selectedIds.length > 0 && <ReactKonva.Transformer ref={trRef} />}
+            {/* {selectedIds.length > 0 && <ReactKonva.Transformer ref={trRef} />} */}
+            <ReactKonva.Transformer ref={trRef} />
           </ReactKonva.Layer>
         </ReactKonva.Stage>
       </StageContainer>
