@@ -1,4 +1,4 @@
-import React, { MutableRefObject, RefObject, useEffect, useRef } from 'react';
+import React, { MutableRefObject, RefObject, useRef } from 'react';
 import Konva from 'konva';
 import { KonvaNodeEvents } from 'react-konva';
 import ShapePicker from '../ShapePicker/ShapePicker';
@@ -18,7 +18,7 @@ function Node({ node, isPressedKeyRef, trRef, isSelected }: Props) {
 
   useUpdateTransformerRef({ isSelected, trRef, nodeRef });
 
-  const { selectShape, selectedIds } = useEditor();
+  const { selectShape } = useEditor();
 
   const nodeEvents: KonvaNodeEvents = {
     onClick: () => {
@@ -27,8 +27,7 @@ function Node({ node, isPressedKeyRef, trRef, isSelected }: Props) {
         type: isPressedKeyRef.current.Shift ? 'append' : 'change',
       });
     },
-    onTransformEnd: () => {},
-    onDragEnd: () => {},
+    onDragEnd: e => {},
   };
 
   return <ShapePicker node={node} nodeEvents={nodeEvents} nodeRef={nodeRef} />;
