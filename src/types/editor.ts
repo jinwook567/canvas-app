@@ -46,3 +46,7 @@ export type KonvaRef = Konva.Image | Konva.Text | null;
 export type IsPressedKey = {
   Shift: boolean;
 };
+
+export type TransformedNodes =
+  | Pick<KonvaNode, 'id' | 'width' | 'height' | 'x' | 'y' | 'rotation'>
+  | Pick<KonvaNode, 'id' | 'x' | 'y'>;

@@ -14,6 +14,7 @@ import {
   KonvaStages,
   NodeArg,
   StageIndex,
+  TransformedNodes,
 } from '../types/editor';
 import { arrangeSameShapeNode, createNode } from '../utils/editor';
 
@@ -96,10 +97,6 @@ function useEditor() {
     );
     setStages(newStages);
   };
-
-  type TransformedNodes =
-    | Pick<KonvaNode, 'id' | 'width' | 'height' | 'x' | 'y' | 'rotation'>
-    | Pick<KonvaNode, 'id' | 'x' | 'y'>;
 
   const handleTransformNodes = (transformedNodes: TransformedNodes[]) => {
     const newStage = currentStage.map(node => {
