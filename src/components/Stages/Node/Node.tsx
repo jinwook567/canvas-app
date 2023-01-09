@@ -15,6 +15,7 @@ type Props = {
 function Node({ node, trRef, isSelected }: Props) {
   const nodeRef = useRef<KonvaRef>(null);
   const isPressedKeyRef = usePressedKey();
+  const { handleTransformNodes } = useEditor();
 
   useUpdateTransformerRef({ isSelected, trRef, nodeRef });
 
@@ -27,7 +28,12 @@ function Node({ node, trRef, isSelected }: Props) {
         type: isPressedKeyRef.current.Shift ? 'append' : 'change',
       });
     },
-    onDragEnd: e => {},
+    onDragEnd: e => {
+      const x = e.target.x();
+      const y = e.target.y();
+      const { id } = node;
+      handleTransformNodes([{ id, x, y }]);
+    },
   };
 
   return <ShapePicker node={node} nodeEvents={nodeEvents} nodeRef={nodeRef} />;

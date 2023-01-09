@@ -98,8 +98,9 @@ function useEditor() {
   };
 
   type TransformedNodes =
-    | Pick<KonvaNode, 'id' | 'width' | 'height' | 'x' | 'y'>
+    | Pick<KonvaNode, 'id' | 'width' | 'height' | 'x' | 'y' | 'rotation'>
     | Pick<KonvaNode, 'id' | 'x' | 'y'>;
+
   const handleTransformNodes = (transformedNodes: TransformedNodes[]) => {
     const newStage = currentStage.map(node => {
       const transformedNode = transformedNodes.find(
