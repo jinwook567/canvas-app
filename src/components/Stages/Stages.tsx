@@ -6,17 +6,11 @@ import Stage from './Stage/Stage';
 
 function Stages() {
   const stages = useRecoilValue(stagesState);
-  const isPressedKeyRef = usePressedKey();
 
   return (
     <div>
       {stages.map((nodes, index) => (
-        <Stage
-          key={`${stages.length + index}`}
-          nodes={nodes}
-          index={index}
-          isPressedKeyRef={isPressedKeyRef}
-        />
+        <Stage key={`${stages.length + index}`} nodes={nodes} index={index} />
       ))}
     </div>
   );

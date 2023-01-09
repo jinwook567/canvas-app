@@ -2,19 +2,19 @@ import React, { MutableRefObject, RefObject, useRef } from 'react';
 import Konva from 'konva';
 import { KonvaNodeEvents } from 'react-konva';
 import ShapePicker from '../ShapePicker/ShapePicker';
-import { IsPressedKey, KonvaNode, KonvaRef } from '../../../types/editor';
-import useEditor from '../../../hooks/useEditor';
+import { KonvaNode, KonvaRef } from '../../../types/editor';
+import useEditor, { usePressedKey } from '../../../hooks/useEditor';
 import useUpdateTransformerRef from './useUpdateTransformerRef';
 
 type Props = {
   node: KonvaNode;
-  isPressedKeyRef: MutableRefObject<IsPressedKey>;
   trRef: RefObject<Konva.Transformer>;
   isSelected: boolean;
 };
 
-function Node({ node, isPressedKeyRef, trRef, isSelected }: Props) {
+function Node({ node, trRef, isSelected }: Props) {
   const nodeRef = useRef<KonvaRef>(null);
+  const isPressedKeyRef = usePressedKey();
 
   useUpdateTransformerRef({ isSelected, trRef, nodeRef });
 

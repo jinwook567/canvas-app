@@ -12,10 +12,9 @@ import StageController from '../StageController/StageController';
 type Props = {
   nodes: KonvaStage;
   index: number;
-  isPressedKeyRef: MutableRefObject<IsPressedKey>;
 };
 
-function Stage({ nodes, index, isPressedKeyRef }: Props) {
+function Stage({ nodes, index }: Props) {
   const { width, height } = useRecoilValue(stageSizeState);
   const { selectedIds, deselect, handleTransformNodes } = useEditor();
   const trRef = useRef<Konva.Transformer>(null);
@@ -35,7 +34,6 @@ function Stage({ nodes, index, isPressedKeyRef }: Props) {
               <Node
                 key={node.id}
                 node={node}
-                isPressedKeyRef={isPressedKeyRef}
                 trRef={trRef}
                 isSelected={!!selectedIds.find(id => node.id === id)}
               />
