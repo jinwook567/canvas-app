@@ -1,4 +1,4 @@
-import React, { MutableRefObject, RefObject, useRef } from 'react';
+import React, { RefObject, useRef } from 'react';
 import Konva from 'konva';
 import { KonvaNodeEvents } from 'react-konva';
 import ShapePicker from '../ShapePicker/ShapePicker';

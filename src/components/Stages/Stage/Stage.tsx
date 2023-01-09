@@ -1,10 +1,10 @@
 import Konva from 'konva';
-import React, { MutableRefObject, useRef } from 'react';
+import React, { useRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { useRecoilValue } from 'recoil';
 import useEditor from '../../../hooks/useEditor';
 import { stageSizeState } from '../../../recoil/editor';
-import { IsPressedKey, KonvaStage } from '../../../types/editor';
+import { KonvaStage } from '../../../types/editor';
 import Node from '../Node/Node';
 import StageContainer from '../StageContainer/StageContainer';
 import StageController from '../StageController/StageController';

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { usePressedKey } from '../../hooks/useEditor';
 import { stagesState } from '../../recoil/editor';
 import Stage from './Stage/Stage';
 
