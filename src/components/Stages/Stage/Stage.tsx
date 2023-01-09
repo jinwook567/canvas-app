@@ -50,6 +50,7 @@ function Stage({ nodes, index }: Props) {
                   y: trNode.y(),
                   width: trNode.width() * trNode.scaleX(),
                   height: trNode.height() * trNode.scaleY(),
+                  rotation: trNode.rotation(),
                 }));
 
                 trRef.current.nodes().forEach(trNode => {
