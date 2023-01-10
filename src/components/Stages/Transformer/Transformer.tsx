@@ -19,15 +19,10 @@ function Transformer({ trRef }: Props) {
           id: trNode.id(),
           x: trNode.x(),
           y: trNode.y(),
-          width: trNode.width() * trNode.scaleX(),
-          height: trNode.height() * trNode.scaleY(),
+          scaleX: trNode.scaleX(),
+          scaleY: trNode.scaleY(),
           rotation: trNode.rotation(),
         }));
-
-        trRef.current.nodes().forEach(trNode => {
-          trNode.scaleX(1);
-          trNode.scaleY(1);
-        });
 
         handleTransformNodes(transformedNodes);
       }}

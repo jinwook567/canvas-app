@@ -8,15 +8,17 @@ export interface KonvaImageNode extends Omit<Konva.ImageConfig, 'image'> {
   y: number;
   id: string;
   url: string;
+  scaleX: number;
+  scaleY: number;
 }
 
 export interface KonvaTextNode extends Konva.TextConfig {
   type: 'text';
-  width: number;
-  height: number;
   x: number;
   y: number;
   id: string;
+  scaleX: number;
+  scaleY: number;
 }
 
 export type KonvaNode = KonvaImageNode | KonvaTextNode;

@@ -134,14 +134,20 @@ test('handleTransformNodes', () => {
 
   const transformedNodes = result.current.currentStage.map(node => ({
     id: node.id,
-    width: node.width * 1.5,
-    height: node.height * 1.5,
+    scaleX: node.scaleX * 1.5,
+    scaleY: node.scaleY * 1.5,
     x: node.x + 100,
     y: node.y + 200,
   }));
 
   act(() => result.current.handleTransformNodes(transformedNodes));
   expect(result.current.currentStage).toEqual(
-    transformedNodes.map(node => ({ ...node, type: 'image', url: '1' }))
+    transformedNodes.map(node => ({
+      ...node,
+      type: 'image',
+      url: '1',
+      width: 300,
+      height: 300,
+    }))
   );
 });

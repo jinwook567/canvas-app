@@ -47,6 +47,8 @@ const createImageNode = (nodeArg: ImageNodeArg) => ({
   height: nodeArg.height,
   url: nodeArg.url,
   type: 'image' as const,
+  scaleX: 1,
+  scaleY: 1,
 });
 
 export const createNode = ({
