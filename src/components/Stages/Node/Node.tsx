@@ -1,10 +1,11 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { RefObject, useRef } from 'react';
 import Konva from 'konva';
-import { KonvaNodeEvents } from 'react-konva';
-import ShapePicker from '../ShapePicker/ShapePicker';
-import { KonvaNode, KonvaRef } from '../../../types/editor';
-import useEditor, { usePressedKey } from '../../../hooks/useEditor';
-import useUpdateTransformerRef from './useUpdateTransformerRef';
+import { Text } from 'react-konva';
+import { KonvaNode } from '../../../types/editor';
+import useUpdateTransformerBySelectedId from './useUpdateTransformerRef';
+import Image from '../Image/Image';
+import useNodeEvents from './useNodeEvents';
 
 type Props = {
   node: KonvaNode;
@@ -13,30 +14,26 @@ type Props = {
 };
 
 function Node({ node, trRef, isSelected }: Props) {
-  const nodeRef = useRef<KonvaRef>(null);
-  const isPressedKeyRef = usePressedKey();
-  const { handleTransformNodes } = useEditor();
+  const nodeRef = useRef(null);
 
-  useUpdateTransformerRef({ isSelected, trRef, nodeRef });
+  useUpdateTransformerBySelectedId({ isSelected, trRef, nodeRef });
 
-  const { selectShape } = useEditor();
+  const nodeEvents = useNodeEvents(node);
 
-  const nodeEvents: KonvaNodeEvents = {
-    onClick: () => {
-      selectShape({
-        id: node.id,
-        type: isPressedKeyRef.current.Shift ? 'append' : 'change',
-      });
-    },
-    onDragEnd: e => {
-      const x = e.target.x();
-      const y = e.target.y();
-      const { id } = node;
-      handleTransformNodes([{ id, x, y }]);
-    },
+  const config = {
+    ...node,
+    ...nodeEvents,
+    draggable: true,
+    ref: nodeRef,
   };
 
-  return <ShapePicker node={node} nodeEvents={nodeEvents} nodeRef={nodeRef} />;
+  switch (node.type) {
+    case 'image':
+      return <Image {...config} />;
+
+    default:
+      return <Text {...config} />;
+  }
 }
 
 export default Node;

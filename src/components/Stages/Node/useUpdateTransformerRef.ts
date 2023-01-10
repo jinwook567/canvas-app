@@ -7,7 +7,11 @@ type Props = {
   nodeRef: RefObject<Konva.Node>;
 };
 
-function useUpdateTransformerRef({ isSelected, trRef, nodeRef }: Props) {
+function useUpdateTransformerBySelectedId({
+  isSelected,
+  trRef,
+  nodeRef,
+}: Props) {
   useEffect(() => {
     if (!trRef.current) return;
 
@@ -24,4 +28,4 @@ function useUpdateTransformerRef({ isSelected, trRef, nodeRef }: Props) {
   }, [isSelected]);
 }
 
-export default useUpdateTransformerRef;
+export default useUpdateTransformerBySelectedId;
