@@ -20,7 +20,7 @@ function Node({ node, trRef, isSelected }: Props) {
 
   const nodeEvents = useNodeEvents(node);
 
-  const config = {
+  const props = {
     ...node,
     ...nodeEvents,
     draggable: true,
@@ -29,10 +29,10 @@ function Node({ node, trRef, isSelected }: Props) {
 
   switch (node.type) {
     case 'image':
-      return <Image {...config} />;
+      return <Image {...props} />;
 
     default:
-      return <Text {...config} />;
+      return <Text {...props} />;
   }
 }
 
