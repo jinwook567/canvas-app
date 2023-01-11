@@ -1,9 +1,11 @@
 import { KonvaNodeEvents } from 'react-konva';
-import useEditor, { usePressedKey } from '../../../hooks/useEditor';
+import usePressedKey from '../../../hooks/usePressedKey';
+import useEditor from '../../../hooks/useEditor';
 import { KonvaNode } from '../../../types/editor';
 
 function useNodeEvents(node: KonvaNode) {
   const isPressedKeyRef = usePressedKey();
+
   const { handleTransformNodes, selectShape } = useEditor();
 
   const nodeEvents: KonvaNodeEvents = {
