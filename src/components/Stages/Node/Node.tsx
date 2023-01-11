@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { RefObject, useRef } from 'react';
 import Konva from 'konva';
-import { Text } from 'react-konva';
+import * as ReactKonva from 'react-konva';
 import { KonvaNode } from '../../../types/editor';
 import useUpdateTransformerBySelectedId from './useUpdateTransformerRef';
 import Image from '../Image/Image';
@@ -16,14 +16,18 @@ type Props = {
 function Node({ node, trRef, isSelected }: Props) {
   const nodeRef = useRef(null);
 
-  useUpdateTransformerBySelectedId({ isSelected, trRef, nodeRef });
+  useUpdateTransformerBySelectedId({
+    isSelected,
+    trRef,
+    nodeRef,
+  });
 
   const nodeEvents = useNodeEvents(node);
 
   const props = {
+    draggable: true,
     ...node,
     ...nodeEvents,
-    draggable: true,
     ref: nodeRef,
   };
 
@@ -31,8 +35,25 @@ function Node({ node, trRef, isSelected }: Props) {
     case 'image':
       return <Image {...props} />;
 
+    case 'group':
+      return (
+        <ReactKonva.Group {...props}>
+          {node.children.map(child => (
+            <Node
+              key={child.id}
+              node={{
+                ...child,
+                draggable: false,
+              }}
+              trRef={trRef}
+              isSelected={false}
+            />
+          ))}
+        </ReactKonva.Group>
+      );
+
     default:
-      return <Text {...props} />;
+      return <ReactKonva.Text {...props} />;
   }
 }
 
