@@ -152,7 +152,7 @@ test('handleTransformNodes', () => {
   );
 });
 
-test('handleOrganizeGroup', () => {
+test('handleOrganizeGroup, handleCloseGroup', () => {
   const result = setupRenderUseEditorHook();
   const nodeArg = { url: '1', width: 100, height: 100, type: 'image' as const };
 
@@ -180,4 +180,8 @@ test('handleOrganizeGroup', () => {
       y: 0,
     })
   );
+
+  act(() => result.current.handleCloseGroup(result.current.currentStage[1].id));
+  expect(result.current.currentStage[1]).toEqual(second);
+  expect(result.current.currentStage[2]).toEqual(third);
 });

@@ -153,7 +153,15 @@ function useEditor() {
     selectShape({ id: groupNode.id, type: 'change' });
   };
 
-  const handleCloseGroup = (groupId: KonvaNode['id']) => {};
+  const handleCloseGroup = (groupId: KonvaNode['id']) => {
+    const newStage = currentStage.reduce((acc, node) => {
+      if (node.id === groupId && node.type === 'group')
+        acc.push(...node.children);
+      else acc.push(node);
+      return acc;
+    }, [] as KonvaNode[]);
+    handleChangeCurrentStage(newStage);
+  };
 
   return {
     handleAppendAsset,
@@ -171,6 +179,7 @@ function useEditor() {
     deselect,
     handleTransformNodes,
     handleOrganizeGroup,
+    handleCloseGroup,
   };
 }
 
