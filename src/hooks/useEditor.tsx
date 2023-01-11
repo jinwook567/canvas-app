@@ -13,10 +13,15 @@ import {
   KonvaStage,
   KonvaStages,
   NodeArg,
+  SelectedIds,
   StageIndex,
   TransformedNodes,
 } from '../types/editor';
-import { arrangeSameShapeNode, createNode } from '../utils/editor';
+import {
+  arrangeSameShapeNode,
+  createGroupNode,
+  createNode,
+} from '../utils/editor';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
@@ -28,7 +33,7 @@ function useEditor() {
   const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
   const currentStage = useRecoilValue(currentStageState);
 
-  const handleAppendAssest = (nodeArg: NodeArg) => {
+  const handleAppendAsset = (nodeArg: NodeArg) => {
     const node = createNode({ nodeArg, stageSize });
 
     const newAttrs = stages.map((nodes, index) =>
@@ -108,8 +113,50 @@ function useEditor() {
     handleChangeCurrentStage(newStage);
   };
 
+  const handleOrganizeGroup = (ids: SelectedIds) => {
+    type InitialValue = {
+      notGroupNodes: KonvaNode[];
+      groupNodes: KonvaNode[];
+      firstNodeIndex: number;
+    };
+    const initialValue: InitialValue = {
+      notGroupNodes: [],
+      groupNodes: [],
+      firstNodeIndex: Infinity,
+    };
+
+    const { notGroupNodes, groupNodes, firstNodeIndex } = currentStage.reduce(
+      (acc, node) => {
+        if (ids.includes(node.id)) {
+          acc.groupNodes.push(node);
+          acc.firstNodeIndex = Math.min(
+            acc.firstNodeIndex,
+            acc.notGroupNodes.length
+          );
+        } else {
+          acc.notGroupNodes.push(node);
+        }
+        return acc;
+      },
+      initialValue
+    );
+
+    const groupNode = createGroupNode({ children: groupNodes });
+
+    const newStage = [
+      ...notGroupNodes.slice(0, firstNodeIndex),
+      groupNode,
+      ...notGroupNodes.slice(firstNodeIndex, notGroupNodes.length),
+    ];
+
+    handleChangeCurrentStage(newStage);
+    selectShape({ id: groupNode.id, type: 'change' });
+  };
+
+  const handleCloseGroup = (groupId: KonvaNode['id']) => {};
+
   return {
-    handleAppendAssest,
+    handleAppendAsset,
     handleAppendStage,
     handleDeleteStage,
     stages,
@@ -123,6 +170,7 @@ function useEditor() {
     selectShape,
     deselect,
     handleTransformNodes,
+    handleOrganizeGroup,
   };
 }
 
