@@ -21,7 +21,7 @@ export interface KonvaTextNode extends Konva.TextConfig {
   scaleY: number;
 }
 
-export interface KonvaGropNode extends Konva.GroupConfig {
+export interface KonvaGroupNode extends Konva.GroupConfig {
   type: 'group';
   id: string;
   x: number;
@@ -31,7 +31,7 @@ export interface KonvaGropNode extends Konva.GroupConfig {
   children: KonvaNode[];
 }
 
-export type KonvaNode = KonvaImageNode | KonvaTextNode | KonvaGropNode;
+export type KonvaNode = KonvaImageNode | KonvaTextNode | KonvaGroupNode;
 
 export type KonvaStage = KonvaNode[];
 
@@ -42,7 +42,7 @@ export type ImageNodeArg = Pick<
   'type' | 'width' | 'height' | 'url'
 >;
 
-export type GroupNodeArg = Pick<KonvaGropNode, 'children'>;
+export type GroupNodeArg = Pick<KonvaGroupNode, 'children'>;
 
 export type NodeArg = ImageNodeArg;
 
