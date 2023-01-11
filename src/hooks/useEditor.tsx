@@ -93,6 +93,7 @@ function useEditor() {
   };
 
   useEffect(() => {
+    console.log('iam rendered');
     deselect();
   }, [currentStageIndex]);
 
@@ -154,12 +155,25 @@ function useEditor() {
   };
 
   const handleCloseGroup = (groupId: KonvaNode['id']) => {
+    deselect();
+
     const newStage = currentStage.reduce((acc, node) => {
-      if (node.id === groupId && node.type === 'group')
-        acc.push(...node.children);
-      else acc.push(node);
+      if (node.id === groupId && node.type === 'group') {
+        const children = node.children.map(child => ({
+          ...child,
+          x: child.x + node.x,
+          y: child.y + node.y,
+          scaleX: child.scaleX * node.scaleX,
+          scaleY: child.scaleY * node.scaleY,
+        }));
+        acc.push(...children);
+      } else {
+        acc.push(node);
+      }
+
       return acc;
     }, [] as KonvaNode[]);
+
     handleChangeCurrentStage(newStage);
   };
 
