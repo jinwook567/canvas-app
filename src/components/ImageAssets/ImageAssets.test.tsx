@@ -130,7 +130,7 @@ test('Image 클릭 시 Stage로 추가가 잘 되는지 테스트', () => {
 
   expect(result.current.stages).toEqual([[expect.objectContaining(rest)]]);
 
-  act(() => result.current.handleAppendStage(0));
+  act(() => result.current.appendStage(0));
 
   fireEvent.click(firstImage);
   expect(result.current.stages).toEqual([

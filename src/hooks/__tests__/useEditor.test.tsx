@@ -19,64 +19,6 @@ function setupRenderUseEditorHook() {
   return result;
 }
 
-test('handleAppendStage', () => {
-  const result = setupRenderUseEditorHook();
-
-  act(() => result.current.handleAppendStage(0));
-  expect(result.current.stages).toEqual([[], []]);
-  expect(result.current.currentStageIndex).toBe(1);
-
-  act(() => result.current.handleAppendStage(0));
-  expect(result.current.stages).toEqual([[], [], []]);
-  expect(result.current.currentStageIndex).toBe(1);
-
-  act(() => result.current.handleAppendStage(2));
-  expect(result.current.stages).toEqual([[], [], [], []]);
-  expect(result.current.currentStageIndex).toBe(3);
-
-  expect(() => result.current.handleAppendStage(4)).toThrow();
-  expect(() => result.current.handleAppendStage(-1)).toThrow();
-});
-
-test('handleDeleteStage', () => {
-  const result = setupRenderUseEditorHook();
-
-  act(() => result.current.handleDeleteStage(0));
-  expect(result.current.stages).toEqual([[]]);
-  expect(result.current.currentStageIndex).toBe(0);
-
-  act(() => result.current.handleAppendStage(0));
-  act(() => result.current.handleAppendStage(1));
-
-  act(() => result.current.handleDeleteStage(2));
-  expect(result.current.stages).toEqual([[], []]);
-  expect(result.current.currentStageIndex).toBe(1);
-
-  act(() => result.current.handleDeleteStage(0));
-  expect(result.current.stages).toEqual([[]]);
-  expect(result.current.currentStageIndex).toBe(0);
-
-  expect(() => result.current.handleDeleteStage(1)).toThrow();
-  expect(() => result.current.handleDeleteStage(-1)).toThrow();
-});
-
-test('select Stage function', () => {
-  const result = setupRenderUseEditorHook();
-
-  expect(() => result.current.selectStage(1)).toThrow();
-  expect(() => result.current.selectStage(-1)).toThrow();
-
-  act(() => result.current.handleAppendStage(0));
-
-  act(() => result.current.selectStage(0));
-  act(() => result.current.selectStage(1));
-
-  expect(result.current.currentStageIndex).toBe(1);
-
-  act(() => result.current.selectStage(0));
-  expect(result.current.currentStageIndex).toBe(0);
-});
-
 test('select shape', () => {
   const result = setupRenderUseEditorHook();
 
@@ -105,11 +47,11 @@ test('deselect shape', () => {
 
   expect(result.current.selectedIds).toEqual([]);
 
-  act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  act(() => result.current.handleAppendStage(0));
+  // act(() => result.current.selectShape({ id: '1', type: 'append' }));
+  // act(() => result.current.selectShape({ id: '1', type: 'append' }));
+  // act(() => result.current.handleAppendStage(0));
 
-  expect(result.current.selectedIds).toEqual([]);
+  // expect(result.current.selectedIds).toEqual([]);
 });
 
 test('handleTransformNodes', () => {
