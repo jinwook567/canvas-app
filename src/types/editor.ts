@@ -2,11 +2,11 @@ import Konva from 'konva';
 
 export interface KonvaImageNode extends Omit<Konva.ImageConfig, 'image'> {
   type: 'image';
+  id: string;
   width: number;
   height: number;
   x: number;
   y: number;
-  id: string;
   url: string;
   scaleX: number;
   scaleY: number;
@@ -14,14 +14,24 @@ export interface KonvaImageNode extends Omit<Konva.ImageConfig, 'image'> {
 
 export interface KonvaTextNode extends Konva.TextConfig {
   type: 'text';
+  id: string;
   x: number;
   y: number;
-  id: string;
   scaleX: number;
   scaleY: number;
 }
 
-export type KonvaNode = KonvaImageNode | KonvaTextNode;
+export interface KonvaGropNode extends Konva.GroupConfig {
+  type: 'group';
+  id: string;
+  x: number;
+  y: number;
+  scaleX: number;
+  scaleY: number;
+  children: KonvaNode[];
+}
+
+export type KonvaNode = KonvaImageNode | KonvaTextNode | KonvaGropNode;
 
 export type KonvaStage = KonvaNode[];
 
@@ -31,6 +41,8 @@ export type ImageNodeArg = Pick<
   KonvaImageNode,
   'type' | 'width' | 'height' | 'url'
 >;
+
+export type GroupNodeArg = Pick<KonvaGropNode, 'children'>;
 
 export type NodeArg = ImageNodeArg;
 
