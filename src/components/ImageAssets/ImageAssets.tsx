@@ -4,6 +4,7 @@ import AppendForm from './AppendForm/AppendForm';
 import ImageAsset from './ImageAsset/ImageAsset';
 import { KonvaImageNode } from '../../types/editor';
 import { imageAssets } from '../../fixtures/editor';
+import useAsset from '../../hooks/useAsset';
 
 function ImageAssets() {
   const [images, setImages] = useState<{ url: string }[]>(imageAssets);
@@ -17,21 +18,21 @@ function ImageAssets() {
     }
   };
 
-  const { handleAppendAsset } = useEditor();
+  const { appendAsset } = useAsset();
 
-  const handleClick = ({
+  const handleAppendAsset = ({
     url,
     width,
     height,
   }: Pick<KonvaImageNode, 'url' | 'width' | 'height'>) => {
-    handleAppendAsset({ type: 'image', url, width, height });
+    appendAsset({ type: 'image', url, width, height });
   };
 
   return (
     <div>
       <AppendForm handleSubmit={handleSubmit} />
       {images.map(({ url }) => (
-        <ImageAsset key={url} url={url} onClick={handleClick} />
+        <ImageAsset key={url} url={url} onClick={handleAppendAsset} />
       ))}
     </div>
   );
