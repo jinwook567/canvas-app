@@ -1,5 +1,5 @@
 import React from 'react';
-import useEditor from '../../../hooks/useEditor';
+import useStage from '../../../hooks/useStage';
 import * as Styled from './StageContaniner.styles';
 
 type Props = {
@@ -8,12 +8,12 @@ type Props = {
 };
 
 function StageContainer({ children, index }: Props) {
-  const { selectStage, currentStageIndex: stageIndex } = useEditor();
+  const { selectStage, currentStageIndex } = useStage();
 
   return (
     <Styled.Container
       onClick={() => selectStage(index)}
-      checked={stageIndex === index}
+      checked={currentStageIndex === index}
     >
       {children}
     </Styled.Container>
