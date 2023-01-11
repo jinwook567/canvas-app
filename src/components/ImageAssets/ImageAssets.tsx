@@ -17,16 +17,14 @@ function ImageAssets() {
     }
   };
 
-  // onDragEvent
-
-  const { handleAppendAssest } = useEditor();
+  const { handleAppendAsset } = useEditor();
 
   const handleClick = ({
     url,
     width,
     height,
   }: Pick<KonvaImageNode, 'url' | 'width' | 'height'>) => {
-    handleAppendAssest({ type: 'image', url, width, height });
+    handleAppendAsset({ type: 'image', url, width, height });
   };
 
   return (
