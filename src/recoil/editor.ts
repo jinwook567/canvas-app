@@ -12,6 +12,14 @@ export const stagesState = atom<KonvaStages>({
   default: [[]],
 });
 
+export const stageCountState = selector({
+  key: 'stageCountState',
+  get: ({ get }) => {
+    const stages = get(stagesState);
+    return stages.length;
+  },
+});
+
 export const currentStageIndexState = atom<StageIndex>({
   key: 'currentStageIndexState',
   default: 0,
