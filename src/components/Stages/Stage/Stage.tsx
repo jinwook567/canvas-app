@@ -13,11 +13,24 @@ type Props = {
 
 function Stage({ index, children }: Props) {
   const { width, height } = useRecoilValue(stageSizeState);
-  const { deselect } = useEditor();
+  const {
+    deselect,
+    handleOrganizeGroup,
+    handleCloseGroup,
+    selectedIds,
+    currentStage,
+  } = useEditor();
+  console.log(currentStage, selectedIds);
 
   return (
     <>
       <StageController index={index} />
+      <button type="button" onClick={() => handleOrganizeGroup(selectedIds)}>
+        그룹
+      </button>
+      <button type="button" onClick={() => handleCloseGroup(selectedIds[0])}>
+        그룹 해제
+      </button>
       <StageContainer index={index}>
         <ReactKonva.Stage
           width={width}
