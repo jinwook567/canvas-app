@@ -5,6 +5,7 @@ import {
   NodeArg,
   StageSize,
   KonvaStage,
+  GroupNodeArg,
 } from '../types/editor';
 import { createUniqueId } from './unit';
 
@@ -49,6 +50,16 @@ const createImageNode = (nodeArg: ImageNodeArg) => ({
   type: 'image' as const,
   scaleX: 1,
   scaleY: 1,
+});
+
+export const createGroupNode = (nodeArg: GroupNodeArg) => ({
+  type: 'group' as const,
+  scaleX: 1,
+  scaleY: 1,
+  children: nodeArg.children,
+  x: 0,
+  y: 0,
+  id: createUniqueId(),
 });
 
 export const createNode = ({
