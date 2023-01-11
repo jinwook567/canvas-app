@@ -1,6 +1,7 @@
 // atoms
-import { atom, selector } from 'recoil';
+import { atom, DefaultValue, selector } from 'recoil';
 import {
+  KonvaStage,
   KonvaStages,
   SelectedIds,
   StageIndex,
@@ -44,6 +45,18 @@ export const currentStageState = selector({
     const stages = get(stagesState);
     const currentStageIndex = get(currentStageIndexState);
     return stages[currentStageIndex];
+  },
+  set: ({ set, get }, newValue) => {
+    const stages = get(stagesState);
+    const currentStageIndex = get(currentStageIndexState);
+    set(
+      stagesState,
+      stages.map((stage, index) =>
+        index === currentStageIndex && !(newValue instanceof DefaultValue)
+          ? newValue
+          : stage
+      )
+    );
   },
 });
 
