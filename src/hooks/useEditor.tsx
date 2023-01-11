@@ -22,6 +22,8 @@ import {
   createGroupNode,
   createNode,
 } from '../utils/editor';
+import useAsset from './useAsset';
+import useStage from './useStage';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stagesState);
@@ -32,49 +34,6 @@ function useEditor() {
 
   const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
   const currentStage = useRecoilValue(currentStageState);
-
-  const handleAppendAsset = (nodeArg: NodeArg) => {
-    const node = createNode({ nodeArg, stageSize });
-
-    const newAttrs = stages.map((nodes, index) =>
-      index === currentStageIndex
-        ? [...nodes, arrangeSameShapeNode({ currentStage, node })]
-        : nodes
-    );
-
-    setStages(newAttrs);
-  };
-
-  const checkTargetIndexInRange = (targetIndex: StageIndex) => {
-    if (targetIndex >= stages.length || targetIndex < 0)
-      throw new Error('wrong targetIndex range');
-  };
-
-  const selectStage = (targetIndex: StageIndex) => {
-    checkTargetIndexInRange(targetIndex);
-    setCurrentStageIndex(targetIndex);
-  };
-
-  const handleAppendStage = (targetIndex: StageIndex) => {
-    checkTargetIndexInRange(targetIndex);
-
-    const appendedStages = stages.reduce(
-      (acc, cur, index) =>
-        index === targetIndex ? [...acc, cur, []] : [...acc, cur],
-      [] as KonvaStages
-    );
-
-    setStages(appendedStages);
-    setCurrentStageIndex(targetIndex + 1);
-  };
-
-  const handleDeleteStage = (targetIndex: StageIndex) => {
-    if (stages.length === 1 && targetIndex === 0) return;
-    checkTargetIndexInRange(targetIndex);
-
-    setStages(stages.filter((_, index) => index !== targetIndex));
-    setCurrentStageIndex(currentStageIndex === 0 ? 0 : currentStageIndex - 1);
-  };
 
   const selectShape = ({
     id,
@@ -93,7 +52,6 @@ function useEditor() {
   };
 
   useEffect(() => {
-    console.log('iam rendered');
     deselect();
   }, [currentStageIndex]);
 
@@ -178,14 +136,9 @@ function useEditor() {
   };
 
   return {
-    handleAppendAsset,
-    handleAppendStage,
-    handleDeleteStage,
     stages,
     setStages,
-    currentStageIndex,
     currentStage,
-    selectStage,
     stageSize,
     setStageSize,
     selectedIds,
@@ -194,39 +147,9 @@ function useEditor() {
     handleTransformNodes,
     handleOrganizeGroup,
     handleCloseGroup,
+    ...useStage(),
+    ...useAsset(),
   };
-}
-
-export function usePressedKey() {
-  const initialValue: IsPressedKey = {
-    Shift: false,
-  };
-
-  const isPressedKeyRef = useRef<{ [key in string]: boolean }>(initialValue);
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (isPressedKeyRef.current[e.key] !== undefined) {
-      isPressedKeyRef.current[e.key] = true;
-    }
-  };
-
-  const handleKeyUp = (e: KeyboardEvent) => {
-    if (isPressedKeyRef.current[e.key] !== undefined) {
-      isPressedKeyRef.current[e.key] = false;
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
-
-  return isPressedKeyRef as MutableRefObject<IsPressedKey>;
 }
 
 export default useEditor;
