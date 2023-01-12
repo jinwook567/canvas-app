@@ -1,12 +1,22 @@
 import { KonvaNodeEvents } from 'react-konva';
+import { KonvaEventObject } from 'konva/lib/Node';
 import usePressedKey from '../../../hooks/usePressedKey';
-import useEditor from '../../../hooks/useEditor';
 import { KonvaNode } from '../../../types/editor';
+import useSelect from '../../../hooks/useSelect';
+import useTransform from '../../../hooks/useTransform';
 
 function useNodeEvents(node: KonvaNode) {
   const isPressedKeyRef = usePressedKey();
 
-  const { handleTransformNodes, selectShape } = useEditor();
+  const { selectShape } = useSelect();
+  const { onTransformEnd } = useTransform();
+
+  const handleOnDragEnd = (e: KonvaEventObject<DragEvent>) => {
+    const id = e.target.id();
+    const x = e.target.x();
+    const y = e.target.y();
+    onTransformEnd([{ id, x, y }]);
+  };
 
   const nodeEvents: KonvaNodeEvents = {
     onClick: () => {
@@ -15,12 +25,7 @@ function useNodeEvents(node: KonvaNode) {
         type: isPressedKeyRef.current.Shift ? 'append' : 'change',
       });
     },
-    onDragEnd: e => {
-      const x = e.target.x();
-      const y = e.target.y();
-      const { id } = node;
-      handleTransformNodes([{ id, x, y }]);
-    },
+    onDragEnd: handleOnDragEnd,
   };
 
   return nodeEvents;
