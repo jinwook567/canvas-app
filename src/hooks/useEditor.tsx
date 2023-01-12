@@ -23,6 +23,8 @@ import {
   createNode,
 } from '../utils/editor';
 import useAsset from './useAsset';
+import useGroup from './useGroup';
+import useSelect from './useSelect';
 import useStage from './useStage';
 
 function useEditor() {
@@ -34,26 +36,6 @@ function useEditor() {
 
   const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
   const currentStage = useRecoilValue(currentStageState);
-
-  const selectShape = ({
-    id,
-    type,
-  }: {
-    id: KonvaNode['id'];
-    type: 'append' | 'change';
-  }) => {
-    setSelectedIds(
-      type === 'append' ? ids => [...new Set([...ids, id])] : [id]
-    );
-  };
-
-  const deselect = () => {
-    setSelectedIds([]);
-  };
-
-  useEffect(() => {
-    deselect();
-  }, [currentStageIndex]);
 
   const handleChangeCurrentStage = (newStage: KonvaStage) => {
     const newStages = stages.map((stage, index) =>
@@ -72,69 +54,6 @@ function useEditor() {
     handleChangeCurrentStage(newStage);
   };
 
-  const handleOrganizeGroup = (ids: SelectedIds) => {
-    type InitialValue = {
-      notGroupNodes: KonvaNode[];
-      groupNodes: KonvaNode[];
-      firstNodeIndex: number;
-    };
-    const initialValue: InitialValue = {
-      notGroupNodes: [],
-      groupNodes: [],
-      firstNodeIndex: Infinity,
-    };
-
-    const { notGroupNodes, groupNodes, firstNodeIndex } = currentStage.reduce(
-      (acc, node) => {
-        if (ids.includes(node.id)) {
-          acc.groupNodes.push(node);
-          acc.firstNodeIndex = Math.min(
-            acc.firstNodeIndex,
-            acc.notGroupNodes.length
-          );
-        } else {
-          acc.notGroupNodes.push(node);
-        }
-        return acc;
-      },
-      initialValue
-    );
-
-    const groupNode = createGroupNode({ children: groupNodes });
-
-    const newStage = [
-      ...notGroupNodes.slice(0, firstNodeIndex),
-      groupNode,
-      ...notGroupNodes.slice(firstNodeIndex, notGroupNodes.length),
-    ];
-
-    handleChangeCurrentStage(newStage);
-    selectShape({ id: groupNode.id, type: 'change' });
-  };
-
-  const handleCloseGroup = (groupId: KonvaNode['id']) => {
-    deselect();
-
-    const newStage = currentStage.reduce((acc, node) => {
-      if (node.id === groupId && node.type === 'group') {
-        const children = node.children.map(child => ({
-          ...child,
-          x: child.x + node.x,
-          y: child.y + node.y,
-          scaleX: child.scaleX * node.scaleX,
-          scaleY: child.scaleY * node.scaleY,
-        }));
-        acc.push(...children);
-      } else {
-        acc.push(node);
-      }
-
-      return acc;
-    }, [] as KonvaNode[]);
-
-    handleChangeCurrentStage(newStage);
-  };
-
   return {
     stages,
     setStages,
@@ -142,13 +61,11 @@ function useEditor() {
     stageSize,
     setStageSize,
     selectedIds,
-    selectShape,
-    deselect,
     handleTransformNodes,
-    handleOrganizeGroup,
-    handleCloseGroup,
     ...useStage(),
     ...useAsset(),
+    ...useSelect(),
+    ...useGroup(),
   };
 }
 
