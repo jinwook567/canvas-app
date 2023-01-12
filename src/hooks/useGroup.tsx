@@ -9,11 +9,11 @@ type InitialValue = {
   groupNodes: KonvaNode[];
   firstNodeIndex: number;
 };
-const initialValue: InitialValue = {
+const getInitialValue = (): InitialValue => ({
   notGroupNodes: [],
   groupNodes: [],
   firstNodeIndex: Infinity,
-};
+});
 
 const separateGroupNodes = ({
   currentStage,
@@ -33,7 +33,7 @@ const separateGroupNodes = ({
       acc.notGroupNodes.push(node);
     }
     return acc;
-  }, initialValue);
+  }, getInitialValue());
 
 function useGroup() {
   const [currentStage, setCurrentStage] = useRecoilState(currentStageState);
@@ -41,6 +41,7 @@ function useGroup() {
 
   const organizeGroup = (selectedIds: SelectedIds) => {
     if (selectedIds.length < 2) return;
+
     const { notGroupNodes, groupNodes, firstNodeIndex } = separateGroupNodes({
       currentStage,
       selectedIds,
@@ -49,7 +50,7 @@ function useGroup() {
     const newStage = [
       ...notGroupNodes.slice(0, firstNodeIndex),
       groupNode,
-      ...notGroupNodes.slice(firstNodeIndex, notGroupNodes.length),
+      ...notGroupNodes.slice(firstNodeIndex),
     ];
 
     setCurrentStage(newStage);
