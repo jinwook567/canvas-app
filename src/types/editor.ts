@@ -62,5 +62,5 @@ export type IsPressedKey = {
 };
 
 export type TransformedNodes =
-  | Pick<KonvaNode, 'id' | 'width' | 'height' | 'x' | 'y' | 'rotation'>
-  | Pick<KonvaNode, 'id' | 'x' | 'y'>;
+  | Pick<KonvaNode, 'id' | 'width' | 'height' | 'x' | 'y' | 'rotation'>[]
+  | Pick<KonvaNode, 'id' | 'x' | 'y'>[];
