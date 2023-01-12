@@ -40,6 +40,7 @@ function useGroup() {
   const { selectShape, deselect } = useSelect();
 
   const organizeGroup = (selectedIds: SelectedIds) => {
+    if (selectedIds.length < 2) return;
     const { notGroupNodes, groupNodes, firstNodeIndex } = separateGroupNodes({
       currentStage,
       selectedIds,
@@ -50,6 +51,7 @@ function useGroup() {
       groupNode,
       ...notGroupNodes.slice(firstNodeIndex, notGroupNodes.length),
     ];
+
     setCurrentStage(newStage);
     selectShape({ id: groupNode.id, type: 'change' });
   };
@@ -59,8 +61,8 @@ function useGroup() {
       if (node.id === groupId && node.type === 'group') {
         const children = node.children.map(child => ({
           ...child,
-          x: child.x + node.x,
-          y: child.y + node.y,
+          x: child.x * node.scaleX + node.x,
+          y: child.y * node.scaleY + node.y,
           scaleX: child.scaleX * node.scaleX,
           scaleY: child.scaleY * node.scaleY,
         }));
@@ -71,6 +73,7 @@ function useGroup() {
 
       return acc;
     }, [] as KonvaNode[]);
+
     deselect();
     setCurrentStage(newStage);
   };
