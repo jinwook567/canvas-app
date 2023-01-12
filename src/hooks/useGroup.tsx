@@ -5,12 +5,12 @@ import { createGroupNode } from '../utils/editor';
 import useSelect from './useSelect';
 
 type InitialValue = {
-  notGroupNodes: KonvaNode[];
+  unGroupNodes: KonvaNode[];
   groupNodes: KonvaNode[];
   firstNodeIndex: number;
 };
 const getInitialValue = (): InitialValue => ({
-  notGroupNodes: [],
+  unGroupNodes: [],
   groupNodes: [],
   firstNodeIndex: Infinity,
 });
@@ -27,10 +27,10 @@ const separateGroupNodes = ({
       acc.groupNodes.push(node);
       acc.firstNodeIndex = Math.min(
         acc.firstNodeIndex,
-        acc.notGroupNodes.length
+        acc.unGroupNodes.length
       );
     } else {
-      acc.notGroupNodes.push(node);
+      acc.unGroupNodes.push(node);
     }
     return acc;
   }, getInitialValue());
@@ -42,15 +42,15 @@ function useGroup() {
   const organizeGroup = (selectedIds: SelectedIds) => {
     if (selectedIds.length < 2) return;
 
-    const { notGroupNodes, groupNodes, firstNodeIndex } = separateGroupNodes({
+    const { unGroupNodes, groupNodes, firstNodeIndex } = separateGroupNodes({
       currentStage,
       selectedIds,
     });
     const groupNode = createGroupNode({ children: groupNodes });
     const newStage = [
-      ...notGroupNodes.slice(0, firstNodeIndex),
+      ...unGroupNodes.slice(0, firstNodeIndex),
       groupNode,
-      ...notGroupNodes.slice(firstNodeIndex),
+      ...unGroupNodes.slice(firstNodeIndex),
     ];
 
     setCurrentStage(newStage);
