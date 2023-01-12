@@ -58,7 +58,7 @@ test('handleTransformNodes', () => {
   const result = setupRenderUseEditorHook();
 
   act(() =>
-    result.current.handleAppendAsset({
+    result.current.appendAsset({
       url: '1',
       width: 300,
       height: 300,
@@ -66,7 +66,7 @@ test('handleTransformNodes', () => {
     })
   );
   act(() =>
-    result.current.handleAppendAsset({
+    result.current.appendAsset({
       url: '1',
       width: 300,
       height: 300,
@@ -98,9 +98,9 @@ test('handleOrganizeGroup, handleCloseGroup', () => {
   const result = setupRenderUseEditorHook();
   const nodeArg = { url: '1', width: 100, height: 100, type: 'image' as const };
 
-  act(() => result.current.handleAppendAsset(nodeArg));
-  act(() => result.current.handleAppendAsset(nodeArg));
-  act(() => result.current.handleAppendAsset(nodeArg));
+  act(() => result.current.appendAsset(nodeArg));
+  act(() => result.current.appendAsset(nodeArg));
+  act(() => result.current.appendAsset(nodeArg));
 
   const first = result.current.currentStage[0];
   const second = result.current.currentStage[1];
@@ -109,7 +109,7 @@ test('handleOrganizeGroup, handleCloseGroup', () => {
   act(() => result.current.selectShape({ id: second.id, type: 'append' }));
   act(() => result.current.selectShape({ id: third.id, type: 'append' }));
 
-  act(() => result.current.handleOrganizeGroup(result.current.selectedIds));
+  act(() => result.current.organizeGroup(result.current.selectedIds));
 
   expect(result.current.currentStage[0]).toEqual(first);
   expect(result.current.currentStage[1]).toEqual(
@@ -123,7 +123,7 @@ test('handleOrganizeGroup, handleCloseGroup', () => {
     })
   );
 
-  act(() => result.current.handleCloseGroup(result.current.currentStage[1].id));
+  act(() => result.current.closeGroup(result.current.currentStage[1].id));
   expect(result.current.currentStage[1]).toEqual(second);
   expect(result.current.currentStage[2]).toEqual(third);
 });
