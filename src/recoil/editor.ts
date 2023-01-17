@@ -1,4 +1,3 @@
-// atoms
 import { atom, DefaultValue, selector } from 'recoil';
 import {
   KonvaStages,
@@ -68,5 +67,3 @@ export const historyStepState = atom({
   key: 'historyStepState',
   default: 0,
 });
-
-export default {};
