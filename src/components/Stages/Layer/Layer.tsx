@@ -2,7 +2,6 @@ import Konva from 'konva';
 import React, { useRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { useRecoilValue } from 'recoil';
-import useCommand from '../../../hooks/useCommand';
 import { selectedIdsState } from '../../../recoil/editor';
 import { KonvaStage } from '../../../types/editor';
 import Node from '../Node/Node';
@@ -15,8 +14,6 @@ type Props = {
 function Layer({ nodes }: Props) {
   const trRef = useRef<Konva.Transformer>(null);
   const selectedIds = useRecoilValue(selectedIdsState);
-
-  useCommand();
 
   return (
     <ReactKonva.Layer>
