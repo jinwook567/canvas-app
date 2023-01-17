@@ -19,6 +19,9 @@ export interface KonvaTextNode extends Konva.TextConfig {
   y: number;
   scaleX: number;
   scaleY: number;
+  text: string;
+  fontSize: number;
+  fontFamily: string;
 }
 
 export interface KonvaGroupNode extends Konva.GroupConfig {
@@ -42,9 +45,14 @@ export type ImageNodeArg = Pick<
   'type' | 'width' | 'height' | 'url'
 >;
 
+export type TextNodeArg = Pick<
+  KonvaTextNode,
+  'type' | 'text' | 'fontSize' | 'fontFamily'
+>;
+
 export type GroupNodeArg = Pick<KonvaGroupNode, 'children'>;
 
-export type NodeArg = ImageNodeArg;
+export type NodeArg = ImageNodeArg | TextNodeArg;
 
 export type StageIndex = number;
 
