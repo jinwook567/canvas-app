@@ -7,6 +7,7 @@ import {
 } from '../recoil/editor';
 import useAsset from './useAsset';
 import useGroup from './useGroup';
+import useEditorHistory from './useEditorHistory';
 import useSelect from './useSelect';
 import useStage from './useStage';
 import useTransform from './useTransform';
@@ -29,6 +30,7 @@ function useEditor() {
     ...useSelect(),
     ...useGroup(),
     ...useTransform(),
+    ...useEditorHistory(),
   };
 }
 
