@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { historyState, historyStepState, stagesState } from '../recoil/editor';
 
@@ -6,36 +6,36 @@ function useEditorHistory() {
   const [stages, setStages] = useRecoilState(stagesState);
   const [history, setHistory] = useRecoilState(historyState);
   const [historyStep, setHistoryStep] = useRecoilState(historyStepState);
-  const [isHistoryHandlerEffect, setIsHistoryHandlerEffect] = useState(false);
+  const isHistoryHandlerEffect = useRef<boolean>(false);
 
   useEffect(() => {
-    if (isHistoryHandlerEffect) {
-      setIsHistoryHandlerEffect(false);
+    if (isHistoryHandlerEffect.current) {
+      isHistoryHandlerEffect.current = false;
     } else {
       setHistory([...history.slice(0, historyStep), stages]);
       setHistoryStep(historyStep + 1);
     }
-  }, [stages]);
+  }, [stages, isHistoryHandlerEffect]);
 
   const isInitialStep = historyStep === 1;
   const isLastStep = historyStep === history.length;
 
   const historyBack = () => {
     if (isInitialStep) return;
-    setIsHistoryHandlerEffect(true);
+    isHistoryHandlerEffect.current = true;
     setHistoryStep(historyStep - 1);
     setStages(history[historyStep - 1 - 1]);
   };
 
   const historyForward = () => {
     if (isLastStep) return;
-    setIsHistoryHandlerEffect(true);
+    isHistoryHandlerEffect.current = true;
     setHistoryStep(historyStep + 1);
 
     setStages(history[historyStep]);
   };
 
-  return { historyBack, historyForward };
+  return { historyBack, historyForward, history };
 }
 
 export default useEditorHistory;
