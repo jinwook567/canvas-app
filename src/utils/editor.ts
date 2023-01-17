@@ -6,8 +6,9 @@ import {
   StageSize,
   KonvaStage,
   GroupNodeArg,
+  TextNodeArg,
 } from '../types/editor';
-import { createUniqueId } from './unit';
+import { createUniqueId, omit } from './unit';
 
 type PositionArg = {
   stageSize: {
@@ -15,8 +16,8 @@ type PositionArg = {
     height: StageSize['height'];
   };
   nodeSize: {
-    width: NodeArg['width'];
-    height: NodeArg['height'];
+    width: number;
+    height: number;
   };
 };
 
@@ -62,6 +63,17 @@ export const createGroupNode = (nodeArg: GroupNodeArg) => ({
   id: createUniqueId(),
 });
 
+const createTextNode = (nodeArg: TextNodeArg) => ({
+  type: 'text' as const,
+  scaleX: 1,
+  scaleY: 1,
+  text: nodeArg.text,
+  fontFamily: nodeArg.fontFamily,
+  fontSize: nodeArg.fontSize,
+  width: nodeArg.text.length * nodeArg.fontSize,
+  height: nodeArg.fontSize,
+});
+
 export const createNode = ({
   nodeArg,
   stageSize,
@@ -71,17 +83,23 @@ export const createNode = ({
 }): KonvaNode => {
   const id = createUniqueId();
 
-  const node = createImageNode(nodeArg);
+  const node =
+    nodeArg.type === 'text'
+      ? createTextNode(nodeArg)
+      : createImageNode(nodeArg);
 
   const { x, y, width, height } = getInitialPosition({
     stageSize,
     nodeSize: {
-      width: nodeArg.width,
-      height: nodeArg.height,
+      width: node.width,
+      height: node.height,
     },
     ratio: initialImageStageRatio,
   });
-  return { ...node, id, x, y, width, height };
+
+  return node.type === 'text'
+    ? { ...omit(node, 'width', 'height'), id, x, y }
+    : { ...node, id, x, y, width, height };
 };
 
 export const findSameShapeNode = ({
