@@ -59,6 +59,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.0"],\
             ["react-konva", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.3"],\
+            ["react-konva-utils", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:0.3.1"],\
             ["react-scripts", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:5.0.1"],\
             ["recoil", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:0.7.6"],\
             ["typescript", "patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=d73830"],\
@@ -7771,6 +7772,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.0"],\
             ["react-konva", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.3"],\
+            ["react-konva-utils", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:0.3.1"],\
             ["react-scripts", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:5.0.1"],\
             ["recoil", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:0.7.6"],\
             ["typescript", "patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=d73830"],\
@@ -16754,6 +16756,38 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.0"],\
             ["react-reconciler", "virtual:bf9d1eaeb9701afa9765d6dbee71efd972d4064a9103eaeb545b3c6f26637c56b2b67265decca3257d20f5c22a3a17110e025cb1a060f27e0064e17dbb98ce13#npm:0.29.0"],\
             ["scheduler", "npm:0.23.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/konva",\
+            "@types/react-dom",\
+            "@types/react",\
+            "konva",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["react-konva-utils", [\
+        ["npm:0.3.1", {\
+          "packageLocation": "./.yarn/cache/react-konva-utils-npm-0.3.1-c862299148-71716402c0.zip/node_modules/react-konva-utils/",\
+          "packageDependencies": [\
+            ["react-konva-utils", "npm:0.3.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:0.3.1", {\
+          "packageLocation": "./.yarn/__virtual__/react-konva-utils-virtual-df9e134130/0/cache/react-konva-utils-npm-0.3.1-c862299148-71716402c0.zip/node_modules/react-konva-utils/",\
+          "packageDependencies": [\
+            ["react-konva-utils", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:0.3.1"],\
+            ["@types/konva", null],\
+            ["@types/react", "npm:18.0.26"],\
+            ["@types/react-dom", "npm:18.0.9"],\
+            ["konva", "npm:8.3.14"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.0"],\
+            ["react-konva", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.3"],\
+            ["use-image", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:1.1.0"]\
           ],\
           "packagePeers": [\
             "@types/konva",\

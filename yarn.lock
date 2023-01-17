@@ -4966,6 +4966,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-konva: ^18.2.3
+    react-konva-utils: ^0.3.1
     react-scripts: 5.0.1
     recoil: ^0.7.6
     typescript: 4.9.3
@@ -11870,7 +11871,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-konva@npm:^18.2.3":
+"react-konva-utils@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "react-konva-utils@npm:0.3.1"
+  dependencies:
+    react-konva: ^18.0.0-0
+    use-image: ^1.1.0
+  peerDependencies:
+    konva: ^8.3.5
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: 71716402c08133910f0b83ade367b71444ecfbd0dc62257c91ddf754e88dadc2154b08f0ead1a16980e3e1c1b2b8fb9ff5cf55673cf677b899d157b33d6c1c43
+  languageName: node
+  linkType: hard
+
+"react-konva@npm:^18.0.0-0, react-konva@npm:^18.2.3":
   version: 18.2.3
   resolution: "react-konva@npm:18.2.3"
   dependencies:
