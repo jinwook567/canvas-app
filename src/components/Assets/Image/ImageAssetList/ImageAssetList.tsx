@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import AppendForm from './AppendForm/AppendForm';
-import ImageAsset from './ImageAsset/ImageAsset';
-import { KonvaImageNode } from '../../types/editor';
-import { imageAssets } from '../../fixtures/editor';
-import useAsset from '../../hooks/useAsset';
+import AppendForm from '../AppendForm/AppendForm';
+import ImageAsset from '../ImageAsset/ImageAsset';
+import { KonvaImageNode } from '../../../../types/editor';
+import { imageAssets } from '../../../../fixtures/editor';
+import useAsset from '../../../../hooks/useAsset';
 
 function ImageAssets() {
   const [images, setImages] = useState<{ url: string }[]>(imageAssets);

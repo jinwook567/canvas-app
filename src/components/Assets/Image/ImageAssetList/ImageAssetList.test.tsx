@@ -1,11 +1,11 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { fireEvent, renderHook, screen, act } from '@testing-library/react';
-import ImageAssets from './ImageAssets';
-import { createNode } from '../../utils/editor';
-import useEditor from '../../hooks/useEditor';
-import { imageAssets } from '../../fixtures/editor';
-import { initialImageStageRatio } from '../../constants/editor';
+import ImageAssets from './ImageAssetList';
+import { createNode } from '../../../../utils/editor';
+import useEditor from '../../../../hooks/useEditor';
+import { imageAssets } from '../../../../fixtures/editor';
+import { initialImageStageRatio } from '../../../../constants/editor';
 
 const sampleImg1 =
   'https://images.velog.io/images/sdb016/post/34bdac57-2d63-43ce-a14c-8054e9e036de/test.png';

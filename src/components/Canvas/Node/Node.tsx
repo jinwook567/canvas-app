@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { RefObject, useRef } from 'react';
 import Konva from 'konva';
-import * as ReactKonva from 'react-konva';
+import { Group as ReactKonvaGroup } from 'react-konva';
 import { KonvaNode } from '../../../types/editor';
 import useUpdateTransformerBySelectedId from './useUpdateTransformerRef';
 import Image from '../Image/Image';
@@ -38,7 +38,7 @@ function Node({ node, trRef, isSelected }: Props) {
 
     case 'group':
       return (
-        <ReactKonva.Group {...props}>
+        <ReactKonvaGroup {...props}>
           {node.children.map(child => (
             <Node
               key={child.id}
@@ -50,7 +50,7 @@ function Node({ node, trRef, isSelected }: Props) {
               isSelected={false}
             />
           ))}
-        </ReactKonva.Group>
+        </ReactKonvaGroup>
       );
 
     default:

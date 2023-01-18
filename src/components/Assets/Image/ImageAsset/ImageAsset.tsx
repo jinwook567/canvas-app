@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { IconButton } from '@mui/material';
-import { KonvaImageNode } from '../../../types/editor';
+import { KonvaImageNode } from '../../../../types/editor';
 import * as Style from './ImageAsset.styles';
 
 type Props = {

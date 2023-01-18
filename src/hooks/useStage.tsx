@@ -2,7 +2,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   currentStageIndexState,
   stageCountState,
-  stagesState,
+  stageList,
 } from '../recoil/editor';
 import { KonvaStages, StageIndex } from '../types/editor';
 
@@ -11,7 +11,7 @@ function useStage() {
   const [currentStageIndex, setCurrentStageIndex] = useRecoilState(
     currentStageIndexState
   );
-  const setStages = useSetRecoilState(stagesState);
+  const setStages = useSetRecoilState(stageList);
 
   const checkTargetIndexInRange = (targetIndex: StageIndex) => {
     if (targetIndex >= stageCount || targetIndex < 0)

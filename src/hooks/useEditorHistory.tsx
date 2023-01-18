@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
-import { historyState, historyStepState, stagesState } from '../recoil/editor';
+import { historyState, historyStepState, stageList } from '../recoil/editor';
 
 function useEditorHistory() {
-  const [stages, setStages] = useRecoilState(stagesState);
+  const [stages, setStages] = useRecoilState(stageList);
   const [history, setHistory] = useRecoilState(historyState);
   const [historyStep, setHistoryStep] = useRecoilState(historyStepState);
   const isHistoryHandlerEffect = useRef<boolean>(false);

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import Konva from 'konva';
 import React, { ForwardedRef, useEffect, useState } from 'react';
-import * as ReactKonva from 'react-konva';
+import { Text as ReactKonvaText } from 'react-konva';
 import { Html } from 'react-konva-utils';
 import useText from '../../../hooks/useText';
 import { KonvaTextNode } from '../../../types/editor';
@@ -38,7 +38,7 @@ function Text({ ...props }: Props, ref: ForwardedRef<Konva.Text>) {
           <Textarea {...props} textRef={ref} onChange={handleChangeText} />
         </Html>
       )}
-      <ReactKonva.Text
+      <ReactKonvaText
         {...props}
         ref={ref}
         onDblClick={() => setIsChangingText(true)}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
-import useEditor from '../../hooks/useEditor';
+import useEditor from '../../../hooks/useEditor';
 
 // Stages 파트만 커스텀 훅으로 테스트한다.
 

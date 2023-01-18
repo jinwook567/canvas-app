@@ -1,13 +1,15 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import useAsset from '../../hooks/useAsset';
-import useEditorHistory from '../../hooks/useEditorHistory';
-import { stagesState } from '../../recoil/editor';
-import Layer from './Layer/Layer';
-import Stage from './Stage/Stage';
+import useAsset from '../../../hooks/useAsset';
+import useEditorHistory from '../../../hooks/useEditorHistory';
+import { stageList } from '../../../recoil/editor';
+import StageController from '../../Controller/StageController/StageController';
+import useStageSize from '../../useStageSize';
+import Layer from '../Layer/Layer';
+import Stage from '../Stage/Stage';
 
 function Stages() {
-  const stages = useRecoilValue(stagesState);
+  const stages = useRecoilValue(stageList);
   const { historyBack, historyForward } = useEditorHistory();
   const { appendAsset } = useAsset();
   const handleAppendText = () => {
@@ -18,9 +20,10 @@ function Stages() {
       fontFamily: 'Calibri',
     });
   };
+  const canvasDivRef = useStageSize();
 
   return (
-    <div>
+    <div ref={canvasDivRef}>
       <button type="button" onClick={historyBack}>
         back
       </button>
@@ -31,9 +34,12 @@ function Stages() {
         텍스트 추가
       </button>
       {stages.map((nodes, index) => (
-        <Stage key={`${stages.length + index}`} index={index}>
-          <Layer nodes={nodes} />
-        </Stage>
+        <>
+          <StageController index={index} />
+          <Stage key={`${stages.length + index}`} index={index}>
+            <Layer nodes={nodes} />
+          </Stage>
+        </>
       ))}
     </div>
   );

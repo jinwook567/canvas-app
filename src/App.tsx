@@ -1,5 +1,5 @@
 import React from 'react';
-import Main from './components/Main/Main';
+import Main from './components/Layout/Main/Main';
 import Editor from './pages/Editor';
 
 function App() {

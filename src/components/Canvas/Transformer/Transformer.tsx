@@ -1,7 +1,7 @@
 import React, { RefObject } from 'react';
 import { KonvaEventObject, Node, NodeConfig } from 'konva/lib/Node';
 import Konva from 'konva';
-import * as ReactKonva from 'react-konva';
+import { Transformer as ReactKonvaTransformer } from 'react-konva';
 import useTransform from '../../../hooks/useTransform';
 
 type Props = {
@@ -37,7 +37,7 @@ function Transformer({ trRef }: Props) {
   };
 
   return (
-    <ReactKonva.Transformer
+    <ReactKonvaTransformer
       ref={trRef}
       onTransformEnd={handleTransformEnd}
       onDragEnd={handleTransformEnd}

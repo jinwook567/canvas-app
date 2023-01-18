@@ -2,7 +2,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   selectedIdsState,
   stageSizeState,
-  stagesState,
+  stageList,
   currentStageState,
 } from '../recoil/editor';
 import useAsset from './useAsset';
@@ -13,7 +13,7 @@ import useStage from './useStage';
 import useTransform from './useTransform';
 
 function useEditor() {
-  const [stages, setStages] = useRecoilState(stagesState);
+  const [stages, setStages] = useRecoilState(stageList);
   const [stageSize, setStageSize] = useRecoilState(stageSizeState);
   const selectedIds = useRecoilValue(selectedIdsState);
   const currentStage = useRecoilValue(currentStageState);
