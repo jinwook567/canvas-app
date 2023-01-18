@@ -72,6 +72,8 @@ const createTextNode = (nodeArg: TextNodeArg) => ({
   fontSize: nodeArg.fontSize,
   width: nodeArg.text.length * nodeArg.fontSize,
   height: nodeArg.fontSize,
+  align: 'center' as const,
+  verticalAlign: 'top' as const,
 });
 
 export const createNode = ({

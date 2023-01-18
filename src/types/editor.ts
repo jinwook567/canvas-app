@@ -22,6 +22,8 @@ export interface KonvaTextNode extends Konva.TextConfig {
   text: string;
   fontSize: number;
   fontFamily: string;
+  align: 'left' | 'center' | 'right';
+  verticalAlign: 'top' | 'middle' | 'bottom';
 }
 
 export interface KonvaGroupNode extends Konva.GroupConfig {
