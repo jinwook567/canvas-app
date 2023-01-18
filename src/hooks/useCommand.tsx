@@ -13,16 +13,19 @@ function useCommand(ref: RefObject<HTMLDivElement>) {
 
   const handleGroup = (e: KeyboardEvent) => {
     if (e.metaKey && e.key === 'g') {
+      e.preventDefault();
       organizeGroup(selectedIds);
     }
 
     if (e.metaKey && e.shiftKey && e.key === 'g' && selectedIds.length === 1) {
+      e.preventDefault();
       closeGroup(selectedIds[0]);
     }
   };
 
   const handleDeleteAsset = (e: KeyboardEvent) => {
     if (e.key === 'Backspace' || e.key === 'Delete') {
+      e.preventDefault();
       deleteAsset(selectedIds);
       deselect();
     }
@@ -30,7 +33,6 @@ function useCommand(ref: RefObject<HTMLDivElement>) {
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.target !== ref.current) return;
-    e.preventDefault();
 
     handleGroup(e);
     handleDeleteAsset(e);
