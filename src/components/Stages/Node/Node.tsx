@@ -6,6 +6,7 @@ import { KonvaNode } from '../../../types/editor';
 import useUpdateTransformerBySelectedId from './useUpdateTransformerRef';
 import Image from '../Image/Image';
 import useNodeEvents from './useNodeEvents';
+import Text from '../Text/Text';
 
 type Props = {
   node: KonvaNode;
@@ -53,7 +54,7 @@ function Node({ node, trRef, isSelected }: Props) {
       );
 
     default:
-      return <ReactKonva.Text {...props} />;
+      return <Text {...props} isSelected={isSelected} />;
   }
 }
 
