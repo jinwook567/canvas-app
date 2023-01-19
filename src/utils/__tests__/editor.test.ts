@@ -1,6 +1,6 @@
 import {
   arrangeSameShapeNode,
-  createNode,
+  createNodeConfig,
   findSameShapeNode,
   getCenterPosition,
   getInitialPosition,
@@ -26,15 +26,15 @@ test('test getInitialPosition function', () => {
 });
 
 test('test findSameShapeNode function', () => {
-  const node1 = createNode({
+  const node1 = createNodeConfig({
     nodeArg: { width: 500, height: 500, url: 'aa', type: 'image' },
     stageSize,
   });
-  const node2 = createNode({
+  const node2 = createNodeConfig({
     nodeArg: { width: 500, height: 500, url: 'aa', type: 'image' },
     stageSize,
   });
-  const node3 = createNode({
+  const node3 = createNodeConfig({
     nodeArg: { width: 600, height: 300, url: 'aa', type: 'image' },
     stageSize,
   });
@@ -45,11 +45,11 @@ test('test findSameShapeNode function', () => {
 });
 
 test('test arrangeSameShapeNode function', () => {
-  const node1 = createNode({
+  const node1 = createNodeConfig({
     nodeArg: { width: 500, height: 500, url: 'aa', type: 'image' },
     stageSize,
   });
-  const node2 = createNode({
+  const node2 = createNodeConfig({
     nodeArg: { width: 500, height: 500, url: 'aa', type: 'image' },
     stageSize,
   });
