@@ -1,30 +1,28 @@
 import Konva from 'konva';
-import React, { useRef } from 'react';
+import React, { useRef, RefObject } from 'react';
 import { Layer as ReactKonvaLayer } from 'react-konva';
 import { useRecoilValue } from 'recoil';
 import { selectedIdsState } from '../../../recoil/editor';
-import { KonvaStage } from '../../../types/editor';
-import Node from '../Node/Node';
+import { SelectedIds } from '../../../types/editor';
 import Transformer from '../Transformer/Transformer';
 
 type Props = {
-  nodes: KonvaStage;
+  children: ({
+    trRef,
+    selectedIds,
+  }: {
+    trRef: RefObject<Konva.Transformer>;
+    selectedIds: SelectedIds;
+  }) => React.ReactNode;
 };
 
-function Layer({ nodes }: Props) {
+function Layer({ children }: Props) {
   const trRef = useRef<Konva.Transformer>(null);
   const selectedIds = useRecoilValue(selectedIdsState);
 
   return (
     <ReactKonvaLayer>
-      {nodes.map(node => (
-        <Node
-          key={node.id}
-          node={node}
-          trRef={trRef}
-          isSelected={!!selectedIds.find(id => node.id === id)}
-        />
-      ))}
+      {children({ trRef, selectedIds })}
 
       <Transformer trRef={trRef} />
     </ReactKonvaLayer>

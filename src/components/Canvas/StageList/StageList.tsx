@@ -1,48 +1,42 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import useAsset from '../../../hooks/useAsset';
-import useEditorHistory from '../../../hooks/useEditorHistory';
-import { stageList } from '../../../recoil/editor';
+import { stageListState } from '../../../recoil/editor';
 import StageController from '../../Controller/StageController/StageController';
 import useStageSize from '../../useStageSize';
 import Layer from '../Layer/Layer';
+import Node from '../Node/Node';
 import Stage from '../Stage/Stage';
+import StageWrapper from '../StageWrapper/StageWrapper';
 
-function Stages() {
-  const stages = useRecoilValue(stageList);
-  const { historyBack, historyForward } = useEditorHistory();
-  const { appendAsset } = useAsset();
-  const handleAppendText = () => {
-    appendAsset({
-      type: 'text',
-      text: '텍스트 텍스트',
-      fontSize: 30,
-      fontFamily: 'Calibri',
-    });
-  };
+function StageList() {
+  const stageList = useRecoilValue(stageListState);
   const canvasDivRef = useStageSize();
 
   return (
     <div ref={canvasDivRef}>
-      <button type="button" onClick={historyBack}>
-        back
-      </button>
-      <button type="button" onClick={historyForward}>
-        forward
-      </button>
-      <button type="button" onClick={handleAppendText}>
-        텍스트 추가
-      </button>
-      {stages.map((nodes, index) => (
-        <>
+      {stageList.map((nodes, index) => (
+        <React.Fragment key={`${index + 1}`}>
           <StageController index={index} />
-          <Stage key={`${stages.length + index}`} index={index}>
-            <Layer nodes={nodes} />
-          </Stage>
-        </>
+          <StageWrapper index={index}>
+            <Stage>
+              <Layer>
+                {({ trRef, selectedIds }) =>
+                  nodes.map(node => (
+                    <Node
+                      key={node.id}
+                      node={node}
+                      trRef={trRef}
+                      isSelected={!!selectedIds.find(id => node.id === id)}
+                    />
+                  ))
+                }
+              </Layer>
+            </Stage>
+          </StageWrapper>
+        </React.Fragment>
       ))}
     </div>
   );
 }
 
-export default Stages;
+export default StageList;
