@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box } from '@mui/material';
 import useStage from '../../../hooks/useStage';
 
 type Props = {
@@ -15,7 +16,7 @@ function StageController({ index }: Props) {
   };
 
   return (
-    <div>
+    <Box sx={{ width: 1 }}>
       <button
         onClick={handleAppendStage}
         type="button"
@@ -30,7 +31,7 @@ function StageController({ index }: Props) {
       >
         Stage 제거
       </button>
-    </div>
+    </Box>
   );
 }
 

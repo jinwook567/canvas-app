@@ -6,14 +6,15 @@ function useStageSize() {
   const canvasDivRef = useRef<HTMLDivElement>(null);
   const setStageSize = useSetRecoilState(stageSizeState);
   const time = 500;
+  const ratio = 0.3;
 
   const timer = useRef<NodeJS.Timeout | null>(null);
 
   const getSize = () =>
     canvasDivRef.current
       ? {
-          width: canvasDivRef.current.offsetWidth,
-          height: canvasDivRef.current.offsetHeight,
+          width: canvasDivRef.current.offsetWidth * 0.5,
+          height: canvasDivRef.current.offsetWidth * 0.5,
         }
       : null;
 

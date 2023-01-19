@@ -7,17 +7,18 @@ import Layer from '../Layer/Layer';
 import Node from '../Node/Node';
 import Stage from '../Stage/Stage';
 import StageWrapper from '../StageWrapper/StageWrapper';
+import * as Styled from './StageList.styles';
 
 function StageList() {
   const stageList = useRecoilValue(stageListState);
   const canvasDivRef = useStageSize();
 
   return (
-    <div ref={canvasDivRef}>
+    <Styled.Container ref={canvasDivRef}>
       {stageList.map((nodes, index) => (
-        <React.Fragment key={`${index + 1}`}>
-          <StageController index={index} />
+        <Styled.StageArea key={`${index + 1}`}>
           <StageWrapper index={index}>
+            <StageController index={index} />
             <Stage>
               <Layer>
                 {({ trRef, selectedIds }) =>
@@ -33,9 +34,9 @@ function StageList() {
               </Layer>
             </Stage>
           </StageWrapper>
-        </React.Fragment>
+        </Styled.StageArea>
       ))}
-    </div>
+    </Styled.Container>
   );
 }
 

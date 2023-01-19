@@ -18,7 +18,12 @@ function StageWrapper({ children, index }: Props) {
 
   useEffect(() => {
     if (index === currentStageIndex) {
-      wrapperRef.current?.focus();
+      wrapperRef.current?.focus({ preventScroll: true });
+      wrapperRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      });
     }
   }, [currentStageIndex]);
 
