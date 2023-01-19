@@ -2,7 +2,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { stageListState } from '../../../recoil/editor';
 import StageController from '../../Controller/StageController/StageController';
-import useStageSize from '../../useStageSize';
+import useStageSize from '../useStageSize';
 import Layer from '../Layer/Layer';
 import Node from '../Node/Node';
 import Stage from '../Stage/Stage';

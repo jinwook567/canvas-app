@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { stageSizeState } from '../recoil/editor';
+import { stageSizeState } from '../../recoil/editor';
 
 function useStageSize() {
   const canvasDivRef = useRef<HTMLDivElement>(null);
