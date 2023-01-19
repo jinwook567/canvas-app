@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import useCommand from '../../../hooks/useCommand';
 import useStage from '../../../hooks/useStage';
-import * as Styled from './StageContaniner.styles';
+import * as Styled from './StageWrapper.styles';
 
 type Props = {
   children: React.ReactNode;
   index: number;
 };
 
-function StageContainer({ children, index }: Props) {
+function StageWrapper({ children, index }: Props) {
   const { selectStage, currentStageIndex } = useStage();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleSelectStage = () => {
     selectStage(index);
@@ -18,22 +18,22 @@ function StageContainer({ children, index }: Props) {
 
   useEffect(() => {
     if (index === currentStageIndex) {
-      containerRef.current?.focus();
+      wrapperRef.current?.focus();
     }
   }, [currentStageIndex]);
 
-  useCommand(containerRef);
+  useCommand(wrapperRef);
 
   return (
-    <Styled.Container
+    <Styled.Wrapper
       onClick={handleSelectStage}
       checked={currentStageIndex === index}
       tabIndex={0}
-      ref={containerRef}
+      ref={wrapperRef}
     >
       {children}
-    </Styled.Container>
+    </Styled.Wrapper>
   );
 }
 
-export default StageContainer;
+export default StageWrapper;

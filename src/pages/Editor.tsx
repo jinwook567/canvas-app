@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import ImageAssets from '../components/Assets/Image/ImageAssetList/ImageAssetList';
-import Stages from '../components/Canvas/StageList/StageList';
+import StageList from '../components/Canvas/StageList/StageList';
 
 function Editor() {
   return (
@@ -11,7 +11,7 @@ function Editor() {
       </Grid>
 
       <Grid item lg={10}>
-        <Stages />
+        <StageList />
       </Grid>
     </Grid>
   );

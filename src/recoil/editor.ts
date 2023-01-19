@@ -6,7 +6,7 @@ import {
   StageSize,
 } from '../types/editor';
 
-export const stageList = atom<KonvaStages>({
+export const stageListState = atom<KonvaStages>({
   key: 'stageList',
   default: [[]],
 });
@@ -14,7 +14,7 @@ export const stageList = atom<KonvaStages>({
 export const stageCountState = selector({
   key: 'stageCountState',
   get: ({ get }) => {
-    const stages = get(stageList);
+    const stages = get(stageListState);
     return stages.length;
   },
 });
@@ -40,15 +40,15 @@ export const selectedIdsState = atom<SelectedIds>({
 export const currentStageState = selector({
   key: 'currentStageState',
   get: ({ get }) => {
-    const stages = get(stageList);
+    const stages = get(stageListState);
     const currentStageIndex = get(currentStageIndexState);
     return stages[currentStageIndex];
   },
   set: ({ set, get }, newValue) => {
-    const stages = get(stageList);
+    const stages = get(stageListState);
     const currentStageIndex = get(currentStageIndexState);
     set(
-      stageList,
+      stageListState,
       stages.map((stage, index) =>
         index === currentStageIndex && !(newValue instanceof DefaultValue)
           ? newValue
