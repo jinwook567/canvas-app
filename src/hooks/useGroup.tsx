@@ -1,12 +1,12 @@
 import { useRecoilState } from 'recoil';
 import { currentStageState } from '../recoil/editor';
-import { SelectedIds, KonvaNode, KonvaStage } from '../types/editor';
-import { createGroupNode } from '../utils/editor';
+import { SelectedIds, KonvaNodeConfig, KonvaStage } from '../types/editor';
+import { createGroupConfig } from '../utils/editor';
 import useSelect from './useSelect';
 
 type InitialValue = {
-  unGroupNodes: KonvaNode[];
-  groupNodes: KonvaNode[];
+  unGroupNodes: KonvaNodeConfig[];
+  groupNodes: KonvaNodeConfig[];
   firstNodeIndex: number;
 };
 const getInitialValue = (): InitialValue => ({
@@ -46,7 +46,7 @@ function useGroup() {
       currentStage,
       selectedIds,
     });
-    const groupNode = createGroupNode({ children: groupNodes });
+    const groupNode = createGroupConfig({ children: groupNodes });
     const newStage = [
       ...unGroupNodes.slice(0, firstNodeIndex),
       groupNode,
@@ -57,7 +57,7 @@ function useGroup() {
     selectShape({ id: groupNode.id, type: 'change' });
   };
 
-  const closeGroup = (groupId: KonvaNode['id']) => {
+  const closeGroup = (groupId: KonvaNodeConfig['id']) => {
     const newStage = currentStage.reduce((acc, node) => {
       if (node.id === groupId && node.type === 'group') {
         const children = node.children.map(child => ({
@@ -73,7 +73,7 @@ function useGroup() {
       }
 
       return acc;
-    }, [] as KonvaNode[]);
+    }, [] as KonvaNodeConfig[]);
 
     deselect();
     setCurrentStage(newStage);

@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import Konva from 'konva';
 import React, { ForwardedRef, useEffect, useRef } from 'react';
-import { KonvaTextNode } from '../../../types/editor';
+import { KonvaTextConfig } from '../../../types/editor';
 import * as Styled from './Textarea.styles';
 
-type Props = KonvaTextNode & {
+type Props = KonvaTextConfig & {
   textRef: ForwardedRef<Konva.Text>;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };

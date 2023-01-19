@@ -1,6 +1,6 @@
 import { useSetRecoilState } from 'recoil';
 import { currentStageState } from '../recoil/editor';
-import { KonvaTextNode } from '../types/editor';
+import { KonvaTextConfig } from '../types/editor';
 
 function useText() {
   const setCurrentStage = useSetRecoilState(currentStageState);
@@ -9,8 +9,8 @@ function useText() {
     id,
     text,
   }: {
-    id: KonvaTextNode['id'];
-    text: KonvaTextNode['text'];
+    id: KonvaTextConfig['id'];
+    text: KonvaTextConfig['text'];
   }) => {
     setCurrentStage(currentStage =>
       currentStage.map(node => (node.id === id ? { ...node, text } : node))

@@ -2,7 +2,7 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { fireEvent, renderHook, screen, act } from '@testing-library/react';
 import ImageAssets from './ImageAssetList';
-import { createNode } from '../../../../utils/editor';
+import { createNodeConfig } from '../../../../utils/editor';
 import useEditor from '../../../../hooks/useEditor';
 import { imageAssets } from '../../../../fixtures/editor';
 import { initialImageStageRatio } from '../../../../constants/editor';
@@ -118,7 +118,7 @@ test('Image 클릭 시 Stage로 추가가 잘 되는지 테스트', () => {
   const { stageSize } = result.current;
 
   const nodeArg = { url, width, height, type: 'image' as const };
-  const node = createNode({
+  const node = createNodeConfig({
     nodeArg,
     stageSize,
   });

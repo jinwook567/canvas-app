@@ -1,15 +1,15 @@
 import React, { useRef } from 'react';
 import { IconButton } from '@mui/material';
-import { KonvaImageNode } from '../../../../types/editor';
+import { KonvaImageConfig } from '../../../../types/editor';
 import * as Style from './ImageAsset.styles';
 
 type Props = {
-  url: KonvaImageNode['url'];
+  url: KonvaImageConfig['url'];
   onClick: ({
     url,
     width,
     height,
-  }: Pick<KonvaImageNode, 'url' | 'width' | 'height'>) => void;
+  }: Pick<KonvaImageConfig, 'url' | 'width' | 'height'>) => void;
 };
 
 function ImageAsset({ url, onClick }: Props) {

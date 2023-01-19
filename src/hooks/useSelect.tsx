@@ -1,6 +1,6 @@
 import { useSetRecoilState } from 'recoil';
 import { selectedIdsState } from '../recoil/editor';
-import { KonvaNode } from '../types/editor';
+import { KonvaNodeConfig } from '../types/editor';
 
 function useSelect() {
   const setSelectedIds = useSetRecoilState(selectedIdsState);
@@ -9,7 +9,7 @@ function useSelect() {
     id,
     type,
   }: {
-    id: KonvaNode['id'];
+    id: KonvaNodeConfig['id'];
     type: 'append' | 'change';
   }) => {
     setSelectedIds(

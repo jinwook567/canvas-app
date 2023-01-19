@@ -4,7 +4,7 @@ import {
   stageCountState,
   stageListState,
 } from '../recoil/editor';
-import { KonvaStages, StageIndex } from '../types/editor';
+import { KonvaStageList, StageIndex } from '../types/editor';
 
 function useStage() {
   const stageCount = useRecoilValue(stageCountState);
@@ -31,7 +31,7 @@ function useStage() {
         acc.push(stage);
         if (index === currentStageIndex) acc.push([]);
         return acc;
-      }, [] as KonvaStages)
+      }, [] as KonvaStageList)
     );
     setCurrentStageIndex(targetIndex + 1);
   };

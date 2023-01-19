@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { KonvaTextNode } from '../../../types/editor';
+import { KonvaTextConfig } from '../../../types/editor';
 
 export const TextArea = styled.textarea<
-  KonvaTextNode & { width: number; height: number }
+  KonvaTextConfig & { width: number; height: number }
 >`
   font-size: ${({ fontSize }) => fontSize}px;
   font-family: ${({ fontFamily }) => fontFamily};

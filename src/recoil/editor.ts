@@ -1,12 +1,12 @@
 import { atom, DefaultValue, selector } from 'recoil';
 import {
-  KonvaStages,
+  KonvaStageList,
   SelectedIds,
   StageIndex,
   StageSize,
 } from '../types/editor';
 
-export const stageListState = atom<KonvaStages>({
+export const stageListState = atom<KonvaStageList>({
   key: 'stageList',
   default: [[]],
 });
@@ -58,7 +58,7 @@ export const currentStageState = selector({
   },
 });
 
-export const historyState = atom<KonvaStages[]>({
+export const historyState = atom<KonvaStageList[]>({
   key: 'historyState',
   default: [],
 });

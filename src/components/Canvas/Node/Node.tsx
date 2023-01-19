@@ -2,14 +2,14 @@
 import React, { RefObject, useRef } from 'react';
 import Konva from 'konva';
 import { Group as ReactKonvaGroup } from 'react-konva';
-import { KonvaNode } from '../../../types/editor';
+import { KonvaNodeConfig } from '../../../types/editor';
 import useUpdateTransformerBySelectedId from './useUpdateTransformerRef';
 import Image from '../Image/Image';
 import useNodeEvents from './useNodeEvents';
 import Text from '../Text/Text';
 
 type Props = {
-  node: KonvaNode;
+  node: KonvaNodeConfig;
   trRef: RefObject<Konva.Transformer>;
   isSelected: boolean;
 };
@@ -27,18 +27,17 @@ function Node({ node, trRef, isSelected }: Props) {
 
   const props = {
     draggable: true,
-    ...node,
     ...nodeEvents,
     ref: nodeRef,
   };
 
   switch (node.type) {
     case 'image':
-      return <Image {...props} />;
+      return <Image {...props} {...node} />;
 
     case 'group':
       return (
-        <ReactKonvaGroup {...props}>
+        <ReactKonvaGroup {...props} {...node}>
           {node.children.map(child => (
             <Node
               key={child.id}
@@ -54,7 +53,7 @@ function Node({ node, trRef, isSelected }: Props) {
       );
 
     default:
-      return <Text {...props} isSelected={isSelected} />;
+      return <Text {...props} {...node} isSelected={isSelected} />;
   }
 }
 

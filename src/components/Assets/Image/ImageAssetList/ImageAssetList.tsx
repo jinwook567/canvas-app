@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AppendForm from '../AppendForm/AppendForm';
 import ImageAsset from '../ImageAsset/ImageAsset';
-import { KonvaImageNode } from '../../../../types/editor';
+import { KonvaImageConfig } from '../../../../types/editor';
 import { imageAssets } from '../../../../fixtures/editor';
 import useAsset from '../../../../hooks/useAsset';
 
@@ -17,14 +17,15 @@ function ImageAssets() {
     }
   };
 
-  const { appendAsset } = useAsset();
+  const { appendAsset, createNodeConfig } = useAsset();
 
   const handleAppendAsset = ({
     url,
     width,
     height,
-  }: Pick<KonvaImageNode, 'url' | 'width' | 'height'>) => {
-    appendAsset({ type: 'image', url, width, height });
+  }: Pick<KonvaImageConfig, 'url' | 'width' | 'height'>) => {
+    const nodeConfig = createNodeConfig({ type: 'image', url, width, height });
+    appendAsset(nodeConfig);
   };
 
   return (

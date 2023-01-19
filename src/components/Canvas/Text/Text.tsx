@@ -4,10 +4,10 @@ import React, { ForwardedRef, useEffect, useState } from 'react';
 import { Text as ReactKonvaText } from 'react-konva';
 import { Html } from 'react-konva-utils';
 import useText from '../../../hooks/useText';
-import { KonvaTextNode } from '../../../types/editor';
+import { KonvaTextConfig } from '../../../types/editor';
 import Textarea from './Textarea';
 
-type Props = KonvaTextNode & { isSelected: boolean };
+type Props = KonvaTextConfig & { isSelected: boolean };
 
 function Text({ ...props }: Props, ref: ForwardedRef<Konva.Text>) {
   const [isChangingText, setIsChangingText] = useState(false);
