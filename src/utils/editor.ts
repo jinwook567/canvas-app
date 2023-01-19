@@ -1,12 +1,17 @@
-import { initialImageStageRatio } from '../constants/editor';
 import {
-  KonvaNode,
-  ImageNodeArg,
+  defaultGroupConfig,
+  defaultImageConfig,
+  defaultTextConfig,
+  initialImageStageRatio,
+} from '../constants/editor';
+import {
+  KonvaNodeConfig,
+  KonvaImageConfigArg,
   NodeArg,
   StageSize,
   KonvaStage,
-  GroupNodeArg,
-  TextNodeArg,
+  KonvaGroupConfigArg,
+  KonvaTextConfigArg,
 } from '../types/editor';
 import { createUniqueId, omit } from './unit';
 
@@ -44,51 +49,36 @@ export const getInitialPosition = ({
   return { width, height, x, y };
 };
 
-const createImageNode = (nodeArg: ImageNodeArg) => ({
-  width: nodeArg.width,
-  height: nodeArg.height,
-  url: nodeArg.url,
-  type: 'image' as const,
-  scaleX: 1,
-  scaleY: 1,
-});
-
-export const createGroupNode = (nodeArg: GroupNodeArg) => ({
-  type: 'group' as const,
-  scaleX: 1,
-  scaleY: 1,
-  children: nodeArg.children,
-  x: 0,
-  y: 0,
+const createImageConfig = (nodeArg: KonvaImageConfigArg) => ({
+  ...nodeArg,
+  ...defaultImageConfig,
   id: createUniqueId(),
 });
 
-const createTextNode = (nodeArg: TextNodeArg) => ({
-  type: 'text' as const,
-  scaleX: 1,
-  scaleY: 1,
-  text: nodeArg.text,
-  fontFamily: nodeArg.fontFamily,
-  fontSize: nodeArg.fontSize,
-  width: nodeArg.text.length * nodeArg.fontSize,
-  height: nodeArg.fontSize,
-  align: 'center' as const,
-  verticalAlign: 'top' as const,
+const createTextConfig = (nodeArg: KonvaTextConfigArg) => ({
+  ...nodeArg,
+  ...defaultTextConfig,
+  width:
+    nodeArg.fontSize *
+    nodeArg.text
+      .split('\n')
+      .reduce((acc, cols) => Math.max(acc, cols.length), 0),
+  height: nodeArg.fontSize * nodeArg.text.split('\n').length,
 });
 
-export const createNode = ({
+export const createNodeConfig = ({
   nodeArg,
   stageSize,
 }: {
   nodeArg: NodeArg;
   stageSize: StageSize;
-}): KonvaNode => {
+}): KonvaNodeConfig => {
   const id = createUniqueId();
 
   const node =
     nodeArg.type === 'text'
-      ? createTextNode(nodeArg)
-      : createImageNode(nodeArg);
+      ? createTextConfig(nodeArg)
+      : createImageConfig(nodeArg);
 
   const { x, y, width, height } = getInitialPosition({
     stageSize,
@@ -104,35 +94,42 @@ export const createNode = ({
     : { ...node, id, x, y, width, height };
 };
 
+export const createGroupConfig = (nodeArg: KonvaGroupConfigArg) => ({
+  ...nodeArg,
+  ...defaultGroupConfig,
+  id: createUniqueId(),
+  type: 'group' as const,
+});
+
 export const findSameShapeNode = ({
   currentStage,
-  node,
+  nodeConfig,
 }: {
   currentStage: KonvaStage;
-  node: KonvaNode;
+  nodeConfig: KonvaNodeConfig;
 }) =>
   currentStage.find(
     ({ x, y, width, height, type }) =>
-      x === node.x &&
-      y === node.y &&
-      width === node.width &&
-      height === node.height &&
-      type === node.type
+      x === nodeConfig.x &&
+      y === nodeConfig.y &&
+      width === nodeConfig.width &&
+      height === nodeConfig.height &&
+      type === nodeConfig.type
   );
 
 export const arrangeSameShapeNode = ({
   currentStage,
-  node,
+  nodeConfig,
 }: {
   currentStage: KonvaStage;
-  node: KonvaNode;
-}): KonvaNode => {
-  const sameShapeNode = findSameShapeNode({ currentStage, node });
-  if (!sameShapeNode) return node;
+  nodeConfig: KonvaNodeConfig;
+}): KonvaNodeConfig => {
+  const sameShapeNode = findSameShapeNode({ currentStage, nodeConfig });
+  if (!sameShapeNode) return nodeConfig;
   return arrangeSameShapeNode({
     currentStage,
-    node: {
-      ...node,
+    nodeConfig: {
+      ...nodeConfig,
       x: sameShapeNode.x + 15,
       y: sameShapeNode.y + 15,
     },
