@@ -1,9 +1,9 @@
-import { ListItemIcon, MenuItem, MenuList, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
+import { ListItemIcon, MenuItem, MenuList, Typography } from '@mui/material';
 
 type Props = {
-  tabList: { icon: ReactElement; name: string }[];
-  onClick: (name: string) => void;
+  tabList: { icon: ReactElement; name: '이미지' | '템플릿' | '텍스트' }[];
+  onClick: (name: '이미지' | '템플릿' | '텍스트') => void;
   selectedTab: string;
 };
 
