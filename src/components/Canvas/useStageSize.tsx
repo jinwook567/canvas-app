@@ -6,7 +6,7 @@ type Props = {
 
 function useStageSize({ setStageSize }: Props) {
   const canvasDivRef = useRef<HTMLDivElement>(null);
-  const time = 500;
+  const time = 100;
 
   const timer = useRef<NodeJS.Timeout | null>(null);
 
@@ -19,15 +19,12 @@ function useStageSize({ setStageSize }: Props) {
       : null;
 
   const handleResize = () => {
-    if (!timer.current) {
+    if (timer.current) clearTimeout(timer.current);
+    const newTimer = setTimeout(() => {
       const size = getSize();
       if (size) setStageSize(size);
-
-      const newTimer = setTimeout(() => {
-        timer.current = null;
-      }, time);
-      timer.current = newTimer;
-    }
+    }, time);
+    timer.current = newTimer;
   };
 
   useEffect(() => {
