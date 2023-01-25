@@ -1,6 +1,6 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { stageListState } from '../../../recoil/editor';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { stageListState, stageSizeState } from '../../../recoil/editor';
 import StageController from '../../Controller/StageController/StageController';
 import useStageSize from '../useStageSize';
 import Layer from '../Layer/Layer';
@@ -11,7 +11,12 @@ import * as Styled from './StageList.styles';
 
 function StageList() {
   const stageList = useRecoilValue(stageListState);
-  const canvasDivRef = useStageSize();
+
+  const setStageSize = useSetRecoilState(stageSizeState);
+  const canvasDivRef = useStageSize({
+    setStageSize: size =>
+      setStageSize({ width: size.width / 2, height: size.height / 2 }),
+  });
 
   return (
     <Styled.Container ref={canvasDivRef}>

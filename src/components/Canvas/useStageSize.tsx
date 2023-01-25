@@ -2,9 +2,12 @@ import { useRef, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { stageSizeState } from '../../recoil/editor';
 
-function useStageSize() {
+type Props = {
+  setStageSize: (size: { width: number; height: number }) => void;
+};
+
+function useStageSize({ setStageSize }: Props) {
   const canvasDivRef = useRef<HTMLDivElement>(null);
-  const setStageSize = useSetRecoilState(stageSizeState);
   const time = 500;
   const ratio = 0.3;
 
@@ -13,8 +16,8 @@ function useStageSize() {
   const getSize = () =>
     canvasDivRef.current
       ? {
-          width: canvasDivRef.current.offsetWidth * 0.5,
-          height: canvasDivRef.current.offsetWidth * 0.5,
+          width: canvasDivRef.current.offsetWidth,
+          height: canvasDivRef.current.offsetWidth,
         }
       : null;
 
