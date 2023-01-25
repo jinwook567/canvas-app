@@ -136,17 +136,16 @@ export const arrangeSameShapeNode = ({
   });
 };
 
-export const applyScaleToNodes = ({
-  nodes,
+export const applyScaleToNode = ({
+  node,
   scale,
 }: {
-  nodes: KonvaStage;
+  node: KonvaNodeConfig;
   scale: number;
-}): KonvaStage =>
-  nodes.map(node => ({
-    ...node,
-    scaleX: node.scaleX * scale,
-    scaleY: node.scaleY * scale,
-    x: node.x * scale,
-    y: node.y * scale,
-  }));
+}) => ({
+  ...node,
+  scaleX: node.scaleX * scale,
+  scaleY: node.scaleY * scale,
+  x: node.x * scale,
+  y: node.y * scale,
+});
