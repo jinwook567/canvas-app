@@ -10,10 +10,12 @@ import {
   NodeArg,
   SelectedIds,
 } from '../types/editor';
+import useSelect from './useSelect';
 
 function useAsset() {
   const setCurrentStage = useSetRecoilState(currentStageState);
   const stageSize = useRecoilValue(stageSizeState);
+  const { deselect } = useSelect();
 
   const createNodeConfig = (nodeArg: NodeArg) =>
     createNodeConfigUtils({ nodeArg, stageSize });
@@ -32,6 +34,7 @@ function useAsset() {
   };
 
   const applyTemplate = (nodes: KonvaStage) => {
+    deselect();
     setCurrentStage(nodes);
   };
 
