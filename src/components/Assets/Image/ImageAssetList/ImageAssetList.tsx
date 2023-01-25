@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Grid } from '@mui/material';
 import AppendForm from '../AppendForm/AppendForm';
 import ImageAsset from '../ImageAsset/ImageAsset';
 import { KonvaImageConfig } from '../../../../types/editor';
@@ -29,12 +30,12 @@ function ImageAssets() {
   };
 
   return (
-    <div>
+    <Grid flexDirection="column" alignItems="center" container>
       <AppendForm handleSubmit={handleSubmit} />
       {images.map(({ url }) => (
         <ImageAsset key={url} url={url} onClick={handleAppendAsset} />
       ))}
-    </div>
+    </Grid>
   );
 }
 
