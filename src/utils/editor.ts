@@ -149,3 +149,15 @@ export const applyScaleToNode = ({
   x: node.x * scale,
   y: node.y * scale,
 });
+
+export const getRatio = (size: StageSize) => size.width / size.height;
+
+export const getScale = (size1: StageSize, size2: StageSize) => {
+  const size1Ratio = getRatio(size1);
+  const size2Ratio = getRatio(size2);
+
+  if (size1Ratio > size2Ratio) {
+    return size2.width / size1.width;
+  }
+  return size2.height / size1.height;
+};
