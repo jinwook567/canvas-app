@@ -94,7 +94,7 @@ export type TransformedNodes =
   | Pick<KonvaNodeConfig, 'id' | 'x' | 'y'>[];
 
 export type Template = {
-  stageWidth: number;
-  stageHeight: number;
+  width: number;
+  height: number;
   nodes: KonvaStage;
 };
