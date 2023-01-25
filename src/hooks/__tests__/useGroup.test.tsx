@@ -1,13 +1,20 @@
 import { act } from '@testing-library/react';
+import { createNodeConfig } from '../../utils/editor';
 import setupRenderUseEditorHook from '../../utils/setupRenderEditorHook';
 
 test('handleOrganizeGroup, handleCloseGroup', () => {
   const result = setupRenderUseEditorHook();
   const nodeArg = { url: '1', width: 100, height: 100, type: 'image' as const };
 
-  act(() => result.current.appendAsset(nodeArg));
-  act(() => result.current.appendAsset(nodeArg));
-  act(() => result.current.appendAsset(nodeArg));
+  const nodes = Array(3)
+    .fill(0)
+    .map(() =>
+      createNodeConfig({ nodeArg, stageSize: { width: 1000, height: 1000 } })
+    );
+
+  nodes.forEach(nodeConfig =>
+    act(() => result.current.appendAsset(nodeConfig))
+  );
 
   const first = result.current.currentStage[0];
   const second = result.current.currentStage[1];
@@ -19,6 +26,7 @@ test('handleOrganizeGroup, handleCloseGroup', () => {
   act(() => result.current.organizeGroup(result.current.selectedIds));
 
   expect(result.current.currentStage[0]).toEqual(first);
+
   expect(result.current.currentStage[1]).toEqual(
     expect.objectContaining({
       type: 'group',
