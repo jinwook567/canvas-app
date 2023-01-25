@@ -4,7 +4,12 @@ import {
   arrangeSameShapeNode,
   createNodeConfig as createNodeConfigUtils,
 } from '../utils/editor';
-import { KonvaNodeConfig, NodeArg, SelectedIds } from '../types/editor';
+import {
+  KonvaNodeConfig,
+  KonvaStage,
+  NodeArg,
+  SelectedIds,
+} from '../types/editor';
 
 function useAsset() {
   const setCurrentStage = useSetRecoilState(currentStageState);
@@ -26,10 +31,15 @@ function useAsset() {
     );
   };
 
+  const applyTemplate = (nodes: KonvaStage) => {
+    setCurrentStage(nodes);
+  };
+
   return {
     appendAsset,
     deleteAsset,
     createNodeConfig,
+    applyTemplate,
   };
 }
 
