@@ -4,6 +4,7 @@ import { RecoilRoot } from 'recoil';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import DebugObserver from './recoil/debug';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,6 +12,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <RecoilRoot>
+      <DebugObserver />
       <App />
     </RecoilRoot>
   </React.StrictMode>
