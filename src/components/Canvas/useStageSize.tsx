@@ -1,6 +1,4 @@
 import { useRef, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { stageSizeState } from '../../recoil/editor';
 
 type Props = {
   setStageSize: (size: { width: number; height: number }) => void;
@@ -9,7 +7,6 @@ type Props = {
 function useStageSize({ setStageSize }: Props) {
   const canvasDivRef = useRef<HTMLDivElement>(null);
   const time = 500;
-  const ratio = 0.3;
 
   const timer = useRef<NodeJS.Timeout | null>(null);
 
