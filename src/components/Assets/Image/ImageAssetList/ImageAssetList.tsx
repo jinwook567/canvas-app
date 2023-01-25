@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Masonry from '@mui/lab/Masonry';
 import { Grid } from '@mui/material';
 import AppendForm from '../AppendForm/AppendForm';
 import ImageAsset from '../ImageAsset/ImageAsset';
@@ -6,7 +7,7 @@ import { KonvaImageConfig } from '../../../../types/editor';
 import { imageAssets } from '../../../../fixtures/editor';
 import useAsset from '../../../../hooks/useAsset';
 
-function ImageAssets() {
+function ImageAssetList() {
   const [images, setImages] = useState<{ url: string }[]>(imageAssets);
 
   const handleSubmit = (imageUrl: string) => {
@@ -32,11 +33,13 @@ function ImageAssets() {
   return (
     <Grid flexDirection="column" alignItems="center" container>
       <AppendForm handleSubmit={handleSubmit} />
-      {images.map(({ url }) => (
-        <ImageAsset key={url} url={url} onClick={handleAppendAsset} />
-      ))}
+      <Masonry columns={2}>
+        {images.map(({ url }) => (
+          <ImageAsset key={url} url={url} onClick={handleAppendAsset} />
+        ))}
+      </Masonry>
     </Grid>
   );
 }
 
-export default ImageAssets;
+export default ImageAssetList;

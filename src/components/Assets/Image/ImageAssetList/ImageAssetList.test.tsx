@@ -1,7 +1,7 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { fireEvent, renderHook, screen, act } from '@testing-library/react';
-import ImageAssets from './ImageAssetList';
+import ImageAssetList from './ImageAssetList';
 import { createNodeConfig } from '../../../../utils/editor';
 import useEditor from '../../../../hooks/useEditor';
 import { imageAssets } from '../../../../fixtures/editor';
@@ -16,7 +16,7 @@ function renderImageAssets() {
   const wrapper = ({ children }: { children: React.ReactNode }) => (
     <RecoilRoot>
       {children}
-      <ImageAssets />
+      <ImageAssetList />
     </RecoilRoot>
   );
 
