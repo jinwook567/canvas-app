@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-restricted-syntax */
 import { useEffect } from 'react';
 import { useRecoilSnapshot } from 'recoil';

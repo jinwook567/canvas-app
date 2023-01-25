@@ -40,10 +40,8 @@ function useStage() {
     if (stageCount === 1 && targetIndex === 0) return;
     checkTargetIndexInRange(targetIndex);
 
-    setStages(stages =>
-      stages.filter((_, index) => index !== currentStageIndex)
-    );
-    setCurrentStageIndex(currentStageIndex === 0 ? 0 : currentStageIndex - 1);
+    setStages(stages => stages.filter((_, index) => index !== targetIndex));
+    setCurrentStageIndex(targetIndex === 0 ? 0 : targetIndex - 1);
   };
 
   return {
