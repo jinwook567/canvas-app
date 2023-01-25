@@ -6,11 +6,14 @@ import Header from '../components/Layout/Header/Header';
 import Footer from '../components/Layout/Footer/Footer';
 import Main from '../components/Layout/Main/Main';
 import Assets from '../components/Assets/Assets/Assets';
+import HeaderController from '../components/Controller/HeaderController/HeaderController';
 
 function Editor() {
   return (
     <Container>
-      <Header>Here is header</Header>
+      <Header>
+        <HeaderController />
+      </Header>
 
       <Main>
         <Grid lg={3} item container>
@@ -22,7 +25,9 @@ function Editor() {
         </Grid>
       </Main>
 
-      <Footer>Here is footer</Footer>
+      <Footer>
+        <a href="https://github.com/jinwook567/canvas-app">canvas-app</a>
+      </Footer>
     </Container>
   );
 }
