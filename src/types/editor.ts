@@ -92,3 +92,9 @@ export type IsPressedKey = {
 export type TransformedNodes =
   | Pick<KonvaNodeConfig, 'id' | 'width' | 'height' | 'x' | 'y' | 'rotation'>[]
   | Pick<KonvaNodeConfig, 'id' | 'x' | 'y'>[];
+
+export type Template = {
+  stageWidth: number;
+  stageHeight: number;
+  nodes: KonvaStage;
+};
