@@ -6,7 +6,15 @@ type Props = {
 };
 
 function Footer({ children }: Props) {
-  return <Grid sx={{ padding: 1, background: 'gray' }}>{children}</Grid>;
+  return (
+    <Grid
+      sx={{ padding: 1, background: 'gray' }}
+      justifyContent="center"
+      container
+    >
+      {children}
+    </Grid>
+  );
 }
 
 export default Footer;

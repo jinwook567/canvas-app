@@ -6,7 +6,7 @@ type Props = {
 };
 
 function Header({ children }: Props) {
-  return <Grid sx={{ padding: 1, background: 'blue' }}>{children}</Grid>;
+  return <Grid sx={{ padding: 1, background: 'gray' }}>{children}</Grid>;
 }
 
 export default Header;
