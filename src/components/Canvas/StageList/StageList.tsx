@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import Konva from 'konva';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { v4 as uuidv4 } from 'uuid';
 import { stageListState, stageSizeState } from '../../../recoil/editor';
 import StageController from '../../Controller/StageController/StageController';
 import useStageSize from '../useStageSize';
@@ -18,13 +20,18 @@ function StageList() {
       setStageSize({ width: size.width / 2, height: size.height / 2 }),
   });
 
+  const stageListRef = useRef(new Map<string, Konva.Stage>());
+
   return (
     <Styled.Container ref={canvasDivRef}>
+      <button type="button" onClick={() => console.log(stageListRef.current)}>
+        Hi
+      </button>
       {stageList.map((nodes, index) => (
         <Styled.StageArea key={`${index + 1}`}>
           <StageWrapper index={index}>
             <StageController index={index} />
-            <Stage>
+            <Stage listRef={stageListRef} id={uuidv4()}>
               <Layer>
                 {({ trRef, selectedIds }) =>
                   nodes.map(node => (
