@@ -1,6 +1,5 @@
 import Konva from 'konva';
-import React, { MutableRefObject, useEffect, useRef } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, { RefObject, useEffect, useRef } from 'react';
 import { Stage as ReactKonvaStage } from 'react-konva';
 import { useRecoilValue } from 'recoil';
 import useSelect from '../../../hooks/useSelect';
@@ -8,21 +7,18 @@ import { stageSizeState } from '../../../recoil/editor';
 
 type Props = {
   children: React.ReactNode;
-  listRef: MutableRefObject<Map<string, Konva.Stage>>;
-  id: string;
+  isTriggeredDownload: boolean;
+  onDownload: (ref: RefObject<Konva.Stage>) => void;
 };
 
-function Stage({ children, listRef, id }: Props) {
+function Stage({ children, isTriggeredDownload, onDownload }: Props) {
   const { width, height } = useRecoilValue(stageSizeState);
   const { deselect } = useSelect();
+  const stageRef = useRef<Konva.Stage>(null);
 
-  useEffect(
-    () => () => {
-      listRef.current.delete(id);
-    },
-    [id]
-  );
-  // id가 변경됨에 따라서,
+  useEffect(() => {
+    if (isTriggeredDownload) onDownload(stageRef);
+  }, [isTriggeredDownload]);
 
   return (
     <ReactKonvaStage
@@ -30,10 +26,7 @@ function Stage({ children, listRef, id }: Props) {
       height={height}
       onTouchStart={e => e.target === e.target.getStage() && deselect()}
       onMouseDown={e => e.target === e.target.getStage() && deselect()}
-      ref={instance => {
-        if (instance) listRef.current.set(id, instance);
-      }}
-      id={id}
+      ref={stageRef}
     >
       {children}
     </ReactKonvaStage>
