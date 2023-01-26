@@ -162,7 +162,7 @@ export const getScale = (size1: StageSize, size2: StageSize) => {
   return size2.height / size1.height;
 };
 
-export const downloadURI = (uri: any, name: string) => {
+export const downloadURI = (uri: string, name: string) => {
   const link = document.createElement('a');
   link.download = name;
   link.href = uri;

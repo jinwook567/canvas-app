@@ -67,3 +67,8 @@ export const historyStepState = atom({
   key: 'historyStepState',
   default: 0,
 });
+
+export const isTriggeredDownloadState = atom({
+  key: 'isTriggeredDownloadState',
+  default: false,
+});

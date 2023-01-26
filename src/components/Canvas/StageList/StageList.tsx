@@ -8,7 +8,7 @@ import Node from '../Node/Node';
 import Stage from '../Stage/Stage';
 import StageWrapper from '../StageWrapper/StageWrapper';
 import * as Styled from './StageList.styles';
-import useDownload from './useDownload';
+import useDownload from '../../../hooks/useDownload';
 
 function StageList() {
   const stageList = useRecoilValue(stageListState);
@@ -19,14 +19,10 @@ function StageList() {
       setStageSize({ width: size.width / 2, height: size.height / 2 }),
   });
 
-  const { isTriggeredDownload, handleDownload, triggerDownload } =
-    useDownload();
+  const { isTriggeredDownload, handleDownload } = useDownload();
 
   return (
     <Styled.Container ref={canvasDivRef}>
-      <button type="button" onClick={triggerDownload}>
-        Hi
-      </button>
       {stageList.map((nodes, index) => (
         <Styled.StageArea key={`${index + 1}`}>
           <StageWrapper index={index}>
