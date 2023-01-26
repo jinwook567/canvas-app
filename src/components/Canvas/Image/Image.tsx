@@ -8,7 +8,7 @@ import { KonvaImageConfig } from '../../../types/editor';
 type Props = KonvaImageConfig;
 
 function Image({ type, url, ...rest }: Props, ref: ForwardedRef<Konva.Image>) {
-  const [image] = useImage(url);
+  const [image] = useImage(url, 'anonymous');
 
   return <ReactKonvaImage image={image} {...rest} ref={ref} />;
 }
