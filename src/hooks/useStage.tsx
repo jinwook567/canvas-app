@@ -29,7 +29,7 @@ function useStage() {
     setStages(stages =>
       stages.reduce((acc, stage, index) => {
         acc.push(stage);
-        if (index === currentStageIndex) acc.push([]);
+        if (index === targetIndex) acc.push([]);
         return acc;
       }, [] as KonvaStageList)
     );
