@@ -6,6 +6,7 @@ Currently, only supports desktop environments(window width>1200px)
 ## Features
 
 - resize and rotate an image, change the position
+- text
 - template(can preview on canvas)
 - history(back, forward)
 - multiple stages
