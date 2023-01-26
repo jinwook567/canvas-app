@@ -40,8 +40,10 @@ test('test findSameShapeNode function', () => {
   });
 
   const currentStage = [node1, node2];
-  expect(findSameShapeNode({ currentStage, node: node1 })).toBe(node1);
-  expect(findSameShapeNode({ currentStage, node: node3 })).toBeUndefined();
+  expect(findSameShapeNode({ currentStage, nodeConfig: node1 })).toBe(node1);
+  expect(
+    findSameShapeNode({ currentStage, nodeConfig: node3 })
+  ).toBeUndefined();
 });
 
 test('test arrangeSameShapeNode function', () => {
@@ -55,18 +57,18 @@ test('test arrangeSameShapeNode function', () => {
   });
 
   const currentStage = [node1];
-  expect(arrangeSameShapeNode({ currentStage, node: node2 }).x).toBe(
+  expect(arrangeSameShapeNode({ currentStage, nodeConfig: node2 }).x).toBe(
     node2.x + 15
   );
-  expect(arrangeSameShapeNode({ currentStage, node: node2 }).y).toBe(
+  expect(arrangeSameShapeNode({ currentStage, nodeConfig: node2 }).y).toBe(
     node2.y + 15
   );
-  currentStage.push(arrangeSameShapeNode({ currentStage, node: node2 }));
+  currentStage.push(arrangeSameShapeNode({ currentStage, nodeConfig: node2 }));
 
-  expect(arrangeSameShapeNode({ currentStage, node: node2 }).x).toBe(
+  expect(arrangeSameShapeNode({ currentStage, nodeConfig: node2 }).x).toBe(
     node2.x + 30
   );
-  expect(arrangeSameShapeNode({ currentStage, node: node2 }).x).toBe(
+  expect(arrangeSameShapeNode({ currentStage, nodeConfig: node2 }).x).toBe(
     node2.x + 30
   );
 });
