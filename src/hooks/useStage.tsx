@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   currentStageIndexState,
@@ -5,6 +6,7 @@ import {
   stageListState,
 } from '../recoil/editor';
 import { KonvaStageList, StageIndex } from '../types/editor';
+import useSelect from './useSelect';
 
 function useStage() {
   const stageCount = useRecoilValue(stageCountState);
@@ -12,6 +14,7 @@ function useStage() {
     currentStageIndexState
   );
   const setStages = useSetRecoilState(stageListState);
+  const { deselect } = useSelect();
 
   const checkTargetIndexInRange = (targetIndex: StageIndex) => {
     if (targetIndex >= stageCount || targetIndex < 0)
@@ -43,6 +46,10 @@ function useStage() {
     setStages(stages => stages.filter((_, index) => index !== targetIndex));
     setCurrentStageIndex(targetIndex === 0 ? 0 : targetIndex - 1);
   };
+
+  useEffect(() => {
+    deselect();
+  }, [currentStageIndex]);
 
   return {
     appendStage,
