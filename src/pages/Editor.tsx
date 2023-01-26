@@ -16,11 +16,11 @@ function Editor() {
       </Header>
 
       <Main>
-        <Grid lg={3} item container>
+        <Grid lg={3} item>
           <Assets />
         </Grid>
 
-        <Grid item lg={9}>
+        <Grid lg={9} item>
           <StageList />
         </Grid>
       </Main>

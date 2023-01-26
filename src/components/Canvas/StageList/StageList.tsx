@@ -22,7 +22,7 @@ function StageList() {
   const { isTriggeredDownload, handleDownload } = useDownload();
 
   return (
-    <Styled.Container ref={canvasDivRef}>
+    <Styled.Container ref={canvasDivRef} rowGap={3}>
       {stageList.map((nodes, index) => (
         <Styled.StageArea key={`${index + 1}`}>
           <StageWrapper index={index}>

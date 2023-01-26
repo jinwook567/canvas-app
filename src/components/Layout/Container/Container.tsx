@@ -7,7 +7,7 @@ type Props = {
 
 function Container({ children }: Props) {
   return (
-    <Grid sx={{ minHeight: '100vh' }} container flexDirection="column">
+    <Grid sx={{ height: '100vh' }} container flexDirection="column">
       {children}
     </Grid>
   );
