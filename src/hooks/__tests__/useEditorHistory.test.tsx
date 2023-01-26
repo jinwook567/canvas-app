@@ -1,18 +1,22 @@
 import { act } from '@testing-library/react';
+import { createNodeConfig } from '../../utils/editor';
 import setupRenderUseEditorHook from '../../utils/setupRenderEditorHook';
 
 test('history', () => {
   const result = setupRenderUseEditorHook();
 
   expect(result.current.history).toEqual([[[]]]);
+  const nodeArg = {
+    type: 'image' as const,
+    url: '1',
+    width: 300,
+    height: 300,
+  };
 
   act(() =>
-    result.current.appendAsset({
-      type: 'image',
-      url: '1',
-      width: 300,
-      height: 300,
-    })
+    result.current.appendAsset(
+      createNodeConfig({ nodeArg, stageSize: result.current.stageSize })
+    )
   );
 
   const firstStage = result.current.currentStage;

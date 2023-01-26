@@ -1,24 +1,32 @@
 import { act } from '@testing-library/react';
+import { createNodeConfig } from '../../utils/editor';
 import setupRenderUseEditorHook from '../../utils/setupRenderEditorHook';
 
 test('handleTransformNodes', () => {
   const result = setupRenderUseEditorHook();
 
+  const nodeArg = {
+    url: '1',
+    width: 300,
+    height: 300,
+    type: 'image' as const,
+  };
+
   act(() =>
-    result.current.appendAsset({
-      url: '1',
-      width: 300,
-      height: 300,
-      type: 'image',
-    })
+    result.current.appendAsset(
+      createNodeConfig({
+        nodeArg,
+        stageSize: result.current.stageSize,
+      })
+    )
   );
   act(() =>
-    result.current.appendAsset({
-      url: '1',
-      width: 300,
-      height: 300,
-      type: 'image',
-    })
+    result.current.appendAsset(
+      createNodeConfig({
+        nodeArg,
+        stageSize: result.current.stageSize,
+      })
+    )
   );
 
   const transformedNodes = result.current.currentStage.map(node => ({

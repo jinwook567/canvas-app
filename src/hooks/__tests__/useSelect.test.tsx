@@ -29,9 +29,9 @@ test('deselect shape', () => {
 
   expect(result.current.selectedIds).toEqual([]);
 
-  // act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  // act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  // act(() => result.current.handleAppendStage(0));
+  act(() => result.current.selectShape({ id: '1', type: 'append' }));
+  act(() => result.current.selectShape({ id: '1', type: 'append' }));
+  act(() => result.current.appendStage(0));
 
-  // expect(result.current.selectedIds).toEqual([]);
+  expect(result.current.selectedIds).toEqual([]);
 });
