@@ -7,6 +7,7 @@ import Footer from '../components/Layout/Footer/Footer';
 import Main from '../components/Layout/Main/Main';
 import Assets from '../components/Assets/Assets/Assets';
 import HeaderController from '../components/Controller/HeaderController/HeaderController';
+import StageListWrapper from '../components/Canvas/StageListWrapper/StageListWrapper';
 
 function Editor() {
   return (
@@ -21,7 +22,9 @@ function Editor() {
         </Grid>
 
         <Grid lg={9} item>
-          <StageList />
+          <StageListWrapper>
+            <StageList />
+          </StageListWrapper>
         </Grid>
       </Main>
 
