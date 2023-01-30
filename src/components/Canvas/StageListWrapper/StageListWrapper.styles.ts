@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Grid } from '@mui/material';
 
-export const Container = styled(Grid)`
+export const Wrapper = styled(Grid)`
   width: 100%;
   background: lightgray;
   padding-top: 20px;
