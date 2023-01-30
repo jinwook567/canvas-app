@@ -2,6 +2,7 @@ import { RefObject, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { selectedIdsState } from '../recoil/editor';
 import useAsset from './useAsset';
+import useEditorHistory from './useEditorHistory';
 import useGroup from './useGroup';
 import useSelect from './useSelect';
 
@@ -10,6 +11,7 @@ function useCommand(ref: RefObject<HTMLDivElement>) {
   const { deleteAsset } = useAsset();
   const { deselect } = useSelect();
   const selectedIds = useRecoilValue(selectedIdsState);
+  const { historyBack, historyForward } = useEditorHistory();
 
   const handleGroup = (e: KeyboardEvent) => {
     if (e.metaKey && e.key === 'g') {
@@ -31,11 +33,27 @@ function useCommand(ref: RefObject<HTMLDivElement>) {
     }
   };
 
+  const handleHistoryBack = (e: KeyboardEvent) => {
+    if (e.metaKey && e.key === 'z') {
+      e.preventDefault();
+      historyBack();
+    }
+  };
+
+  const handleHistoryForward = (e: KeyboardEvent) => {
+    if (e.metaKey && e.key === 'z' && e.shiftKey) {
+      e.preventDefault();
+      historyForward();
+    }
+  };
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.target !== ref.current) return;
 
     handleGroup(e);
     handleDeleteAsset(e);
+    handleHistoryBack(e);
+    handleHistoryForward(e);
   };
 
   useEffect(() => {
