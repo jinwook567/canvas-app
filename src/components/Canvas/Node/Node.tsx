@@ -52,8 +52,11 @@ function Node({ node, trRef, isSelected }: Props) {
         </ReactKonvaGroup>
       );
 
-    default:
+    case 'text':
       return <Text {...props} {...node} isSelected={isSelected} />;
+
+    default:
+      return null;
   }
 }
 
