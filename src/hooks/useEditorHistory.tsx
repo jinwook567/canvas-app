@@ -19,7 +19,7 @@ function useEditorHistory() {
       setHistory([...history.slice(0, historyStep), stages]);
       setHistoryStep(historyStep + 1);
     }
-  }, [stages, isHistoryHandlerEffect]);
+  }, [stages]);
 
   const isInitialStep = historyStep === 1;
   const isLastStep = historyStep === history.length;
