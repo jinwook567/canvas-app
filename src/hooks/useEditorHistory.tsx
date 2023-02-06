@@ -27,6 +27,7 @@ function useEditorHistory() {
   const historyBack = () => {
     if (isInitialStep) return;
     isHistoryHandlerEffect.current = true;
+
     setHistoryStep(historyStep - 1);
     setStages(history[historyStep - 1 - 1]);
   };
@@ -34,8 +35,8 @@ function useEditorHistory() {
   const historyForward = () => {
     if (isLastStep) return;
     isHistoryHandlerEffect.current = true;
-    setHistoryStep(historyStep + 1);
 
+    setHistoryStep(historyStep + 1);
     setStages(history[historyStep]);
   };
 
