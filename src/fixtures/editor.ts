@@ -67,3 +67,10 @@ export const stage = {
   height: 515.5,
   nodes,
 };
+
+export const imageNodeArg = {
+  type: 'image' as const,
+  width: 500,
+  height: 500,
+  url: 'image',
+};
