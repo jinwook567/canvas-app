@@ -1,5 +1,5 @@
 import { act } from '@testing-library/react';
-import { imageNodeArg } from '../../fixtures/editor';
+import { imageNodeArg, nodes } from '../../fixtures/editor';
 import setupRenderUseEditorHook from '../../utils/setupRenderEditorHook';
 import { omit } from '../../utils/unit';
 
@@ -58,4 +58,13 @@ test('delete Asset', () => {
   act(() => deleteAsset(SelectedIds()));
 
   expect(CurrentStage()).toEqual([]);
+});
+
+test('apply template', () => {
+  const { result, CurrentStage } = setupRenderUseAssetHook();
+
+  const { applyTemplate } = result.current;
+  act(() => applyTemplate(nodes));
+
+  expect(CurrentStage()).toEqual(nodes);
 });
