@@ -12,6 +12,8 @@ function useEditorHistory() {
   const [historyStep, setHistoryStep] = useRecoilState(historyStepState);
   const isHistoryHandlerEffect = useRef<boolean>(false);
 
+  console.log({ history, historyStep });
+
   useEffect(() => {
     if (isHistoryHandlerEffect.current) {
       isHistoryHandlerEffect.current = false;
@@ -19,7 +21,7 @@ function useEditorHistory() {
       setHistory([...history.slice(0, historyStep), stages]);
       setHistoryStep(historyStep + 1);
     }
-  }, [stages, isHistoryHandlerEffect]);
+  }, [stages]);
 
   const isInitialStep = historyStep === 1;
   const isLastStep = historyStep === history.length;
