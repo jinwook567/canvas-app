@@ -1,31 +1,26 @@
 import { act } from '@testing-library/react';
-import { createNodeConfig } from '../../utils/editor';
+import { imageNodeArg } from '../../fixtures/editor';
 import setupRenderUseEditorHook from '../../utils/setupRenderEditorHook';
 
 test('history', () => {
   const result = setupRenderUseEditorHook();
 
-  expect(result.current.history).toEqual([[[]]]);
-  const nodeArg = {
-    type: 'image' as const,
-    url: '1',
-    width: 300,
-    height: 300,
-  };
+  const History = () => result.current.history;
+  expect(History()).toEqual([[[]]]);
 
-  act(() =>
-    result.current.appendAsset(
-      createNodeConfig({ nodeArg, stageSize: result.current.stageSize })
-    )
-  );
+  const { appendAsset, createNodeConfig } = result.current;
+  act(() => appendAsset(createNodeConfig(imageNodeArg)));
 
-  const firstStage = result.current.currentStage;
-  expect(result.current.history).toEqual([[[]], [firstStage]]);
+  const CurrentStage = () => result.current.currentStage;
+  const firstStage = CurrentStage();
+  expect(History()).toEqual([[[]], [firstStage]]);
 
+  const historyStages = [firstStage];
+  const { onTransformEnd } = result.current;
   for (let i = 0; i < 3; i += 1) {
-    const targetNode = result.current.currentStage[0];
+    const targetNode = CurrentStage()[0];
     act(() =>
-      result.current.onTransformEnd([
+      onTransformEnd([
         {
           id: targetNode.id,
           x: targetNode.x + 50,
@@ -33,19 +28,14 @@ test('history', () => {
         },
       ])
     );
+    historyStages.push(CurrentStage());
   }
 
-  const secondStage = [
-    { ...firstStage[0], x: firstStage[0].x + 50, y: firstStage[0].y + 50 },
-  ];
-  const thirdStage = [
-    { ...secondStage[0], x: secondStage[0].x + 50, y: secondStage[0].y + 50 },
-  ];
-  const fourthStage = [
-    { ...thirdStage[0], x: thirdStage[0].x + 50, y: thirdStage[0].y + 50 },
-  ];
+  const secondStage = historyStages[1];
+  const thirdStage = historyStages[2];
+  const fourthStage = historyStages[3];
 
-  expect(result.current.history).toEqual([
+  expect(History()).toEqual([
     [[]],
     [firstStage],
     [secondStage],
@@ -53,19 +43,40 @@ test('history', () => {
     [fourthStage],
   ]);
 
-  act(() => result.current.historyBack());
-  expect(result.current.currentStage).toEqual(thirdStage);
+  const HistoryBack = () => result.current.historyBack();
+  const HistoryForward = () => result.current.historyForward();
 
-  act(() => result.current.historyBack());
-  act(() => result.current.historyBack());
-  expect(result.current.currentStage).toEqual(firstStage);
+  expect(CurrentStage()).toEqual(fourthStage);
 
-  act(() => result.current.historyForward());
-  expect(result.current.currentStage).toEqual(secondStage);
+  act(() => HistoryBack());
+  expect(CurrentStage()).toEqual(thirdStage);
 
-  const targetNode = result.current.currentStage[0];
+  act(() => HistoryBack());
+  act(() => HistoryBack());
+  expect(CurrentStage()).toEqual(firstStage);
+
+  act(() => HistoryBack());
+  expect(CurrentStage()).toEqual([]);
+
+  act(() => HistoryBack());
+  expect(CurrentStage()).toEqual([]);
+
+  act(() => HistoryForward());
+  expect(CurrentStage()).toEqual(firstStage);
+
+  act(() => HistoryForward());
+  act(() => HistoryForward());
+  act(() => HistoryForward());
+  act(() => HistoryForward());
+  act(() => HistoryForward());
+  expect(CurrentStage()).toEqual(fourthStage);
+
+  act(() => HistoryBack());
+  act(() => HistoryBack());
+
+  const targetNode = CurrentStage()[0];
   act(() =>
-    result.current.onTransformEnd([
+    onTransformEnd([
       {
         id: targetNode.id,
         x: targetNode.x + 300,
@@ -77,7 +88,7 @@ test('history', () => {
     { ...secondStage[0], x: secondStage[0].x + 300, y: secondStage[0].y + 300 },
   ];
 
-  expect(result.current.history).toEqual([
+  expect(History()).toEqual([
     [[]],
     [firstStage],
     [secondStage],
