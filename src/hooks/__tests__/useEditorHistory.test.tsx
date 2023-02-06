@@ -8,19 +8,23 @@ test('history', () => {
   const History = () => result.current.history;
   expect(History()).toEqual([[[]]]);
 
-  const { appendAsset, createNodeConfig } = result.current;
-  act(() => appendAsset(createNodeConfig(imageNodeArg)));
+  const AppendAsset = () => result.current.appendAsset;
+  const CreateNodeConfig = () => result.current.createNodeConfig;
+
+  act(() => AppendAsset()(CreateNodeConfig()(imageNodeArg)));
 
   const CurrentStage = () => result.current.currentStage;
   const firstStage = CurrentStage();
   expect(History()).toEqual([[[]], [firstStage]]);
 
   const historyStages = [firstStage];
-  const { onTransformEnd } = result.current;
+
+  const OnTransformEnd = () => result.current.onTransformEnd;
+
   for (let i = 0; i < 3; i += 1) {
     const targetNode = CurrentStage()[0];
     act(() =>
-      onTransformEnd([
+      OnTransformEnd()([
         {
           id: targetNode.id,
           x: targetNode.x + 50,
@@ -76,7 +80,7 @@ test('history', () => {
 
   const targetNode = CurrentStage()[0];
   act(() =>
-    onTransformEnd([
+    OnTransformEnd()([
       {
         id: targetNode.id,
         x: targetNode.x + 300,
