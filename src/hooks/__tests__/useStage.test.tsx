@@ -1,74 +1,83 @@
-import { act, renderHook } from '@testing-library/react';
-import React from 'react';
-import { RecoilRoot } from 'recoil';
-import useStage from '../useStage';
+import { act } from '@testing-library/react';
+import setupRenderUseEditorHook from '../../utils/setupRenderEditorHook';
 
-function setUpRenderStageHook() {
-  const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <RecoilRoot>{children}</RecoilRoot>
-  );
+function setupRenderUseStageHook() {
+  const result = setupRenderUseEditorHook();
+  const AppendStage = () => result.current.appendStage;
+  const StageCount = () => result.current.stageCount;
+  const CurrentStageIndex = () => result.current.currentStageIndex;
+  const DeleteStage = () => result.current.deleteStage;
+  const SelectStage = () => result.current.selectStage;
 
-  const { result } = renderHook(useStage, {
-    wrapper,
-  });
-
-  return result;
+  return {
+    result,
+    AppendStage,
+    StageCount,
+    CurrentStageIndex,
+    DeleteStage,
+    SelectStage,
+  };
 }
 
 test('handleAppendStage', () => {
-  const result = setUpRenderStageHook();
+  const { AppendStage, StageCount, CurrentStageIndex } =
+    setupRenderUseStageHook();
 
-  act(() => result.current.appendStage(0));
-  expect(result.current.stageCount).toBe(2);
-  expect(result.current.currentStageIndex).toBe(1);
+  act(() => AppendStage()(0));
 
-  act(() => result.current.appendStage(0));
-  expect(result.current.stageCount).toBe(3);
-  expect(result.current.currentStageIndex).toBe(1);
+  expect(StageCount()).toBe(2);
+  expect(CurrentStageIndex()).toBe(1);
 
-  act(() => result.current.appendStage(2));
-  expect(result.current.stageCount).toBe(4);
-  expect(result.current.currentStageIndex).toBe(3);
+  act(() => AppendStage()(0));
+  expect(StageCount()).toBe(3);
+  expect(CurrentStageIndex()).toBe(1);
 
-  expect(() => result.current.appendStage(4)).toThrow();
-  expect(() => result.current.appendStage(-1)).toThrow();
+  act(() => AppendStage()(2));
+  expect(StageCount()).toBe(4);
+  expect(CurrentStageIndex()).toBe(3);
+
+  expect(() => AppendStage()(4)).toThrow();
+  expect(() => AppendStage()(-1)).toThrow();
 });
 
 test('handleDeleteStage', () => {
-  const result = setUpRenderStageHook();
+  const { AppendStage, StageCount, CurrentStageIndex, DeleteStage } =
+    setupRenderUseStageHook();
 
-  act(() => result.current.deleteStage(0));
-  expect(result.current.stageCount).toBe(1);
-  expect(result.current.currentStageIndex).toBe(0);
+  act(() => DeleteStage()(0));
 
-  act(() => result.current.appendStage(0));
-  act(() => result.current.appendStage(1));
+  expect(StageCount()).toBe(1);
+  expect(CurrentStageIndex()).toBe(0);
 
-  act(() => result.current.deleteStage(2));
-  expect(result.current.stageCount).toBe(2);
-  expect(result.current.currentStageIndex).toBe(1);
+  act(() => AppendStage()(0));
+  act(() => AppendStage()(1));
 
-  act(() => result.current.deleteStage(0));
-  expect(result.current.stageCount).toBe(1);
-  expect(result.current.currentStageIndex).toBe(0);
+  act(() => DeleteStage()(2));
+  expect(StageCount()).toBe(2);
+  expect(CurrentStageIndex()).toBe(1);
 
-  expect(() => result.current.deleteStage(1)).toThrow();
-  expect(() => result.current.deleteStage(-1)).toThrow();
+  act(() => DeleteStage()(0));
+  expect(StageCount()).toBe(1);
+  expect(CurrentStageIndex()).toBe(0);
+
+  expect(() => DeleteStage()(1)).toThrow();
+  expect(() => DeleteStage()(-1)).toThrow();
 });
 
 test('select Stage function', () => {
-  const result = setUpRenderStageHook();
+  const { AppendStage, CurrentStageIndex, SelectStage } =
+    setupRenderUseStageHook();
 
-  expect(() => result.current.selectStage(1)).toThrow();
-  expect(() => result.current.selectStage(-1)).toThrow();
+  expect(() => SelectStage()(1)).toThrow();
+  expect(() => SelectStage()(-1)).toThrow();
 
-  act(() => result.current.appendStage(0));
+  act(() => AppendStage()(0));
 
-  act(() => result.current.selectStage(0));
-  act(() => result.current.selectStage(1));
+  act(() => SelectStage()(0));
+  act(() => SelectStage()(1));
 
-  expect(result.current.currentStageIndex).toBe(1);
+  expect(CurrentStageIndex()).toBe(1);
 
-  act(() => result.current.selectStage(0));
-  expect(result.current.currentStageIndex).toBe(0);
+  act(() => SelectStage()(0));
+  expect(CurrentStageIndex()).toBe(0);
 });
