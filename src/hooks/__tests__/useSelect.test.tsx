@@ -1,37 +1,49 @@
 import { act } from '@testing-library/react';
 import setupRenderUseEditorHook from '../../utils/setupRenderEditorHook';
 
-test('select shape', () => {
+function setUpRenderUseSelectHook() {
   const result = setupRenderUseEditorHook();
+  const SelectShape = () => result.current.selectShape;
+  const Deselect = () => result.current.deselect;
+  const SelectedIds = () => result.current.selectedIds;
 
-  act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  act(() => result.current.selectShape({ id: '2', type: 'append' }));
-  act(() => result.current.selectShape({ id: '3', type: 'append' }));
+  return { result, SelectShape, Deselect, SelectedIds };
+}
 
-  expect(result.current.selectedIds).toEqual(['1', '2', '3']);
+test('select shape', () => {
+  const { SelectShape, Deselect, SelectedIds } = setUpRenderUseSelectHook();
 
-  act(() => result.current.deselect());
-  expect(result.current.selectedIds).toEqual([]);
+  act(() => SelectShape()({ id: '1', type: 'append' }));
+  act(() => SelectShape()({ id: '2', type: 'append' }));
+  act(() => SelectShape()({ id: '3', type: 'append' }));
 
-  act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  expect(result.current.selectedIds).toEqual(['1']);
+  expect(SelectedIds()).toEqual(['1', '2', '3']);
 
-  act(() => result.current.selectShape({ id: '2', type: 'change' }));
-  expect(result.current.selectedIds).toEqual(['2']);
+  act(() => Deselect()());
+  expect(SelectedIds()).toEqual([]);
+
+  act(() => SelectShape()({ id: '1', type: 'append' }));
+  act(() => SelectShape()({ id: '1', type: 'append' }));
+  expect(SelectedIds()).toEqual(['1']);
+
+  act(() => SelectShape()({ id: '2', type: 'change' }));
+  expect(SelectedIds()).toEqual(['2']);
 });
 
 test('deselect shape', () => {
-  const result = setupRenderUseEditorHook();
-  act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  act(() => result.current.deselect());
+  const { result, SelectShape, Deselect, SelectedIds } =
+    setUpRenderUseSelectHook();
+  act(() => SelectShape()({ id: '1', type: 'append' }));
+  act(() => SelectShape()({ id: '1', type: 'append' }));
+  act(() => Deselect()());
 
-  expect(result.current.selectedIds).toEqual([]);
+  expect(SelectedIds()).toEqual([]);
 
-  act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  act(() => result.current.selectShape({ id: '1', type: 'append' }));
-  act(() => result.current.appendStage(0));
+  act(() => SelectShape()({ id: '1', type: 'append' }));
+  act(() => SelectShape()({ id: '1', type: 'append' }));
 
-  expect(result.current.selectedIds).toEqual([]);
+  const AppendStage = () => result.current.appendStage;
+  act(() => AppendStage()(0));
+
+  expect(SelectedIds()).toEqual([]);
 });
