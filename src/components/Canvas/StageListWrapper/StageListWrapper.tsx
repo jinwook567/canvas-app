@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
+import useSideEffects from '../../../hooks/useSideEffects';
 import { stageSizeState } from '../../../recoil/editor';
 import useStageSize from '../useStageSize';
 import * as Styled from './StageListWrapper.styles';
@@ -14,6 +15,7 @@ function StageListWrapper({ children }: Props) {
     setStageSize: size =>
       setStageSize({ width: size.width / 2, height: size.height / 2 }),
   });
+  useSideEffects();
 
   return (
     <Styled.Wrapper ref={canvasDivRef} rowGap={3}>
