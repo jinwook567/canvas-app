@@ -1,48 +1,54 @@
 import { useEffect, useRef } from 'react';
-import { useRecoilState } from 'recoil';
-import {
-  historyState,
-  historyStepState,
-  stageListState,
-} from '../recoil/editor';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { historyState, stageListState } from '../recoil/editor';
+import { KonvaStageList } from '../types/editor';
 
 function useEditorHistory() {
-  const [stages, setStages] = useRecoilState(stageListState);
   const [history, setHistory] = useRecoilState(historyState);
-  const [historyStep, setHistoryStep] = useRecoilState(historyStepState);
-  const isHistoryHandlerEffect = useRef<boolean>(false);
+  const setStageList = useSetRecoilState(stageListState);
+  const isTriggered = useRef(false);
 
-  console.log({ history, historyStep });
+  const appendHistory = (stageList: KonvaStageList) => {
+    setHistory({
+      ...history,
+      head: { stageList, prev: history.head, next: null },
+    });
+  };
 
   useEffect(() => {
-    if (isHistoryHandlerEffect.current) {
-      isHistoryHandlerEffect.current = false;
-    } else {
-      setHistory([...history.slice(0, historyStep), stages]);
-      setHistoryStep(historyStep + 1);
+    if (isTriggered.current && history.head) {
+      setStageList(history.head.stageList);
+      isTriggered.current = false;
     }
-  }, [stages]);
-
-  const isInitialStep = historyStep === 1;
-  const isLastStep = historyStep === history.length;
+  }, [history]);
 
   const historyBack = () => {
-    if (isInitialStep) return;
-    isHistoryHandlerEffect.current = true;
-
-    setHistoryStep(historyStep - 1);
-    setStages(history[historyStep - 1 - 1]);
+    if (history.head && history.head.prev) {
+      setHistory({
+        head: {
+          stageList: history.head.prev.stageList,
+          prev: history.head.prev.prev,
+          next: history.head,
+        },
+      });
+      isTriggered.current = true;
+    }
   };
 
   const historyForward = () => {
-    if (isLastStep) return;
-    isHistoryHandlerEffect.current = true;
-
-    setHistoryStep(historyStep + 1);
-    setStages(history[historyStep]);
+    if (history.head && history.head.next) {
+      setHistory({
+        head: {
+          stageList: history.head.next.stageList,
+          prev: history.head,
+          next: history.head.next.next,
+        },
+      });
+      isTriggered.current = true;
+    }
   };
 
-  return { historyBack, historyForward, history };
+  return { historyBack, historyForward, history, appendHistory };
 }
 
 export default useEditorHistory;

@@ -58,17 +58,23 @@ export const currentStageState = selector({
   },
 });
 
-export const historyState = atom<KonvaStageList[]>({
-  key: 'historyState',
-  default: [],
-});
-
-export const historyStepState = atom({
-  key: 'historyStepState',
-  default: 0,
-});
-
 export const isTriggeredDownloadState = atom({
   key: 'isTriggeredDownloadState',
   default: false,
+});
+
+type HistoryNode = {
+  stageList: KonvaStageList;
+  prev: HistoryNode;
+  next: HistoryNode;
+} | null;
+
+export const historyState = atom<{
+  head: HistoryNode;
+}>({
+  key: 'historyState',
+  default: {
+    head: { stageList: [[]], next: null, prev: null },
+  },
+  effects: [],
 });
