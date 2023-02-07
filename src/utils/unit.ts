@@ -23,5 +23,3 @@ export const omit = <T, K extends keyof T>(
   });
   return newObj;
 };
-
-export default {};
