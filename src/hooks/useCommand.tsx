@@ -2,7 +2,6 @@ import { RefObject, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { selectedIdsState } from '../recoil/editor';
 import useAsset from './useAsset';
-import useEditorHistory from './useEditorHistory';
 import useGroup from './useGroup';
 import useSelect from './useSelect';
 
