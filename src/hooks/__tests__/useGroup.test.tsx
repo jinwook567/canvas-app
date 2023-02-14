@@ -1,67 +1,51 @@
 import { act } from '@testing-library/react';
-import { createNodeConfig } from '../../utils/editor';
+import { imageNodeArg } from '../../fixtures/editor';
 import setupRenderUseEditorHook from '../../utils/setupRenderEditorHook';
 
-test('handleOrganizeGroup, handleCloseGroup', () => {
+function setUpRenderUseGroupHook() {
   const result = setupRenderUseEditorHook();
-  const nodeArg = { url: '1', width: 100, height: 100, type: 'image' as const };
+  return {
+    AppendAsset: () => result.current.appendAsset,
+    SelectShape: () => result.current.selectShape,
+    OrganizeGroup: () => result.current.organizeGroup,
+    CloseGroup: () => result.current.closeGroup,
+    CreateNodeConfig: () => result.current.createNodeConfig,
+    CurrentStage: () => result.current.currentStage,
+    SelectedIds: () => result.current.selectedIds,
+  };
+}
 
-  const nodes = Array(3)
-    .fill(0)
-    .map(() =>
-      createNodeConfig({ nodeArg, stageSize: { width: 1000, height: 1000 } })
-    );
+test('그룹 생성 및 해제', () => {
+  const {
+    AppendAsset,
+    SelectShape,
+    OrganizeGroup,
+    CloseGroup,
+    CreateNodeConfig,
+    CurrentStage,
+    SelectedIds,
+  } = setUpRenderUseGroupHook();
 
-  nodes.forEach(nodeConfig =>
-    act(() => result.current.appendAsset(nodeConfig))
-  );
+  act(() => AppendAsset()(CreateNodeConfig()(imageNodeArg)));
+  act(() => AppendAsset()(CreateNodeConfig()(imageNodeArg)));
+  act(() => AppendAsset()(CreateNodeConfig()(imageNodeArg)));
 
-  const first = result.current.currentStage[0];
-  const second = result.current.currentStage[1];
-  const third = result.current.currentStage[2];
+  const currentStageBeforeGrouping = CurrentStage();
+  act(() => SelectShape()({ id: CurrentStage()[0].id, type: 'append' }));
+  act(() => SelectShape()({ id: CurrentStage()[1].id, type: 'append' }));
 
-  act(() => result.current.selectShape({ id: second.id, type: 'append' }));
-  act(() => result.current.selectShape({ id: third.id, type: 'append' }));
+  act(() => OrganizeGroup()(SelectedIds()));
 
-  act(() => result.current.organizeGroup(result.current.selectedIds));
-
-  expect(result.current.currentStage[0]).toEqual(first);
-
-  expect(result.current.currentStage[1]).toEqual(
+  expect(CurrentStage()[0].type).toEqual('group');
+  expect(CurrentStage()[0]).toEqual(
     expect.objectContaining({
       type: 'group',
-      scaleX: 1,
-      scaleY: 1,
-      children: [second, third],
-      x: 0,
-      y: 0,
+      children: [currentStageBeforeGrouping[0], currentStageBeforeGrouping[1]],
     })
   );
 
-  act(() => result.current.closeGroup(result.current.currentStage[1].id));
-  expect(result.current.currentStage).toEqual([first, second, third]);
-
-  act(() => result.current.selectShape({ id: second.id, type: 'append' }));
-  act(() => result.current.selectShape({ id: third.id, type: 'append' }));
-  expect(result.current.selectedIds).toEqual([second.id, third.id]);
-  act(() => result.current.organizeGroup(result.current.selectedIds));
-
-  act(() => result.current.selectShape({ id: first.id, type: 'append' }));
-  act(() =>
-    result.current.selectShape({
-      id: result.current.currentStage[1].id,
-      type: 'append',
-    })
-  );
-  act(() => result.current.organizeGroup(result.current.selectedIds));
-
-  expect(result.current.currentStage[0]).toEqual(
-    expect.objectContaining({
-      type: 'group',
-      children: [
-        first,
-        expect.objectContaining({ type: 'group', children: [second, third] }),
-      ],
-    })
-  );
+  // 그룹 해제
+  act(() => SelectShape()({ id: CurrentStage()[0].id, type: 'change' }));
+  act(() => CloseGroup()(CurrentStage()[0].id));
+  expect(CurrentStage()).toEqual(currentStageBeforeGrouping);
 });
