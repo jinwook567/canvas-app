@@ -76,5 +76,4 @@ export const historyState = atom<{
   default: {
     head: { stageList: [[]], next: null, prev: null },
   },
-  effects: [],
 });
