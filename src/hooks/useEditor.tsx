@@ -11,12 +11,15 @@ import useEditorHistory from './useEditorHistory';
 import useSelect from './useSelect';
 import useStage from './useStage';
 import useTransform from './useTransform';
+import useSideEffects from './useSideEffects';
 
 function useEditor() {
   const [stages, setStages] = useRecoilState(stageListState);
   const [stageSize, setStageSize] = useRecoilState(stageSizeState);
   const selectedIds = useRecoilValue(selectedIdsState);
   const currentStage = useRecoilValue(currentStageState);
+
+  useSideEffects();
 
   return {
     stages,
