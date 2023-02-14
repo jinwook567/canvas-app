@@ -19,7 +19,7 @@ function setupRenderUseStageHook() {
   };
 }
 
-test('handleAppendStage', () => {
+test('Stage 추가', () => {
   const { AppendStage, StageCount, CurrentStageIndex } =
     setupRenderUseStageHook();
 
@@ -40,7 +40,7 @@ test('handleAppendStage', () => {
   expect(() => AppendStage()(-1)).toThrow();
 });
 
-test('handleDeleteStage', () => {
+test('Stage 삭제', () => {
   const { AppendStage, StageCount, CurrentStageIndex, DeleteStage } =
     setupRenderUseStageHook();
 
@@ -51,6 +51,7 @@ test('handleDeleteStage', () => {
 
   act(() => AppendStage()(0));
   act(() => AppendStage()(1));
+  expect(StageCount()).toBe(3);
 
   act(() => DeleteStage()(2));
   expect(StageCount()).toBe(2);
@@ -64,7 +65,7 @@ test('handleDeleteStage', () => {
   expect(() => DeleteStage()(-1)).toThrow();
 });
 
-test('select Stage function', () => {
+test('Stage 선택', () => {
   const { AppendStage, CurrentStageIndex, SelectStage } =
     setupRenderUseStageHook();
 
@@ -74,10 +75,8 @@ test('select Stage function', () => {
   act(() => AppendStage()(0));
 
   act(() => SelectStage()(0));
-  act(() => SelectStage()(1));
-
-  expect(CurrentStageIndex()).toBe(1);
-
-  act(() => SelectStage()(0));
   expect(CurrentStageIndex()).toBe(0);
+
+  act(() => SelectStage()(1));
+  expect(CurrentStageIndex()).toBe(1);
 });
