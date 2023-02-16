@@ -1,22 +1,19 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import StageList from '../components/Canvas/StageList/StageList';
-import Container from '../components/Layout/Container/Container';
-import Header from '../components/Layout/Header/Header';
-import Footer from '../components/Layout/Footer/Footer';
-import Main from '../components/Layout/Main/Main';
 import Assets from '../components/Assets/Assets/Assets';
 import HeaderController from '../components/Controller/HeaderController/HeaderController';
 import StageListWrapper from '../components/Canvas/StageListWrapper/StageListWrapper';
+import Layout from '../components/common/Layout/Layout';
 
 function Editor() {
   return (
-    <Container>
-      <Header>
+    <Layout>
+      <Layout.Header>
         <HeaderController />
-      </Header>
+      </Layout.Header>
 
-      <Main>
+      <Layout.Main>
         <Grid lg={3} item>
           <Assets />
         </Grid>
@@ -26,12 +23,12 @@ function Editor() {
             <StageList />
           </StageListWrapper>
         </Grid>
-      </Main>
+      </Layout.Main>
 
-      <Footer>
+      <Layout.Footer>
         <a href="https://github.com/jinwook567/canvas-app">canvas-app</a>
-      </Footer>
-    </Container>
+      </Layout.Footer>
+    </Layout>
   );
 }
 
