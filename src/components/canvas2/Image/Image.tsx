@@ -5,13 +5,9 @@ import { Image as KonvaImage } from 'react-konva';
 
 type Props = Konva.ImageConfig | (Konva.ImageConfig & { url: string });
 
-function Image(props: Props) {
-  const { url, image } = props;
+function Image({ url, image, ...rest }: Props) {
   return (
-    <KonvaImage
-      {...props}
-      image={url ? useImage(url, 'anonymous')[0] : image}
-    />
+    <KonvaImage {...rest} image={url ? useImage(url, 'anonymous')[0] : image} />
   );
 }
 
