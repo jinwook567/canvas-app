@@ -18,5 +18,8 @@
     "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint"],
-  "rules": {}
+  "rules": {
+    "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off"
+  }
 }
