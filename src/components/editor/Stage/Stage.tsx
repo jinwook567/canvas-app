@@ -5,7 +5,7 @@ import Konva from 'konva';
 type Props = {
   children: React.ReactNode;
   requestExport: boolean;
-  onExport: (ref: string) => void;
+  onExport: (dataUrl: string) => void;
 } & Konva.StageConfig;
 
 function Stage({ children, requestExport, onExport, ...config }: Props) {
