@@ -5,7 +5,6 @@ import DomPortal from './DomPortal';
 
 type Props = Konva.TextConfig & {
   onChange: (text: string) => void;
-  text: NonNullable<Konva.TextConfig['text']>;
 };
 
 function Text({ onChange, ...config }: Props, ref: ForwardedRef<Konva.Text>) {
