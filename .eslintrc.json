@@ -20,6 +20,8 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "react/jsx-props-no-spreading": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "react/no-array-index-key": "off",
+    "no-case-declarations": "off"
   }
 }
