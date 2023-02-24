@@ -45,7 +45,7 @@ function ShapePicker(props: Props) {
       return (
         <Group {...config} ref={ref}>
           {items.map((item, index) => (
-            <ShapePicker key={index} {...item} />
+            <ShapePicker key={index} {...item} isSelected={false} />
           ))}
         </Group>
       );
