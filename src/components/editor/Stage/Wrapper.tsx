@@ -13,7 +13,7 @@ function Wrapper({ isSelected, onSelect, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (ref.current) ref.current.focus();
+    if (isSelected && ref.current) ref.current.focus();
   }, [isSelected]);
 
   const handleSelect = () => {
