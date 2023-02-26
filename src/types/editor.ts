@@ -1,6 +1,36 @@
 import Konva from 'konva';
 import { RemoveIndex } from '../utils/types';
 
+type Image = {
+  id: string;
+  type: 'image';
+  config: Konva.ImageConfig;
+  src: string;
+};
+
+type Text = {
+  id: string;
+  type: 'text';
+  config: Konva.TextConfig;
+};
+
+type Group = {
+  id: string;
+  type: 'group';
+  config: Konva.GroupConfig;
+  nodes: Node[];
+};
+
+export type Node = Image | Text | Group;
+
+type Stage = {
+  id: string;
+  config: Konva.ContainerConfig;
+  nodes: Node[];
+};
+
+type StageList = Stage[];
+
 type RequiredNodeConfig = Required<
   Pick<Konva.NodeConfig, 'id' | 'x' | 'y' | 'scaleX' | 'scaleY'>
 >;
