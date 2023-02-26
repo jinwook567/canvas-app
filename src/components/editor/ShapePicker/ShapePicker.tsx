@@ -20,7 +20,7 @@ type Props =
   | {
       type: 'group';
       config: Konva.GroupConfig;
-      items: Props[];
+      nodes: Props[];
       isSelected: boolean;
       updateTransformer: (ref: RefObject<Konva.Group>) => void;
     };
@@ -41,11 +41,11 @@ function ShapePicker(props: Props) {
       return <Text {...config} ref={ref} />;
 
     case 'group':
-      const { items } = props;
+      const { nodes } = props;
       return (
         <Group {...config} ref={ref}>
-          {items.map((item, index) => (
-            <ShapePicker key={index} {...item} isSelected={false} />
+          {nodes.map((node, index) => (
+            <ShapePicker key={index} {...node} isSelected={false} />
           ))}
         </Group>
       );
