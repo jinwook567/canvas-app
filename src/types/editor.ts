@@ -23,13 +23,11 @@ type Group = {
 
 export type Node = Image | Text | Group;
 
-type Stage = {
+export type Stage = {
   id: string;
   config: Konva.ContainerConfig;
   nodes: Node[];
 };
-
-type StageList = Stage[];
 
 type RequiredNodeConfig = Required<
   Pick<Konva.NodeConfig, 'id' | 'x' | 'y' | 'scaleX' | 'scaleY'>
