@@ -39,6 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/user-event", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:13.5.0"],\
             ["@types/eslint", "npm:8.4.10"],\
             ["@types/jest", "npm:29.2.4"],\
+            ["@types/lodash", "npm:4.14.191"],\
             ["@types/node", "npm:16.18.9"],\
             ["@types/react", "npm:18.0.26"],\
             ["@types/react-dom", "npm:18.0.9"],\
@@ -57,6 +58,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react-hooks", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:4.6.0"],\
             ["jest", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:29.3.1"],\
             ["konva", "npm:8.3.14"],\
+            ["lodash", "npm:4.17.21"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.0"],\
             ["react-konva", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.3"],\
@@ -5847,6 +5849,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@types/lodash", [\
+        ["npm:4.14.191", {\
+          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.191-67a04a969b-ba0d5434e1.zip/node_modules/@types/lodash/",\
+          "packageDependencies": [\
+            ["@types/lodash", "npm:4.14.191"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@types/mime", [\
         ["npm:3.0.1", {\
           "packageLocation": "./.yarn/cache/@types-mime-npm-3.0.1-dec03536dc-4040fac73f.zip/node_modules/@types/mime/",\
@@ -7867,6 +7878,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@testing-library/user-event", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:13.5.0"],\
             ["@types/eslint", "npm:8.4.10"],\
             ["@types/jest", "npm:29.2.4"],\
+            ["@types/lodash", "npm:4.14.191"],\
             ["@types/node", "npm:16.18.9"],\
             ["@types/react", "npm:18.0.26"],\
             ["@types/react-dom", "npm:18.0.9"],\
@@ -7885,6 +7897,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-react-hooks", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:4.6.0"],\
             ["jest", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:29.3.1"],\
             ["konva", "npm:8.3.14"],\
+            ["lodash", "npm:4.17.21"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.0"],\
             ["react-konva", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.3"],\
