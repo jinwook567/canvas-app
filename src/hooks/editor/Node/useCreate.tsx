@@ -1,5 +1,4 @@
 /* eslint-disable max-classes-per-file */
-import { Vector2d } from 'konva/lib/types';
 import _ from 'lodash';
 import { useRecoilState } from 'recoil';
 import { selectedStageState } from '../../../recoil/editor/selectors';
@@ -25,6 +24,62 @@ function useCreate() {
   return {
     createNode,
   };
+}
+
+class NodeLocatorBySize {
+  nodeSize: NodeSize;
+
+  _size: Size;
+
+  constructor(node: Node, size: Size) {
+    this.nodeSize = createNodeSize(node);
+    this._size = size;
+  }
+
+  get node() {
+    return this.nodeSize.node;
+  }
+
+  get size() {
+    return this._size;
+  }
+
+  resize(ratio: number) {
+    const getResizeScale = (ratio: number) => {
+      const targetSize = {
+        width: this.nodeSize.width,
+        height: this.nodeSize.height,
+      };
+
+      if (getRatio(targetSize) > getRatio(this.size)) {
+        return getScale(targetSize.width, this.size.width * ratio);
+      }
+      return getScale(targetSize.height, this.size.height * ratio);
+
+      function getRatio(size: Size) {
+        return size.width / size.height;
+      }
+
+      function getScale(target: number, standard: number) {
+        return standard / target;
+      }
+    };
+
+    const result = _.cloneDeep(this.node);
+    result.config.scaleX = getResizeScale(ratio) * this.nodeSize.scaleX;
+    result.config.scaleY = getResizeScale(ratio) * this.nodeSize.scaleY;
+    return new NodeLocatorBySize(result, this._size);
+  }
+
+  get isFlatThanSize() {
+    return (
+      getRatio({ width: this.nodeSize.width, height: this.nodeSize.height }) >
+      getRatio(this.size)
+    );
+    function getRatio(size: Size) {
+      return size.width / size.height;
+    }
+  }
 }
 
 function resize(node: Node, targetSize: Size) {
@@ -80,34 +135,34 @@ function createNodeSize(node: Node) {
 }
 
 class NodeSize {
-  node: Node;
+  _node: Node;
 
   constructor(node: Node) {
-    this.node = node;
+    this._node = node;
   }
 
   get x() {
-    return this.node.config.x || 0;
+    return this._node.config.x || 0;
   }
 
   get y() {
-    return this.node.config.y || 0;
+    return this._node.config.y || 0;
   }
 
   get scaleX() {
-    return this.node.config.scaleX || 1;
+    return this._node.config.scaleX || 1;
   }
 
   get scaleY() {
-    return this.node.config.scaleY || 1;
+    return this._node.config.scaleY || 1;
   }
 
   get width() {
-    return this.node.config.width || 0;
+    return this._node.config.width || 0;
   }
 
   get height() {
-    return this.node.config.height || 0;
+    return this._node.config.height || 0;
   }
 
   get actualWidth() {
@@ -133,31 +188,35 @@ class NodeSize {
   get maxY() {
     return this.y + this.height;
   }
+
+  get node() {
+    return this._node;
+  }
 }
 
 class ImageSize extends NodeSize {
-  node: Image;
+  _node: Image;
 
   constructor(node: Image) {
     super(node);
-    this.node = node;
+    this._node = node;
   }
 }
 
 class TextSize extends NodeSize {
-  node: Text;
+  _node: Text;
 
   constructor(node: Text) {
     super(node);
-    this.node = node;
+    this._node = node;
   }
 
   get fontSize() {
-    return this.node.config.fontSize || 0;
+    return this._node.config.fontSize || 0;
   }
 
   get text() {
-    return this.node.config.text || '';
+    return this._node.config.text || '';
   }
 
   get width() {
@@ -170,36 +229,36 @@ class TextSize extends NodeSize {
 }
 
 class GroupSize extends NodeSize {
-  node: Group;
+  _node: Group;
 
   constructor(node: Group) {
     super(node);
-    this.node = node;
+    this._node = node;
   }
 
   get minX(): number {
-    return this.node.nodes.reduce(
+    return this._node.nodes.reduce(
       (acc, node) => Math.min(acc, createNodeSize(node).minX),
       0
     );
   }
 
   get maxX(): number {
-    return this.node.nodes.reduce(
+    return this._node.nodes.reduce(
       (acc, node) => Math.max(acc, createNodeSize(node).maxX),
       0
     );
   }
 
   get minY(): number {
-    return this.node.nodes.reduce(
+    return this._node.nodes.reduce(
       (acc, node) => Math.min(acc, createNodeSize(node).minY),
       0
     );
   }
 
   get maxY(): number {
-    return this.node.nodes.reduce(
+    return this._node.nodes.reduce(
       (acc, node) => Math.max(acc, createNodeSize(node).maxY),
       0
     );
