@@ -17,7 +17,10 @@ function useCreate() {
     };
 
     const newStage = _.cloneDeep(selectedStage);
-    newStage.nodes.push(placeCenter(resize(node, stageSize), stageSize));
+
+    newStage.nodes.push(
+      new NodeLocatorBySize(node, stageSize).resize(0.3).placeCenter().node
+    );
     setSelectedStage(newStage);
   }
 
@@ -44,21 +47,19 @@ class NodeLocatorBySize {
     return this._size;
   }
 
+  get isNodeFlatThanSize() {
+    return (
+      this.nodeSize.width / this.nodeSize.height >
+      this.size.width / this.size.height
+    );
+  }
+
   resize(ratio: number) {
     const getResizeScale = (ratio: number) => {
-      const targetSize = {
-        width: this.nodeSize.width,
-        height: this.nodeSize.height,
-      };
-
-      if (getRatio(targetSize) > getRatio(this.size)) {
-        return getScale(targetSize.width, this.size.width * ratio);
+      if (this.isNodeFlatThanSize) {
+        return getScale(this.nodeSize.width, this.size.width * ratio);
       }
-      return getScale(targetSize.height, this.size.height * ratio);
-
-      function getRatio(size: Size) {
-        return size.width / size.height;
-      }
+      return getScale(this.nodeSize.height, this.size.height * ratio);
 
       function getScale(target: number, standard: number) {
         return standard / target;
@@ -71,15 +72,20 @@ class NodeLocatorBySize {
     return new NodeLocatorBySize(result, this._size);
   }
 
-  get isFlatThanSize() {
-    return (
-      getRatio({ width: this.nodeSize.width, height: this.nodeSize.height }) >
-      getRatio(this.size)
-    );
-    function getRatio(size: Size) {
-      return size.width / size.height;
-    }
+  placeCenter() {
+    const newNode = _.cloneDeep(this.node);
+    newNode.config.x = (this.size.width - this.nodeSize.actualWidth) / 2;
+    newNode.config.y = (this.size.height - this.nodeSize.actualHeight) / 2;
+    return new NodeLocatorBySize(newNode, this._size);
   }
+}
+
+function createNodeLocatorBySize(node: Node, size: Size) {
+  return {
+    node,
+    resize: () => resize(node, size),
+    placeCenter: () => placeCenter(node, size),
+  };
 }
 
 function resize(node: Node, targetSize: Size) {
