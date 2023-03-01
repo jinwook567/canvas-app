@@ -2,26 +2,66 @@
 import _ from 'lodash';
 import { useRecoilState } from 'recoil';
 import { selectedStageState } from '../../../recoil/editor/selectors';
-import { Group, Image, Node, Text, Size } from '../../../types/editor';
+import {
+  Group,
+  Image,
+  Node,
+  Text,
+  Size,
+  NodeWithoutId,
+  Stage,
+} from '../../../types/editor';
 import { createUniqueId } from '../../../utils/unit';
 
 function useCreate() {
   const [selectedStage, setSelectedStage] = useRecoilState(selectedStageState);
 
-  function createNode(node: Node) {
+  function createNode(node: NodeWithoutId) {
     if (!selectedStage) throw new Error('there is no selected stage');
 
-    const stageSize = {
-      width: selectedStage?.config.width || 0,
-      height: selectedStage?.config.height || 0,
-    };
+    setSelectedStage({
+      ...selectedStage,
+      nodes: [
+        ...selectedStage.nodes,
+        createLocator(giveId(node), selectedStage)
+          .relocate()
+          .avoidSamePos()
+          .node(),
+      ],
+    });
 
-    const newStage = _.cloneDeep(selectedStage);
+    function createLocator(node: Node, stage: Stage) {
+      return {
+        node: () => node,
+        relocate: () => createLocator(relocateNode(node, stage), stage),
+        avoidSamePos: () => createLocator(avoidSamePos(node, stage), stage),
+      };
+    }
 
-    newStage.nodes.push(
-      new NodeLocatorBySize(node, stageSize).resize(0.3).placeCenter().node
-    );
-    setSelectedStage(newStage);
+    function relocateNode(node: Node, stage: Stage) {
+      return createLocatorBySize(node, new StageSize(stage).size)
+        .resize(0.3)
+        .placeCenter()
+        .node();
+    }
+
+    function avoidSamePos(node: Node, stage: Stage): Node {
+      if (
+        stage.nodes.find(
+          comparedNode =>
+            createNodeSize(comparedNode).x === createNodeSize(node).x &&
+            createNodeSize(comparedNode).y === createNodeSize(node).y &&
+            createNodeSize(comparedNode).width === createNodeSize(node).width &&
+            createNodeSize(comparedNode).height === createNodeSize(node).height
+        )
+      ) {
+        const newNode = _.cloneDeep(node);
+        newNode.config.x = createNodeSize(newNode).x + 10;
+        newNode.config.y = createNodeSize(newNode).y + 10;
+        return avoidSamePos(newNode, stage);
+      }
+      return node;
+    }
   }
 
   return {
@@ -29,72 +69,34 @@ function useCreate() {
   };
 }
 
-class NodeLocatorBySize {
-  nodeSize: NodeSize;
-
-  _size: Size;
-
-  constructor(node: Node, size: Size) {
-    this.nodeSize = createNodeSize(node);
-    this._size = size;
-  }
-
-  get node() {
-    return this.nodeSize.node;
-  }
-
-  get size() {
-    return this._size;
-  }
-
-  get isNodeFlatThanSize() {
-    return (
-      this.nodeSize.width / this.nodeSize.height >
-      this.size.width / this.size.height
-    );
-  }
-
-  resize(ratio: number) {
-    const getResizeScale = (ratio: number) => {
-      if (this.isNodeFlatThanSize) {
-        return getScale(this.nodeSize.width, this.size.width * ratio);
-      }
-      return getScale(this.nodeSize.height, this.size.height * ratio);
-
-      function getScale(target: number, standard: number) {
-        return standard / target;
-      }
+function giveId(node: NodeWithoutId): Node {
+  if (node.type === 'group') {
+    return {
+      ...node,
+      id: createUniqueId(),
+      nodes: node.nodes.map(item => giveId(item)),
     };
-
-    const result = _.cloneDeep(this.node);
-    result.config.scaleX = getResizeScale(ratio) * this.nodeSize.scaleX;
-    result.config.scaleY = getResizeScale(ratio) * this.nodeSize.scaleY;
-    return new NodeLocatorBySize(result, this._size);
   }
-
-  placeCenter() {
-    const newNode = _.cloneDeep(this.node);
-    newNode.config.x = (this.size.width - this.nodeSize.actualWidth) / 2;
-    newNode.config.y = (this.size.height - this.nodeSize.actualHeight) / 2;
-    return new NodeLocatorBySize(newNode, this._size);
-  }
+  return { ...node, id: createUniqueId() };
 }
 
-function createNodeLocatorBySize(node: Node, size: Size) {
+function createLocatorBySize(node: Node, size: Size) {
   return {
-    node,
-    resize: () => resize(node, size),
-    placeCenter: () => placeCenter(node, size),
+    node: () => node,
+    resize: (ratio: number) =>
+      createLocatorBySize(resize(node, size, ratio), size),
+    placeCenter: () => createLocatorBySize(placeCenter(node, size), size),
   };
 }
 
-function resize(node: Node, targetSize: Size) {
+function resize(node: Node, targetSize: Size, ratio: number) {
   const scale = getResizeScale(
     {
       width: createNodeSize(node).width,
       height: createNodeSize(node).height,
     },
-    { width: targetSize.width, height: targetSize.height }
+    { width: targetSize.width, height: targetSize.height },
+    ratio
   );
   const result = _.cloneDeep(node);
   result.config.scaleX = scale * createNodeSize(node).scaleX;
@@ -109,11 +111,11 @@ function placeCenter(node: Node, targetSize: Size) {
   return result;
 }
 
-function getResizeScale(targetSize: Size, standardSize: Size) {
+function getResizeScale(targetSize: Size, standardSize: Size, ratio: number) {
   if (getRatio(targetSize) > getRatio(standardSize)) {
-    return getScale(targetSize.width, standardSize.width / 3);
+    return getScale(targetSize.width, standardSize.width * ratio);
   }
-  return getScale(targetSize.height, standardSize.height / 3);
+  return getScale(targetSize.height, standardSize.height * ratio);
 
   function getRatio(size: Size) {
     return size.width / size.height;
@@ -279,12 +281,32 @@ class GroupSize extends NodeSize {
   }
 }
 
-// 상호 관계를 파악하기 어렵기 때문에 중첩함수는 권장되지 않는다.
-// 1. 적정한 사이즈로 변환시킨다.
-// 2. 가운데 위치시킨다.
-// 3. 만약 동일한 위치에 존재한다면, +10 만큼 이후에 위치시킨다.
-// 4. 3을 재귀적으로 수행한다.
+class StageSize {
+  _stage: Stage;
 
-function getCenterPos() {}
+  constructor(stage: Stage) {
+    this._stage = stage;
+  }
+
+  get width() {
+    return this._stage.config.width || 0;
+  }
+
+  get height() {
+    return this._stage.config.height || 0;
+  }
+
+  get scaleX() {
+    return this._stage.config.scaleX || 1;
+  }
+
+  get scaleY() {
+    return this._stage.config.scaleY || 1;
+  }
+
+  get size() {
+    return { width: this.width, height: this.height };
+  }
+}
 
 export default useCreate;
