@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { useSetRecoilState } from 'recoil';
 import { stagesState } from '../../../recoil/editor/atoms';
 import { Size, Stage } from '../../../types/editor';
@@ -9,7 +10,11 @@ const stageSizeRatioByDivSize = 0.8;
 function useCreate() {
   const setStages = useSetRecoilState(stagesState);
 
-  function createStage(stageWithoutId: Omit<Stage, 'id'>, divSize: Size) {
+  function createStage(
+    stageWithoutId: Omit<Stage, 'id'>,
+    divSize: Size,
+    currentStageId: string
+  ) {
     const stage = giveId(stageWithoutId);
     const scale = getResizeScale(
       new StageSize(stage).size,
@@ -17,14 +22,23 @@ function useCreate() {
       stageSizeRatioByDivSize
     );
 
-    setStages(currentVal => [
-      ...currentVal,
-      {
-        ...stage,
-        width: new StageSize(stage).width * scale,
-        height: new StageSize(stage).height * scale,
-      },
-    ]);
+    setStages(currentVal =>
+      currentVal.reduce(
+        (acc, cur) =>
+          cur.id === currentStageId
+            ? [
+                ...acc,
+                cur,
+                {
+                  ...stage,
+                  width: new StageSize(stage).width * scale,
+                  height: new StageSize(stage).height * scale,
+                },
+              ]
+            : [...acc, cur],
+        [] as Stage[]
+      )
+    );
   }
 
   return {
