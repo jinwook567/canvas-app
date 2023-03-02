@@ -11,7 +11,9 @@ import {
   NodeWithoutId,
   Stage,
 } from '../../../types/editor';
+import { getResizeScale } from '../../../utils/editor/scale';
 import { createUniqueId } from '../../../utils/unit';
+import { StageSize } from '../Stage/useCreate';
 
 function useCreate() {
   const [selectedStage, setSelectedStage] = useRecoilState(selectedStageState);
@@ -109,21 +111,6 @@ function placeCenter(node: Node, targetSize: Size) {
   result.config.x = (targetSize.width - createNodeSize(node).actualWidth) / 2;
   result.config.y = (targetSize.height - createNodeSize(node).actualHeight) / 2;
   return result;
-}
-
-function getResizeScale(targetSize: Size, standardSize: Size, ratio: number) {
-  if (getRatio(targetSize) > getRatio(standardSize)) {
-    return getScale(targetSize.width, standardSize.width * ratio);
-  }
-  return getScale(targetSize.height, standardSize.height * ratio);
-
-  function getRatio(size: Size) {
-    return size.width / size.height;
-  }
-
-  function getScale(target: number, standard: number) {
-    return standard / target;
-  }
 }
 
 function createNodeSize(node: Node) {
@@ -278,34 +265,6 @@ class GroupSize extends NodeSize {
 
   get height() {
     return this.maxY - this.maxX;
-  }
-}
-
-class StageSize {
-  _stage: Stage;
-
-  constructor(stage: Stage) {
-    this._stage = stage;
-  }
-
-  get width() {
-    return this._stage.config.width || 0;
-  }
-
-  get height() {
-    return this._stage.config.height || 0;
-  }
-
-  get scaleX() {
-    return this._stage.config.scaleX || 1;
-  }
-
-  get scaleY() {
-    return this._stage.config.scaleY || 1;
-  }
-
-  get size() {
-    return { width: this.width, height: this.height };
   }
 }
 
