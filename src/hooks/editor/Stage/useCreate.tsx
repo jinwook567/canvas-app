@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { useSetRecoilState } from 'recoil';
 import { stagesState } from '../../../recoil/editor/atoms';
 import { Size, Stage } from '../../../types/editor';
