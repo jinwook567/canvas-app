@@ -1,20 +1,20 @@
 import Konva from 'konva';
 import { RemoveIndex } from '../utils/types';
 
-type Image = {
+export type Image = {
   id: string;
   type: 'image';
   config: Konva.ImageConfig;
   src: string;
 };
 
-type Text = {
+export type Text = {
   id: string;
   type: 'text';
   config: Konva.TextConfig;
 };
 
-type Group = {
+export type Group = {
   id: string;
   type: 'group';
   config: Konva.GroupConfig;
@@ -23,10 +23,20 @@ type Group = {
 
 export type Node = Image | Text | Group;
 
+export type NodeWithoutId =
+  | Omit<Image, 'id'>
+  | Omit<Text, 'id'>
+  | (Omit<Group, 'id'> & { nodes: NodeWithoutId[] });
+
 export type Stage = {
   id: string;
   config: Konva.ContainerConfig;
   nodes: Node[];
+};
+
+export type Size = {
+  width: number;
+  height: number;
 };
 
 type RequiredNodeConfig = Required<
