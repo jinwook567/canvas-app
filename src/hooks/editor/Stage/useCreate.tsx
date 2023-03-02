@@ -4,12 +4,18 @@ import { Size, Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
 import { createUniqueId } from '../../../utils/unit';
 
+const stageSizeRatioByDivSize = 0.8;
+
 function useCreate() {
   const setStages = useSetRecoilState(stagesState);
 
   function createStage(stageWithoutId: Omit<Stage, 'id'>, divSize: Size) {
     const stage = giveId(stageWithoutId);
-    const scale = getResizeScale(new StageSize(stage).size, divSize, 0.8);
+    const scale = getResizeScale(
+      new StageSize(stage).size,
+      divSize,
+      stageSizeRatioByDivSize
+    );
 
     setStages(currentVal => [
       ...currentVal,
