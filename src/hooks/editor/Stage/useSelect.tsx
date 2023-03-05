@@ -24,6 +24,10 @@ function useSelect() {
     }
   };
 
+  const changeSelectWithoutValidate = (id: string) => {
+    setSelectedStageId(id);
+  };
+
   const getNextId = (id: string) => {
     if (validateId(id)) {
       return stages[stages.findIndex(stage => stage.id === id) + 1]?.id || null;
@@ -41,6 +45,7 @@ function useSelect() {
   return {
     isSelected,
     changeSelect,
+    changeSelectWithoutValidate,
     getNextId,
     getPrevId,
     validateId,
