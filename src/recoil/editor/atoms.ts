@@ -30,3 +30,8 @@ export const historyState = atom<HistoryState>({
     prev: null,
   },
 });
+
+export const isExportRequestedState = atom({
+  key: 'isExportRequestedState',
+  default: false,
+});
