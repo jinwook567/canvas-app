@@ -5,16 +5,16 @@ import Wrapper from './Wrapper/Wrapper';
 
 type Props = {
   children: React.ReactNode;
-  requestExport: boolean;
+  isExportRequested: boolean;
   onExport: (dataUrl: string) => void;
 } & Konva.ContainerConfig;
 
-function Stage({ children, requestExport, onExport, ...config }: Props) {
+function Stage({ children, isExportRequested, onExport, ...config }: Props) {
   const ref = useRef<Konva.Stage>(null);
 
   useEffect(() => {
-    if (requestExport && ref.current) onExport(ref.current.toDataURL());
-  }, [requestExport]);
+    if (isExportRequested && ref.current) onExport(ref.current.toDataURL());
+  }, [isExportRequested]);
 
   return (
     <KonvaStage ref={ref} {...config}>
