@@ -17,6 +17,7 @@ function ListStage({ id, size, divSize, children }: Props) {
     getStageControlBarPropsWithoutOnAppend,
     getOnAppendProp,
     getStageContainerProps,
+    getStageExportProps,
   } = useListStage();
 
   return (
@@ -30,8 +31,7 @@ function ListStage({ id, size, divSize, children }: Props) {
           width={size.width}
           height={size.height}
           style={{ background: 'white' }}
-          requestExport={false}
-          onExport={dataUrl => dataUrl}
+          {...getStageExportProps()}
         >
           {children}
         </Stage>
