@@ -5,23 +5,25 @@ import * as Styled from './Wrapper.styles';
 
 type Props = {
   isSelected: boolean;
-  onSelect: () => void;
   children: React.ReactNode;
 };
 
-function Wrapper({ isSelected, onSelect, children }: Props) {
+function Wrapper({ isSelected, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isSelected && ref.current) ref.current.focus();
+    if (isSelected && ref.current) {
+      ref.current?.focus();
+      ref.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      });
+    }
   }, [isSelected]);
 
-  const handleSelect = () => {
-    onSelect();
-  };
-
   return (
-    <Styled.Div onClick={handleSelect} isSelected={isSelected}>
+    <Styled.Div isSelected={isSelected} ref={ref}>
       {children}
     </Styled.Div>
   );

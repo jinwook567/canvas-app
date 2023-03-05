@@ -6,4 +6,6 @@ export const Div = styled.div<{ isSelected: boolean }>`
   &:hover {
     border: 3px solid purple;
   }
+  width: fit-content;
+  outline: none;
 `;
