@@ -3,16 +3,18 @@ import { stagesState } from '../../../recoil/editor/atoms';
 import { Size, Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
 import { createUniqueId } from '../../../utils/unit';
+import useSelect from './useSelect';
 
 const stageSizeRatioByDivSize = 0.8;
 
 function useCreate() {
   const setStages = useSetRecoilState(stagesState);
+  const { validateId, changeSelectWithoutValidate } = useSelect();
 
   function createStage(
     stageWithoutId: Omit<Stage, 'id'>,
     divSize: Size,
-    currentStageId: string
+    stageId?: string
   ) {
     const stage = giveId(stageWithoutId);
     const scale = getResizeScale(
@@ -21,23 +23,31 @@ function useCreate() {
       stageSizeRatioByDivSize
     );
 
-    setStages(currentVal =>
-      currentVal.reduce(
-        (acc, cur) =>
-          cur.id === currentStageId
-            ? [
-                ...acc,
-                cur,
-                {
-                  ...stage,
-                  width: new StageSize(stage).width * scale,
-                  height: new StageSize(stage).height * scale,
-                },
-              ]
-            : [...acc, cur],
-        [] as Stage[]
-      )
-    );
+    if (stageId && validateId(stageId)) {
+      setStages(currentVal =>
+        currentVal.reduce(
+          (acc, cur) =>
+            cur.id === stageId
+              ? [...acc, cur, resizeStage(stage, scale)]
+              : [...acc, cur],
+          [] as Stage[]
+        )
+      );
+    } else {
+      setStages(currentVal => [...currentVal, resizeStage(stage, scale)]);
+    }
+
+    changeSelectWithoutValidate(stage.id);
+
+    function resizeStage(stage: Stage, scale: number) {
+      return {
+        ...stage,
+        config: {
+          width: new StageSize(stage).width * scale,
+          height: new StageSize(stage).height * scale,
+        },
+      };
+    }
   }
 
   return {
