@@ -23,3 +23,8 @@ export const selectedStageState = selector({
     );
   },
 });
+
+export const stagesCountState = selector({
+  key: 'stagesCountState',
+  get: ({ get }) => get(stagesState).length,
+});
