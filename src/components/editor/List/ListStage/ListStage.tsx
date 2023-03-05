@@ -16,6 +16,7 @@ function ListStage({ id, size, divSize, children }: Props) {
     getWrapperProps,
     getStageControlBarPropsWithoutOnAppend,
     getOnAppendProp,
+    getStageContainerProps,
   } = useListStage();
 
   return (
@@ -24,14 +25,17 @@ function ListStage({ id, size, divSize, children }: Props) {
         {...getStageControlBarPropsWithoutOnAppend(id)}
         {...getOnAppendProp({ size, divSize, id })}
       />
-      <Stage
-        width={size.width}
-        height={size.height}
-        requestExport={false}
-        onExport={dataUrl => dataUrl}
-      >
-        {children}
-      </Stage>
+      <div {...getStageContainerProps(id)}>
+        <Stage
+          width={size.width}
+          height={size.height}
+          style={{ background: 'green' }}
+          requestExport={false}
+          onExport={dataUrl => dataUrl}
+        >
+          {children}
+        </Stage>
+      </div>
     </Stage.Wrapper>
   );
 }

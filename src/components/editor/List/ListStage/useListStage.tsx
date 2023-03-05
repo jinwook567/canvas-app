@@ -7,13 +7,13 @@ function useListStage() {
   const { isSelected, changeSelect, getNextId, getPrevId } = useSelect();
   const getWrapperProps = (id: string) => ({
     isSelected: isSelected(id),
-    onSelect: () => changeSelect(id),
   });
 
   const { deleteStage } = useDelete();
   const getStageControlBarPropsWithoutOnAppend = (id: string) => {
     const nextId = getNextId(id);
     const prevId = getPrevId(id);
+
     return {
       ...(nextId && { onSelectDown: () => changeSelect(nextId) }),
       ...(prevId && { onSelectUp: () => changeSelect(prevId) }),
@@ -35,10 +35,15 @@ function useListStage() {
       createStage({ config: { ...size }, nodes: [] }, divSize, id),
   });
 
+  const getStageContainerProps = (id: string) => ({
+    onClick: () => changeSelect(id),
+  });
+
   return {
     getWrapperProps,
     getStageControlBarPropsWithoutOnAppend,
     getOnAppendProp,
+    getStageContainerProps,
   };
 }
 
