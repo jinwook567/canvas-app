@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { isExportRequestedState } from '../../../recoil/editor/atoms';
 import { createUniqueId } from '../../../utils/unit';
@@ -14,6 +15,10 @@ function useDownload() {
   const exportURIAsPng = (uri: string) => {
     downloadURI(uri, `${createUniqueId()}.png`);
   };
+
+  useEffect(() => {
+    if (isExportRequested) setIsExportRequested(false);
+  }, [isExportRequested]);
 
   return {
     requestExport,
