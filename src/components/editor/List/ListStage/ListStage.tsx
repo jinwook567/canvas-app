@@ -29,7 +29,7 @@ function ListStage({ id, size, divSize, children }: Props) {
         <Stage
           width={size.width}
           height={size.height}
-          style={{ background: 'green' }}
+          style={{ background: 'white' }}
           requestExport={false}
           onExport={dataUrl => dataUrl}
         >
