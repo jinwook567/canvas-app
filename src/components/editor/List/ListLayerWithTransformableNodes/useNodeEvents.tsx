@@ -7,14 +7,12 @@ import { Node } from '../../../../types/editor';
 
 function useNodeEvents(stageId: string, node: Node): KonvaNodeEvents {
   const { changeSelect, appendSelect } = useSelect();
-  const isPressedKey = usePressedKey();
+  const pressedKey = usePressedKey();
   const { transformNodes } = useTransform();
 
   return {
     onClick: () =>
-      isPressedKey.current.Shift
-        ? appendSelect(node.id)
-        : changeSelect(node.id),
+      pressedKey.current.Shift ? appendSelect(node.id) : changeSelect(node.id),
     onDragEnd: e => {
       const newNode = _.cloneDeep(node);
       newNode.config.x = e.target.x();
