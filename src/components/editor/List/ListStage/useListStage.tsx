@@ -1,7 +1,9 @@
+import { KonvaNodeEvents } from 'react-konva';
 import useCreate from '../../../../hooks/editor/Stage/useCreate';
 import useDelete from '../../../../hooks/editor/Stage/useDelete';
 import useDownload from '../../../../hooks/editor/Stage/useDownload';
 import useSelect from '../../../../hooks/editor/Stage/useSelect';
+import useSelectNode from '../../../../hooks/editor/Node/useSelect';
 import { Size } from '../../../../types/editor';
 
 function useListStage() {
@@ -47,12 +49,19 @@ function useListStage() {
     onExport: (dataURI: string) => exportURIAsPng(dataURI),
   });
 
+  const { resetSelect } = useSelectNode();
+  const getStageSelectProps = (): KonvaNodeEvents => ({
+    onTouchStart: e => e.target === e.target.getStage() && resetSelect(),
+    onMouseDown: e => e.target === e.target.getStage() && resetSelect(),
+  });
+
   return {
     getWrapperProps,
     getStageControlBarPropsWithoutOnAppend,
     getOnAppendProp,
     getStageContainerProps,
     getStageExportProps,
+    getStageSelectProps,
   };
 }
 

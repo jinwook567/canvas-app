@@ -18,6 +18,7 @@ function ListStage({ id, size, divSize, children }: Props) {
     getOnAppendProp,
     getStageContainerProps,
     getStageExportProps,
+    getStageSelectProps,
   } = useListStage();
 
   return (
@@ -32,6 +33,7 @@ function ListStage({ id, size, divSize, children }: Props) {
           height={size.height}
           style={{ background: 'white' }}
           {...getStageExportProps()}
+          {...getStageSelectProps()}
         >
           {children}
         </Stage>
