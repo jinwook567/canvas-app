@@ -92,6 +92,8 @@ function createLocatorBySize(node: Node, size: Size) {
 }
 
 function resize(node: Node, targetSize: Size, ratio: number) {
+  if (node.type === 'text') return node;
+
   const scale = getResizeScale(
     {
       width: createNodeSize(node).width,
