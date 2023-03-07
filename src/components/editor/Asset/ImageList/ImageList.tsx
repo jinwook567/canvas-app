@@ -18,7 +18,12 @@ function ImageList({ items, onClick }: Props) {
     <Masonry columns={2}>
       {items.map(({ src }, index) => (
         <IconButton key={index}>
-          <img src={src} alt="asset" onClick={handleClick} />
+          <img
+            src={src}
+            alt="asset"
+            onClick={handleClick}
+            style={{ width: '100%' }}
+          />
         </IconButton>
       ))}
     </Masonry>
