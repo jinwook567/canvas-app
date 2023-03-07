@@ -2,21 +2,21 @@ import Konva from 'konva';
 import { RemoveIndex } from '../utils/types';
 
 export type Image = {
-  id: string;
-  type: 'image';
+  readonly id: string;
+  readonly type: 'image';
   config: Konva.ImageConfig;
   src: string;
 };
 
 export type Text = {
-  id: string;
-  type: 'text';
+  readonly id: string;
+  readonly type: 'text';
   config: Konva.TextConfig;
 };
 
 export type Group = {
-  id: string;
-  type: 'group';
+  readonly id: string;
+  readonly type: 'group';
   config: Konva.GroupConfig;
   nodes: Node[];
 };
