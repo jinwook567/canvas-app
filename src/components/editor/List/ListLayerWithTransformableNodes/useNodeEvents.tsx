@@ -5,12 +5,12 @@ import useSelect from '../../../../hooks/editor/Node/useSelect';
 import useTransform from '../../../../hooks/editor/Node/useTransform';
 import { Node } from '../../../../types/editor';
 
-function useNodeEvents(stageId: string, node: Node): KonvaNodeEvents {
+function useNodeEvents() {
   const { changeSelect, appendSelect } = useSelect();
   const pressedKey = usePressedKey();
   const { transformNodes } = useTransform();
 
-  return {
+  const getNodeEvents = (stageId: string, node: Node): KonvaNodeEvents => ({
     onClick: () =>
       pressedKey.current.Shift ? appendSelect(node.id) : changeSelect(node.id),
     onDragEnd: e => {
@@ -19,6 +19,10 @@ function useNodeEvents(stageId: string, node: Node): KonvaNodeEvents {
       newNode.config.y = e.target.y();
       transformNodes(stageId, [newNode]);
     },
+  });
+
+  return {
+    getNodeEvents,
   };
 }
 
