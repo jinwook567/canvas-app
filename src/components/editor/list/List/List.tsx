@@ -1,12 +1,12 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { StageSize } from '../../../../hooks/editor/Stage/useCreate';
 import useElementResize from '../../../../hooks/editor/useElementSize';
 import { stagesState } from '../../../../recoil/editor/atoms';
 import ListStage from '../ListStage/ListStage';
 import { useCreateInitialStage } from './useList';
 import * as Styled from './List.styles';
 import ListLayerWithTransformableNodes from '../ListLayerWithTransformableNodes/ListLayerWithTransformableNodes';
+import { createStageSize } from '../../../../utils/editor/size';
 
 function List() {
   const { size, divRef } = useElementResize();
@@ -21,7 +21,7 @@ function List() {
           key={stage.id}
           id={stage.id}
           divSize={size}
-          size={new StageSize(stage).size}
+          size={createStageSize(stage).size}
         >
           <ListLayerWithTransformableNodes
             stageId={stage.id}

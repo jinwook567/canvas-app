@@ -2,6 +2,7 @@ import { useSetRecoilState } from 'recoil';
 import { stagesState } from '../../../recoil/editor/atoms';
 import { Size, Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
+import { createStageSize } from '../../../utils/editor/size';
 import { createUniqueId } from '../../../utils/unit';
 import useSelect from './useSelect';
 
@@ -18,7 +19,7 @@ function useCreate() {
   ) {
     const stage = giveId(stageWithoutId);
     const scale = getResizeScale(
-      new StageSize(stage).size,
+      createStageSize(stage).size,
       divSize,
       stageSizeRatioByDivSize
     );
@@ -43,8 +44,8 @@ function useCreate() {
       return {
         ...stage,
         config: {
-          width: new StageSize(stage).width * scale,
-          height: new StageSize(stage).height * scale,
+          width: createStageSize(stage).width * scale,
+          height: createStageSize(stage).height * scale,
         },
       };
     }
@@ -57,34 +58,6 @@ function useCreate() {
 
 function giveId(stageWithoutId: Omit<Stage, 'id'>): Stage {
   return { ...stageWithoutId, id: createUniqueId() };
-}
-
-export class StageSize {
-  _stage: Stage;
-
-  constructor(stage: Stage) {
-    this._stage = stage;
-  }
-
-  get width() {
-    return this._stage.config.width || 0;
-  }
-
-  get height() {
-    return this._stage.config.height || 0;
-  }
-
-  get scaleX() {
-    return this._stage.config.scaleX || 1;
-  }
-
-  get scaleY() {
-    return this._stage.config.scaleY || 1;
-  }
-
-  get size() {
-    return { width: this.width, height: this.height };
-  }
 }
 
 export default useCreate;
