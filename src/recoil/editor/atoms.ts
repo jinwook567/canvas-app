@@ -24,11 +24,7 @@ type HistoryState = {
 
 export const historyState = atom<HistoryState>({
   key: 'historyState',
-  default: {
-    stages: [],
-    next: null,
-    prev: null,
-  },
+  default: null,
 });
 
 export const isExportRequestedState = atom({
