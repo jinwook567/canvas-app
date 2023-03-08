@@ -2,8 +2,6 @@ import React from 'react';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import DownloadIcon from '@mui/icons-material/Download';
-import UTurnLeftIcon from '@mui/icons-material/UTurnLeft';
-import UTurnRightIcon from '@mui/icons-material/UTurnRight';
 import IconButtonList from '../../common/IconButtonList/IconButtonList';
 
 type Props = {
