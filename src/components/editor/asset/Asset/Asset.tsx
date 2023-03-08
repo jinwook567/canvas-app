@@ -3,10 +3,10 @@ import GridViewIcon from '@mui/icons-material/GridView';
 import ImageIcon from '@mui/icons-material/Image';
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import { Grid } from '@mui/material';
-import useTabs from '../../common/Tabs/useTabs';
-import ImageAsset from './ImageAsset/ImageAsset';
-import TemplateAsset from './TemplateAsset/TemplateAsset';
-import TextAsset from './TextAsset/TextAsset';
+import useTabs from '../../../common/Tabs/useTabs';
+import ImageAsset from '../ImageAsset/ImageAsset';
+import TemplateAsset from '../TemplateAsset/TemplateAsset';
+import TextAsset from '../TextAsset/TextAsset';
 
 function Asset() {
   const [imageItems, setImageItems] = useState<{ src: string }[]>([]);

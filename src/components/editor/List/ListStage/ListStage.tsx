@@ -1,7 +1,7 @@
 import React from 'react';
 import { Size } from '../../../../types/editor';
-import Stage from '../../Stage/Stage';
-import StageControlBar from '../../StageControlBar/StageControlBar';
+import Stage from '../../../common/editor/Stage/Stage';
+import StageControlBar from '../../../common/editor/StageControlBar/StageControlBar';
 import useListStage from './useListStage';
 
 type Props = {

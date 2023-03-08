@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import useCreate from '../../../../hooks/editor/Node/useCreate';
-import ImageList from '../../ImageList/ImageList';
-import ImageUpload from '../../ImageUpload/ImageUpload';
+import ImageList from '../../../common/editor/ImageList/ImageList';
+import ImageUpload from '../../../common/editor/ImageUpload/ImageUpload';
 
 interface Props {
   items: { src: string }[];

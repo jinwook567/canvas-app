@@ -1,7 +1,7 @@
 import React from 'react';
 import { templateSample } from '../../../../fixtures/editor';
 import useTransform from '../../../../hooks/editor/Stage/useTransform';
-import TemplateList from '../../TemplateList/TemplateList';
+import TemplateList from '../../../common/editor/TemplateList/TemplateList';
 
 function TemplateAsset() {
   const { transformSelectedStageByTemplate } = useTransform();
