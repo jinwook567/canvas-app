@@ -11,7 +11,7 @@ function Text({ onChange, ...config }: Props, ref: ForwardedRef<Konva.Text>) {
   const [isChangeMode, setIsChangeMode] = useState(false);
 
   const handleDbClick = () => {
-    setIsChangeMode(false);
+    setIsChangeMode(!isChangeMode);
   };
 
   return isChangeMode ? (
