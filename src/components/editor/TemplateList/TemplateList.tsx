@@ -1,7 +1,7 @@
 import React from 'react';
 import Masonry from '@mui/lab/Masonry';
 import { IconButton } from '@mui/material';
-import Preview, { Props as PreviewProps } from '../../Preview/Preview';
+import Preview, { Props as PreviewProps } from '../Preview/Preview';
 
 type Props = {
   items: PreviewProps[];
