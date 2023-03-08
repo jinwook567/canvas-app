@@ -25,7 +25,7 @@ function useHistory() {
 
   const historyBack = () => {
     setHistory(currentVal =>
-      currentVal && currentVal.prev
+      currentVal && currentVal.prev && currentVal.prev.stages.length > 0
         ? {
             stages: currentVal.prev.stages,
             prev: currentVal.prev.prev,
