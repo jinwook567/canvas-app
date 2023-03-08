@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid } from '@mui/material';
 import useCreate from '../../../../hooks/editor/Node/useCreate';
 import ImageList from '../../ImageList/ImageList';
 import ImageUpload from '../../ImageUpload/ImageUpload';
 
-function ImageAsset() {
-  const [items, setItems] = useState<{ src: string }[]>([]);
+interface Props {
+  items: { src: string }[];
+  addItem: (src: string) => void;
+}
+
+function ImageAsset({ items, addItem }: Props) {
   const { createNode } = useCreate();
   return (
     <Grid container flexDirection="column" alignItems="center" rowGap={3}>
@@ -13,9 +17,7 @@ function ImageAsset() {
         onSubmit={files => {
           if (!files) return;
           for (let i = 0; i < files.length; i += 1) {
-            readImageFileAsURL(files[i], src =>
-              setItems(items => [...items, { src }])
-            );
+            readImageFileAsURL(files[i], src => addItem(src));
           }
         }}
       />

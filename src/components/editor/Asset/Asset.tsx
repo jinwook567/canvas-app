@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GridViewIcon from '@mui/icons-material/GridView';
 import ImageIcon from '@mui/icons-material/Image';
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
@@ -9,10 +9,16 @@ import TemplateAsset from './TemplateAsset/TemplateAsset';
 import TextAsset from './TextAsset/TextAsset';
 
 function Asset() {
+  const [imageItems, setImageItems] = useState<{ src: string }[]>([]);
   const asset = [
     {
       tab: { label: '이미지', icon: <ImageIcon /> },
-      component: <ImageAsset />,
+      component: (
+        <ImageAsset
+          items={imageItems}
+          addItem={src => setImageItems(currentVal => [...currentVal, { src }])}
+        />
+      ),
     },
     {
       tab: { label: '템플릿', icon: <GridViewIcon /> },
