@@ -23,10 +23,7 @@ function List() {
           divSize={size}
           size={createStageSize(stage).size}
         >
-          <ListLayerWithTransformableNodes
-            stageId={stage.id}
-            nodes={stage.nodes}
-          />
+          <ListLayerWithTransformableNodes nodes={stage.nodes} />
         </ListStage>
       ))}
     </Styled.Grid>

@@ -6,11 +6,10 @@ import useListLayer from './useListLayer';
 import useNodeEvents from './useNodeEvents';
 
 type Props = {
-  stageId: string;
   nodes: NodeType[];
 };
 
-function ListLayerWithTransformableNodes({ stageId, nodes }: Props) {
+function ListLayerWithTransformableNodes({ nodes }: Props) {
   const trRef = useRef(null);
   const { getNodeProps, getTransformerConfig } = useListLayer();
   const { getNodeEvents } = useNodeEvents();
@@ -22,12 +21,12 @@ function ListLayerWithTransformableNodes({ stageId, nodes }: Props) {
           key={node.id}
           {...node}
           {...getNodeProps(node.id, trRef)}
-          {...getNodeEvents(stageId, node)}
+          {...getNodeEvents(node)}
           config={{ ...node.config, draggable: true, image: undefined }}
         />
       ))}
 
-      <Transformer ref={trRef} {...getTransformerConfig(stageId, trRef)} />
+      <Transformer ref={trRef} {...getTransformerConfig(trRef)} />
     </Layer>
   );
 }

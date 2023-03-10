@@ -26,7 +26,6 @@ function useListLayer() {
   const { transformNodesConfig } = useTransform();
 
   function getTransformerConfig(
-    stageId: string,
     trRef: RefObject<Konva.Transformer>
   ): Konva.TransformerConfig & KonvaNodeEvents {
     return {
@@ -38,7 +37,6 @@ function useListLayer() {
       if (!trRef.current) return;
 
       transformNodesConfig(
-        stageId,
         trRef.current.nodes().map(trNode => ({
           id: trNode.id(),
           config: omit(trNode.getAttrs(), 'id'),
