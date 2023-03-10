@@ -1,10 +1,15 @@
 import Konva from 'konva';
 import { RemoveIndex } from '../utils/types';
 
+export interface ImageConfigWithoutImage
+  extends Omit<RemoveIndex<Konva.ImageConfig>, 'image'> {
+  image?: Konva.ImageConfig['image'];
+}
+
 export type Image = {
   readonly id: string;
   readonly type: 'image';
-  config: Konva.ImageConfig;
+  config: ImageConfigWithoutImage;
   src: string;
 };
 

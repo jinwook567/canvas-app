@@ -22,7 +22,7 @@ function ListLayerWithTransformableNodes({ nodes }: Props) {
           {...node}
           {...getNodeProps(node.id, trRef)}
           {...getNodeEvents(node)}
-          config={{ ...node.config, draggable: true, image: undefined }}
+          config={{ ...node.config, draggable: true }}
         />
       ))}
 

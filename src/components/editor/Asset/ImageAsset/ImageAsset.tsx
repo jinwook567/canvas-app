@@ -30,7 +30,6 @@ function ImageAsset({ items, addItem }: Props) {
             config: {
               width: image.width,
               height: image.height,
-              image: undefined,
             },
           })
         }

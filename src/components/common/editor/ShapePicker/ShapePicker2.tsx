@@ -3,11 +3,12 @@ import { Group, KonvaNodeEvents } from 'react-konva';
 import Konva from 'konva';
 import Image from '../Image/Image';
 import Text from '../Text/Text';
+import { ImageConfigWithoutImage } from '../../../../types/editor';
 
 export type Props =
   | ({
       type: 'image';
-      config: Konva.ImageConfig;
+      config: ImageConfigWithoutImage;
       src?: string;
       nodeRef?: RefObject<Konva.Image>;
     } & KonvaNodeEvents)
