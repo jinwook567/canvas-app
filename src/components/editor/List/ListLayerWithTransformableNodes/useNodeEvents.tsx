@@ -6,20 +6,28 @@ import useTransform from '../../../../hooks/editor/Node/useTransform';
 import { Node } from '../../../../types/editor';
 
 function useNodeEvents() {
-  const { changeSelect, appendSelect } = useSelect();
+  const { changeSelect, appendSelect, isSelected } = useSelect();
   const pressedKey = usePressedKey();
-  const { transformNodes } = useTransform();
+  const { transformNodesConfig } = useTransform();
 
-  const getNodeEvents = (stageId: string, node: Node): KonvaNodeEvents => ({
-    onClick: () =>
-      pressedKey.current.Shift ? appendSelect(node.id) : changeSelect(node.id),
-    onDragEnd: e => {
-      const newNode = _.cloneDeep(node);
-      newNode.config.x = e.target.x();
-      newNode.config.y = e.target.y();
-      transformNodes(stageId, [newNode]);
-    },
-  });
+  function getNodeEvents(node: Node): KonvaNodeEvents {
+    return {
+      onClick: select,
+      onTouchStart: select,
+      onMouseDown: select,
+      onDragEnd: e => {
+        transformNodesConfig([
+          { id: node.id, config: { x: e.target.x(), y: e.target.y() } },
+        ]);
+      },
+    };
+
+    function select() {
+      return pressedKey.current.Shift
+        ? !isSelected(node.id) && appendSelect(node.id)
+        : !isSelected(node.id) && changeSelect(node.id);
+    }
+  }
 
   return {
     getNodeEvents,
