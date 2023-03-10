@@ -1,9 +1,9 @@
 import { useSetRecoilState } from 'recoil';
-import { Props as TemplateType } from '../../../components/editor/Preview/Preview';
+import { Props as TemplateType } from '../../../components/common/editor/Preview/Preview';
 import { selectedStageState } from '../../../recoil/editor/selectors';
 import { Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
-import { StageSize } from './useCreate';
+import { createStageSize } from '../../../utils/editor/size';
 
 function useTransform() {
   const setSelectedStage = useSetRecoilState(selectedStageState);
@@ -26,7 +26,7 @@ function useTransform() {
     function getTemplateScale(template: TemplateType, stage: Stage) {
       return getResizeScale(
         { width: template.stageWidth, height: template.stageHeight },
-        new StageSize(stage).size,
+        createStageSize(stage).size,
         1
       );
     }
