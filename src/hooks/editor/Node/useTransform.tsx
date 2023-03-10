@@ -3,39 +3,37 @@ import _ from 'lodash';
 import { useSetRecoilState } from 'recoil';
 import { stagesState } from '../../../recoil/editor/atoms';
 import { Node, Stage } from '../../../types/editor';
+import { findStageByNodeId } from '../../../utils/editor/validate';
 
 function useTransform() {
   const setStages = useSetRecoilState(stagesState);
 
   function transformNodesConfig(
-    stageId: string,
-    configs: { id: Node['id']; config: Konva.NodeConfig }[]
+    data: { id: Node['id']; config: Konva.NodeConfig }[]
   ) {
     setStages(currentVal =>
-      currentVal.map(stage =>
-        stage.id === stageId
-          ? configs.reduce(
-              (acc: Stage, config) =>
-                checkNodeExist(acc, config.id)
-                  ? replaceConfig(acc, config)
-                  : acc,
-              stage
-            )
-          : stage
-      )
+      data.reduce((stages, { id, config }) => {
+        const stage = findStageByNodeId(currentVal, id);
+        if (!stage) throw new Error('invalide node');
+
+        const newStage = replaceConfig(stage, { id, config });
+        return stages.map(stage =>
+          stage.id === newStage.id ? newStage : stage
+        );
+      }, currentVal)
     );
+  }
 
-    function replaceConfig(
-      stage: Stage,
-      config: { id: Node['id']; config: Konva.NodeConfig }
-    ): Stage {
-      const node = stage.nodes.find(node => node.id === config.id);
-      if (!node) return stage;
+  function replaceConfig(
+    stage: Stage,
+    data: { id: Node['id']; config: Konva.NodeConfig }
+  ): Stage {
+    const node = stage.nodes.find(node => node.id === data.id);
+    if (!node) return stage;
 
-      const newNode = _.cloneDeep(node);
-      newNode.config = { ...newNode.config, ...config.config };
-      return replaceNode(stage, newNode);
-    }
+    const newNode = _.cloneDeep(node);
+    newNode.config = { ...newNode.config, ...data.config };
+    return replaceNode(stage, newNode);
   }
 
   function transformNodes(stageId: string, nodes: Node[]) {
