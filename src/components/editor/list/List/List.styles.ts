@@ -4,7 +4,6 @@ import { Grid as MuiGrid } from '@mui/material';
 export const Grid = styled(MuiGrid)`
   width: 100%;
   background: lightgray;
-  padding-top: 20px;
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;
