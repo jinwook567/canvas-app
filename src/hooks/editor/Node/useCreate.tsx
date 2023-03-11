@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { useRecoilState } from 'recoil';
 import { selectedStageState } from '../../../recoil/editor/selectors';
 import { Node, Size, NodeWithoutId, Stage } from '../../../types/editor';
@@ -8,6 +7,7 @@ import {
   createStageSize,
   getSize,
 } from '../../../utils/editor/size';
+import { updateNodeConfig } from '../../../utils/editor/update';
 import { createUniqueId } from '../../../utils/unit';
 
 function useCreate() {
@@ -52,10 +52,13 @@ function useCreate() {
             createNodeSize(comparedNode).height === createNodeSize(node).height
         )
       ) {
-        const newNode = _.cloneDeep(node);
-        newNode.config.x = createNodeSize(newNode).x + 10;
-        newNode.config.y = createNodeSize(newNode).y + 10;
-        return avoidSamePos(newNode, stage);
+        return avoidSamePos(
+          updateNodeConfig(node, {
+            x: createNodeSize(node).x + 10,
+            y: createNodeSize(node).y + 10,
+          }),
+          stage
+        );
       }
       return node;
     }
@@ -94,17 +97,17 @@ function resize(node: Node, targetSize: Size, ratio: number) {
     getSize(targetSize.width, targetSize.height),
     ratio
   );
-  const result = _.cloneDeep(node);
-  result.config.scaleX = scale * createNodeSize(node).scaleX;
-  result.config.scaleY = scale * createNodeSize(node).scaleY;
-  return result;
+  return updateNodeConfig(node, {
+    scaleX: scale * createNodeSize(node).scaleX,
+    scaleY: scale * createNodeSize(node).scaleY,
+  });
 }
 
 function placeCenter(node: Node, targetSize: Size) {
-  const result = _.cloneDeep(node);
-  result.config.x = (targetSize.width - createNodeSize(node).actualWidth) / 2;
-  result.config.y = (targetSize.height - createNodeSize(node).actualHeight) / 2;
-  return result;
+  return updateNodeConfig(node, {
+    x: (targetSize.width - createNodeSize(node).actualWidth) / 2,
+    y: (targetSize.height - createNodeSize(node).actualHeight) / 2,
+  });
 }
 
 export default useCreate;
