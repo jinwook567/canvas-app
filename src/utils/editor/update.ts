@@ -28,3 +28,11 @@ export const updateStageNode = (stage: Stage, nodeToUpdate: Node): Stage => ({
     node.id === nodeToUpdate.id ? nodeToUpdate : node
   ),
 });
+
+export const updateNodeConfig = (
+  node: Node,
+  configToUpdate: Node['config']
+): Node => ({
+  ...node,
+  config: { ...node.config, ...configToUpdate },
+});
