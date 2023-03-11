@@ -3,7 +3,11 @@ import { useRecoilState } from 'recoil';
 import { selectedStageState } from '../../../recoil/editor/selectors';
 import { Node, Size, NodeWithoutId, Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
-import { createNodeSize, createStageSize } from '../../../utils/editor/size';
+import {
+  createNodeSize,
+  createStageSize,
+  getSize,
+} from '../../../utils/editor/size';
 import { createUniqueId } from '../../../utils/unit';
 
 function useCreate() {
@@ -86,11 +90,8 @@ function resize(node: Node, targetSize: Size, ratio: number) {
   if (node.type === 'text') return node;
 
   const scale = getResizeScale(
-    {
-      width: createNodeSize(node).width,
-      height: createNodeSize(node).height,
-    },
-    { width: targetSize.width, height: targetSize.height },
+    createNodeSize(node).size,
+    getSize(targetSize.width, targetSize.height),
     ratio
   );
   const result = _.cloneDeep(node);
