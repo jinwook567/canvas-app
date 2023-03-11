@@ -1,6 +1,6 @@
 import { Node, Stage } from '../../types/editor';
 
-export const updateStagesItem = (stages: Stage[], stageToUpdate: Stage) =>
+export const updateStages = (stages: Stage[], stageToUpdate: Stage) =>
   stages.map(stage => (stage.id === stageToUpdate.id ? stageToUpdate : stage));
 
 export const updateStageNodesWithReplacement = (
