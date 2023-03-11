@@ -16,8 +16,11 @@ import { createUniqueId } from '../../../utils/unit';
 function useGroup() {
   const setStages = useSetRecoilState(stagesState);
 
+  const canGroup = (nodeIds: string[]) => nodeIds.length >= 2;
+
   function group(nodeIds: string[]) {
-    if (nodeIds.length < 2) throw new Error('need at least two nodes');
+    if (!canGroup(nodeIds))
+      throw new Error('these nodes can not be group node');
 
     setStages(stages => {
       if (!areNodesInSameStage(stages, nodeIds))
@@ -96,6 +99,7 @@ function useGroup() {
   return {
     group,
     ungroup,
+    canGroup,
   };
 }
 
