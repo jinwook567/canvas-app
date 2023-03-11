@@ -52,6 +52,10 @@ class NodeSize {
     return this._node.config.height || 0;
   }
 
+  get size() {
+    return getSize(this.width, this.height);
+  }
+
   get actualWidth() {
     return this.width * this.scaleX;
   }
@@ -184,6 +188,10 @@ export class StageSize {
   }
 
   get size() {
-    return { width: this.width, height: this.height };
+    return getSize(this.width, this.height);
   }
+}
+
+export function getSize(width: number, height: number) {
+  return { width, height };
 }
