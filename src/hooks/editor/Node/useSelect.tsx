@@ -1,6 +1,5 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { selectedIdsState, stagesState } from '../../../recoil/editor/atoms';
-import { areNodesInSameStage } from '../../../utils/editor/validate';
+import { useRecoilState } from 'recoil';
+import { selectedIdsState } from '../../../recoil/editor/atoms';
 
 function useSelect() {
   const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
@@ -17,13 +16,8 @@ function useSelect() {
     );
   };
 
-  const stages = useRecoilValue(stagesState);
   const appendSelect = (id: string) => {
-    if (areNodesInSameStage(stages, [...selectedIds, id])) {
-      setSelectedIds(currentVal => [...currentVal, id]);
-    } else {
-      changeSelect(id);
-    }
+    setSelectedIds(currentVal => [...currentVal, id]);
   };
 
   const changeSelect = (id: string) => {
