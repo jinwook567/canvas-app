@@ -4,6 +4,7 @@ import { selectedStageState } from '../../../recoil/editor/selectors';
 import { Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
 import { createStageSize, getSize } from '../../../utils/editor/size';
+import { giveId } from '../Node/useCreate';
 
 function useTransform() {
   const setSelectedStage = useSetRecoilState(selectedStageState);
@@ -13,7 +14,7 @@ function useTransform() {
       currentVal
         ? {
             ...currentVal,
-            nodes: template.nodes,
+            nodes: template.nodes.map(node => giveId(node)),
             config: {
               ...currentVal.config,
               scaleX: getTemplateScale(template, currentVal),
