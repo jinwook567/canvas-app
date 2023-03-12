@@ -69,7 +69,7 @@ function useCreate() {
   };
 }
 
-function giveId(node: NodeWithoutId): Node {
+export function giveId(node: NodeWithoutId): Node {
   if (node.type === 'group') {
     return {
       ...node,
