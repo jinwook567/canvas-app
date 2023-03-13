@@ -12,20 +12,29 @@ type Props =
       config: ImageConfigWithoutImage;
       src?: string;
       isSelected: boolean;
-      updateTransformer: (ref: RefObject<Konva.Image>) => void;
+      updateTransformer: (
+        ref: RefObject<Konva.Image>,
+        isSelected: boolean
+      ) => void;
     } & KonvaNodeEvents)
   | ({
       type: 'text';
       config: Konva.TextConfig;
       isSelected: boolean;
-      updateTransformer: (ref: RefObject<Konva.Text>) => void;
+      updateTransformer: (
+        ref: RefObject<Konva.Text>,
+        isSelected: boolean
+      ) => void;
     } & KonvaNodeEvents)
   | ({
       type: 'group';
       config: Konva.GroupConfig;
       nodes: ShapePickerProps[];
       isSelected: boolean;
-      updateTransformer: (ref: RefObject<Konva.Group>) => void;
+      updateTransformer: (
+        ref: RefObject<Konva.Group>,
+        isSelected: boolean
+      ) => void;
     } & KonvaNodeEvents);
 
 function Node(props: Props) {
@@ -33,8 +42,15 @@ function Node(props: Props) {
   const nodeRef = useRef(null);
 
   useEffect(() => {
-    updateTransformer(nodeRef);
+    updateTransformer(nodeRef, isSelected);
   }, [isSelected]);
+
+  useEffect(() => {
+    const instance = nodeRef.current;
+    return () => {
+      updateTransformer({ current: instance }, false);
+    };
+  }, []);
 
   return <ShapePicker2 {...rest} nodeRef={nodeRef} />;
 }
