@@ -1,4 +1,4 @@
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { stagesState } from '../../../recoil/editor/atoms';
 import { Node } from '../../../types/editor';
 import {

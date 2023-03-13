@@ -1,5 +1,4 @@
 import { KonvaNodeEvents } from 'react-konva';
-import _ from 'lodash';
 import usePressedKey from '../../../../hooks/editor/Global/usePressedKey';
 import useSelect from '../../../../hooks/editor/Node/useSelect';
 import useTransform from '../../../../hooks/editor/Node/useTransform';
