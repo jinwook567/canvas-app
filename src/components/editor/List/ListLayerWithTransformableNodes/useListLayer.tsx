@@ -10,11 +10,14 @@ function useListLayer() {
 
   const getNodeProps = (id: string, trRef: RefObject<Konva.Transformer>) => ({
     isSelected: isSelected(id),
-    updateTransformer: (nodeRef: RefObject<Konva.Node>) => {
+    updateTransformer: (
+      nodeRef: RefObject<Konva.Node>,
+      isSelected: boolean
+    ) => {
       if (!trRef.current || !nodeRef.current) return;
 
       trRef.current.nodes(
-        isSelected(id)
+        isSelected
           ? [...trRef.current.nodes(), nodeRef.current]
           : trRef.current.nodes().filter(node => node.id() !== id)
       );

@@ -39,8 +39,12 @@ function ShapePicker(props: Props) {
       const { nodes } = props;
       return (
         <Group {...config} ref={nodeRef} {...rest}>
-          {nodes.map((node, index) => (
-            <ShapePicker key={index} {...node} />
+          {nodes.map(({ nodeRef, ...nodeRest }, index) => (
+            <ShapePicker
+              key={index}
+              {...nodeRest}
+              config={{ ...nodeRest.config, draggable: false }}
+            />
           ))}
         </Group>
       );
