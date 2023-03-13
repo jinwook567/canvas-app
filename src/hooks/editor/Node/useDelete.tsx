@@ -13,7 +13,7 @@ function useDelete() {
   const deleteNodes = (nodeIds: Node['id'][]) => {
     setStages(stages =>
       nodeIds.reduce((acc, nodeId) => {
-        const stageToUpdate = findStageByNodeId(stages, nodeId);
+        const stageToUpdate = findStageByNodeId(acc, nodeId);
         if (!stageToUpdate) throw new Error('invalid node');
 
         const updatedStage = updateStageNodesWithReplacement(
@@ -28,6 +28,7 @@ function useDelete() {
 
   return {
     deleteNodes,
+    canDeleteNode,
   };
 }
 
