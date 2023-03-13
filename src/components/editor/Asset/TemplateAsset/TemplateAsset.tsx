@@ -1,6 +1,6 @@
 import React from 'react';
 import { templateSample } from '../../../../fixtures/editor';
-import useTransform from '../../../../hooks/editor/Stage/useTransform';
+import useTransform from '../../../../hooks/editor/stage/useTransform';
 import TemplateList from '../../../common/editor/TemplateList/TemplateList';
 
 function TemplateAsset() {

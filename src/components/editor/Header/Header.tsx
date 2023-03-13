@@ -1,6 +1,6 @@
 import React from 'react';
-import useHistory from '../../../hooks/editor/Global/useHistory';
-import useDownload from '../../../hooks/editor/Stage/useDownload';
+import useHistory from '../../../hooks/editor/global/useHistory';
+import useDownload from '../../../hooks/editor/stage/useDownload';
 import HeadControlBar from '../../common/editor/HeadControlBar/HeadControlBar';
 
 function Header() {

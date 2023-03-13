@@ -4,7 +4,7 @@ import { selectedIdsState, stagesState } from '../../../recoil/editor/atoms';
 import { selectedStageState } from '../../../recoil/editor/selectors';
 import { Stage, Node } from '../../../types/editor';
 import usePrevious from '../../usePrevious';
-import useSelect from '../Node/useSelect';
+import useSelect from '../node/useSelect';
 import useHistory from './useHistory';
 
 function useSideEffects() {

@@ -1,8 +1,8 @@
 import { Button, Typography } from '@mui/material';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import useDelete from '../../../hooks/editor/Node/useDelete';
-import useGroup from '../../../hooks/editor/Node/useGroup';
+import useDelete from '../../../hooks/editor/node/useDelete';
+import useGroup from '../../../hooks/editor/node/useGroup';
 import { selectedIdsState } from '../../../recoil/editor/atoms';
 import * as Styled from './NodeControlBar.styles';
 

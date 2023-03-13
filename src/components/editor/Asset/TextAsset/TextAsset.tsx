@@ -1,5 +1,5 @@
 import React from 'react';
-import useCreate from '../../../../hooks/editor/Node/useCreate';
+import useCreate from '../../../../hooks/editor/node/useCreate';
 import TextList from '../../../common/editor/TextList/TextList';
 
 function TextAsset() {

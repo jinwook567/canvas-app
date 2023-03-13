@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useCreate from '../../../../hooks/editor/Stage/useCreate';
+import useCreate from '../../../../hooks/editor/stage/useCreate';
 import { Size, Stage } from '../../../../types/editor';
 
 function useList() {}

@@ -4,7 +4,7 @@ import { selectedStageState } from '../../../recoil/editor/selectors';
 import { Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
 import { createStageSize, getSize } from '../../../utils/editor/size';
-import { giveId } from '../Node/useCreate';
+import { giveId } from '../node/useCreate';
 
 function useTransform() {
   const setSelectedStage = useSetRecoilState(selectedStageState);

@@ -1,9 +1,9 @@
 import { KonvaNodeEvents } from 'react-konva';
-import useCreate from '../../../../hooks/editor/Stage/useCreate';
-import useDelete from '../../../../hooks/editor/Stage/useDelete';
-import useDownload from '../../../../hooks/editor/Stage/useDownload';
-import useSelect from '../../../../hooks/editor/Stage/useSelect';
-import useSelectNode from '../../../../hooks/editor/Node/useSelect';
+import useCreate from '../../../../hooks/editor/stage/useCreate';
+import useDelete from '../../../../hooks/editor/stage/useDelete';
+import useDownload from '../../../../hooks/editor/stage/useDownload';
+import useSelect from '../../../../hooks/editor/stage/useSelect';
+import useSelectNode from '../../../../hooks/editor/node/useSelect';
 import { Size } from '../../../../types/editor';
 
 function useListStage() {

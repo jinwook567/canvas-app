@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid } from '@mui/material';
-import useCreate from '../../../../hooks/editor/Node/useCreate';
+import useCreate from '../../../../hooks/editor/node/useCreate';
 import ImageList from '../../../common/editor/ImageList/ImageList';
 import ImageUpload from '../../../common/editor/ImageUpload/ImageUpload';
 

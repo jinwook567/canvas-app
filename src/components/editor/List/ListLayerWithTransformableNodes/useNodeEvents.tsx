@@ -1,7 +1,7 @@
 import { KonvaNodeEvents } from 'react-konva';
-import usePressedKey from '../../../../hooks/editor/Global/usePressedKey';
-import useSelect from '../../../../hooks/editor/Node/useSelect';
-import useTransform from '../../../../hooks/editor/Node/useTransform';
+import usePressedKey from '../../../../hooks/editor/global/usePressedKey';
+import useSelect from '../../../../hooks/editor/node/useSelect';
+import useTransform from '../../../../hooks/editor/node/useTransform';
 import { Node } from '../../../../types/editor';
 
 function useNodeEvents() {
