@@ -24,12 +24,17 @@ function useSelect() {
     setSelectedIds([id]);
   };
 
+  const replaceSelect = (ids: string[]) => {
+    setSelectedIds(ids);
+  };
+
   return {
     isSelected,
     resetSelect,
     deselect,
     appendSelect,
     changeSelect,
+    replaceSelect,
   };
 }
 
