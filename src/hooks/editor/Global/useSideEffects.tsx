@@ -63,14 +63,8 @@ function useCreateSelectEffects() {
       return acc;
     }, [] as string[]);
 
-    if (!isAllNodesReplaced() && isNewNodeCreated()) {
+    if (isNewNodeCreated()) {
       replaceSelect(newNodeIds);
-    }
-
-    function isAllNodesReplaced() {
-      return (
-        newNodeIds.length === hash(stages).length && previous?.length !== 0
-      );
     }
 
     function isNewNodeCreated() {
