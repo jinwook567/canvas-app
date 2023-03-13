@@ -1,4 +1,4 @@
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { stagesState } from '../../../recoil/editor/atoms';
 import { Group, Node, Stage } from '../../../types/editor';
 import { createNodeSize } from '../../../utils/editor/size';
@@ -9,16 +9,26 @@ import {
 } from '../../../utils/editor/update';
 import {
   areNodesInSameStage,
+  findNodeById,
   findStageByNodeId,
 } from '../../../utils/editor/validate';
 import { createUniqueId } from '../../../utils/unit';
 
 function useGroup() {
-  const setStages = useSetRecoilState(stagesState);
+  const [stages, setStages] = useRecoilState(stagesState);
 
-  const canGroup = (nodeIds: string[]) => nodeIds.length >= 2;
+  const canGroup = (nodeIds: Node['id'][]) => nodeIds.length >= 2;
 
-  function group(nodeIds: string[]) {
+  const canUnGroup = (nodeId: Node['id']) => {
+    if (!nodeId) return false;
+
+    const node = findNodeById(stages, nodeId);
+    if (!node) return false;
+
+    return node.type === 'group';
+  };
+
+  function group(nodeIds: Node['id'][]) {
     if (!canGroup(nodeIds))
       throw new Error('these nodes can not be group node');
 
@@ -53,11 +63,11 @@ function useGroup() {
       );
     }
 
-    function getSelectedNodes(nodes: Node[], nodeIds: string[]) {
+    function getSelectedNodes(nodes: Node[], nodeIds: Node['id'][]) {
       return nodes.filter(node => nodeIds.includes(node.id));
     }
 
-    function getNotSelectedNodes(nodes: Node[], nodeIds: string[]) {
+    function getNotSelectedNodes(nodes: Node[], nodeIds: Node['id'][]) {
       return nodes.filter(node => !nodeIds.includes(node.id));
     }
   }
@@ -100,6 +110,7 @@ function useGroup() {
     group,
     ungroup,
     canGroup,
+    canUnGroup,
   };
 }
 
