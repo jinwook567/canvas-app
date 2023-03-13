@@ -1,12 +1,13 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import useElementResize from '../../../../hooks/editor/useElementSize';
+import useElementResize from '../../../../hooks/useElementSize';
 import { stagesState } from '../../../../recoil/editor/atoms';
 import ListStage from '../ListStage/ListStage';
 import { useCreateInitialStage } from './useList';
 import * as Styled from './List.styles';
 import ListLayerWithTransformableNodes from '../ListLayerWithTransformableNodes/ListLayerWithTransformableNodes';
 import { createStageSize } from '../../../../utils/editor/size';
+import NodeControlBar from '../../NodeControlBar/NodeControlBar';
 
 function List() {
   const { size, divRef } = useElementResize();
@@ -16,6 +17,7 @@ function List() {
 
   return (
     <Styled.Grid ref={divRef} rowGap={3}>
+      <NodeControlBar />
       {stages.map(stage => (
         <ListStage
           key={stage.id}
