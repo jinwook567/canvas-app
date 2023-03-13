@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stage, Layer } from 'react-konva';
-import useElementResize from '../../../../hooks/editor/useElementSize';
+import useElementResize from '../../../../hooks/useElementSize';
 import { Node } from '../../../../types/editor';
 import { getResizeScale } from '../../../../utils/editor/scale';
 import ShapePicker2 from '../ShapePicker/ShapePicker2';
