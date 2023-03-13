@@ -1,14 +1,26 @@
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { stagesState } from '../../../recoil/editor/atoms';
 import { Node } from '../../../types/editor';
 import {
   updateStageNodesWithReplacement,
   updateStages,
 } from '../../../utils/editor/update';
-import { findStageByNodeId } from '../../../utils/editor/validate';
+import {
+  findNodeById,
+  findStageByNodeId,
+} from '../../../utils/editor/validate';
 
 function useDelete() {
-  const setStages = useSetRecoilState(stagesState);
+  const [stages, setStages] = useRecoilState(stagesState);
+
+  const canDeleteNode = (nodeIds: Node['id'][]) => {
+    if (nodeIds.length === 0) return false;
+
+    const nodes = nodeIds.map(nodeId => findNodeById(stages, nodeId));
+    if (nodes.some(node => !node || node.config.lock)) return false;
+
+    return true;
+  };
 
   const deleteNodes = (nodeIds: Node['id'][]) => {
     setStages(stages =>
