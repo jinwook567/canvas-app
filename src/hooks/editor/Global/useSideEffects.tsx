@@ -68,7 +68,9 @@ function useCreateSelectEffects() {
     }
 
     function isAllNodesReplaced() {
-      return newNodeIds.length === hash(stages).length;
+      return (
+        newNodeIds.length === hash(stages).length && previous?.length !== 0
+      );
     }
 
     function isNewNodeCreated() {
