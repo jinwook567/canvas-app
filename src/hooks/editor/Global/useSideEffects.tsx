@@ -6,13 +6,20 @@ import useSelect from '../Node/useSelect';
 import useHistory from './useHistory';
 
 function useSideEffects() {
+  useHistoryEffects();
+  useSelectEffects();
+}
+
+function useHistoryEffects() {
   const stages = useRecoilValue(stagesState);
   const { createHistory } = useHistory();
 
   useEffect(() => {
     createHistory(stages);
   }, [stages]);
+}
 
+function useSelectEffects() {
   const selectedStage = useRecoilValue(selectedStageState);
   const selectedIds = useRecoilValue(selectedIdsState);
   const { resetSelect, deselect } = useSelect();
