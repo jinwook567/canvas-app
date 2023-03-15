@@ -1,6 +1,7 @@
 {
   "name": "canva-app",
   "version": "0.1.0",
+  "homepage": "https://jinwook567.github.io/canvas-app",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
