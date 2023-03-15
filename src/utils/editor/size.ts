@@ -111,11 +111,16 @@ class TextSize extends NodeSize {
   }
 
   get width() {
-    return this.fontSize * this.text.length;
+    return (
+      this.fontSize *
+      this.text
+        .split('\n')
+        .reduce((acc, sentence) => Math.max(acc, sentence.length), 0)
+    );
   }
 
   get height() {
-    return this.fontSize;
+    return this.fontSize * this.text.split('\n').length;
   }
 }
 
