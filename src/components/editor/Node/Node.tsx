@@ -52,7 +52,14 @@ function Node(props: Props) {
     };
   }, []);
 
-  return <ShapePicker2 {...rest} nodeRef={nodeRef} />;
+  const { type } = props;
+  return (
+    <ShapePicker2
+      {...rest}
+      nodeRef={nodeRef}
+      {...(type === 'text' && { isSelected })}
+    />
+  );
 }
 
 export default Node;
