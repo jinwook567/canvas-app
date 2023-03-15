@@ -1,23 +1,22 @@
 # canvas-app
 
-This project makes simple photoshop functions available on the web browser using canvas API and React.
-Currently, only supports desktop environments(window width>1200px)
+This project uses HTML5 canvas to manipulate images on the web.  
+Currently, only desktop environments are supported (window width > 1200px)
 
-## Features
+Supported Features
 
-- resize and rotate an image, change the position
-- text
-- template(can preview on canvas)
-- history(back, forward)
+- upload image
+- resize image, change position, change angle
+- template, preview
 - multiple stages
-- group, multiple select
-- support keyboard shortcuts
-  - delete image: Backspace, delete
-  - group: cmd + g
-  - ungroup: cmd + shift + g
+- history(redo, undo)
+- text
+- grouping, ungrouping
+- download png
 
-## Usage
+Features to be supported in the future
 
-This project supports Zero-Install.
-
-no install necessary, "clone & `yarn start`"
+- mobile environment
+- keyboard shortcuts
+- save as template
+- automatic positioning
