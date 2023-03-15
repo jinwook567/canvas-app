@@ -16,7 +16,7 @@ function Text(
   const [isChangeMode, setIsChangeMode] = useState(false);
 
   const handleDbClick = () => {
-    setIsChangeMode(!isChangeMode);
+    setIsChangeMode(true);
   };
 
   useEffect(() => {
