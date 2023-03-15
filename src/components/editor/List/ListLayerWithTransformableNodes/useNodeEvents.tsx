@@ -19,6 +19,11 @@ function useNodeEvents() {
           { id: node.id, config: { x: e.target.x(), y: e.target.y() } },
         ]);
       },
+      ...(node.type === 'text' && {
+        onChange: (text: string) => {
+          transformNodesConfig([{ id: node.id, config: { text } }]);
+        },
+      }),
     };
 
     function select() {
