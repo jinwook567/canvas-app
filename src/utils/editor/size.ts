@@ -69,7 +69,7 @@ class NodeSize {
   }
 
   get maxX() {
-    return this.x + this.width;
+    return this.x + this.actualWidth;
   }
 
   get minY() {
@@ -77,7 +77,7 @@ class NodeSize {
   }
 
   get maxY() {
-    return this.y + this.height;
+    return this.y + this.actualHeight;
   }
 
   get node() {
