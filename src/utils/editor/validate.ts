@@ -30,3 +30,8 @@ const findNode = (nodes: Node[], nodeId: string): Node | undefined => {
   }
   return undefined;
 };
+
+export const isSameStage = (stage1: Stage, stage2: Stage) =>
+  stage1.id === stage2.id;
+
+export const isSameNode = (node1: Node, node2: Node) => node1.id === node2.id;
