@@ -1,8 +1,19 @@
 import { useEffect } from 'react';
 import useCreate from '../../../../hooks/editor/stage/useCreate';
+import useSelect from '../../../../hooks/editor/stage/useSelect';
 import { Size, Stage } from '../../../../types/editor';
 
-function useList() {}
+function useList() {
+  const { isSelected, selectStage } = useSelect();
+  const getStageWrapperProps = (stage: Stage) => ({
+    isSelected: isSelected(stage),
+    onSelect: () => selectStage(stage),
+  });
+
+  return {
+    getStageWrapperProps,
+  };
+}
 
 function useCreateInitialStage(stages: Stage[], divSize: Size) {
   const { createStage } = useCreate();
