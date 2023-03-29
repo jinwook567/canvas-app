@@ -6,8 +6,9 @@ export const stagesState = atom<Stage[]>({
   default: [],
 });
 
-export const selectedStageState = atom<Stage>({
+export const selectedStageState = atom<Stage | null>({
   key: 'selectedStage',
+  default: null,
 });
 
 export const selectedNodesState = atom<Stage['nodes']>({
