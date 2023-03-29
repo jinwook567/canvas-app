@@ -4,11 +4,12 @@ import React, { useRef, useEffect } from 'react';
 import * as Styled from './Wrapper.styles';
 
 type Props = {
+  onSelect: () => void;
   isSelected: boolean;
   children: React.ReactNode;
 };
 
-function Wrapper({ isSelected, children }: Props) {
+function Wrapper({ isSelected, onSelect, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ function Wrapper({ isSelected, children }: Props) {
   }, [isSelected]);
 
   return (
-    <Styled.Div isSelected={isSelected} ref={ref}>
+    <Styled.Div isSelected={isSelected} ref={ref} onClick={onSelect}>
       {children}
     </Styled.Div>
   );
