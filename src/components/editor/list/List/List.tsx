@@ -3,37 +3,33 @@ import { useRecoilValue } from 'recoil';
 import useElementResize from '../../../../hooks/useElementSize';
 import { stagesState } from '../../../../recoil/editor/atoms';
 import ListStage from '../ListStage/ListStage';
-import { useCreateInitialStage } from './useList';
+import useList, { useCreateInitialStage } from './useList';
 import * as Styled from './List.styles';
 import ListLayerWithTransformableNodes from '../ListLayerWithTransformableNodes/ListLayerWithTransformableNodes';
 import { createStageSize } from '../../../../utils/editor/size';
 import NodeControlBar from '../../NodeControlBar/NodeControlBar';
+import Stage from '../../../common/editor/Stage/Stage';
 
 function List() {
   const { size, divRef } = useElementResize();
   const stages = useRecoilValue(stagesState);
 
   useCreateInitialStage(stages, size);
+  const { getStageWrapperProps } = useList();
 
   return (
     <Styled.Grid ref={divRef} rowGap={3}>
       <NodeControlBar />
+
       {stages.map(stage => (
-        <ListStage
-          key={stage.id}
-          id={stage.id}
-          divSize={size}
-          size={createStageSize(stage).size}
-        >
-          <ListLayerWithTransformableNodes nodes={stage.nodes} />
-        </ListStage>
+        <Stage.Wrapper key={stage.id} {...getStageWrapperProps(stage)}>
+          <ListStage size={createStageSize(stage).size}>
+            <ListLayerWithTransformableNodes nodes={stage.nodes} />
+          </ListStage>
+        </Stage.Wrapper>
       ))}
     </Styled.Grid>
   );
 }
-
-// render stage list
-// handle stage size
-// list wrapper doesn't need i think
 
 export default List;
