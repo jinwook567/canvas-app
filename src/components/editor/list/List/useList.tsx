@@ -2,31 +2,36 @@ import { useEffect } from 'react';
 import useCreate from '../../../../hooks/editor/stage/useCreate';
 import useSelect from '../../../../hooks/editor/stage/useSelect';
 import { Size, Stage } from '../../../../types/editor';
+import { getResizeScale } from '../../../../utils/editor/scale';
+import { createStageSize } from '../../../../utils/editor/size';
 
-function useList() {
-  const { isSelected, selectStage } = useSelect();
-  const getStageWrapperProps = (stage: Stage) => ({
-    isSelected: isSelected(stage),
-    onSelect: () => selectStage(stage),
-  });
-
-  return {
-    getStageWrapperProps,
-  };
-}
-
-function useCreateInitialStage(stages: Stage[], divSize: Size) {
+function useCreateInitialStage(
+  currentStagesCount: number,
+  stage: Stage,
+  divSize: Size
+) {
   const { createStage } = useCreate();
+  const { selectStage } = useSelect();
 
   useEffect(() => {
-    if (isSizeCalculated() && stages.length === 0)
-      createStage({ config: { width: 500, height: 500 }, nodes: [] }, divSize);
+    if (isSizeCalculated() && currentStagesCount === 0) {
+      const scale = getResizeScale(createStageSize(stage), divSize, 0.8);
+      const newStage = {
+        ...stage,
+        config: {
+          ...stage.config,
+          width: createStageSize(stage).width * scale,
+          height: createStageSize(stage).height * scale,
+        },
+      };
+      createStage(newStage);
+      selectStage(newStage);
+    }
 
     function isSizeCalculated() {
       return divSize.width !== 0 && divSize.height !== 0;
     }
-  }, [divSize, stages]);
+  }, [divSize, currentStagesCount]);
 }
 
-export default useList;
 export { useCreateInitialStage };
