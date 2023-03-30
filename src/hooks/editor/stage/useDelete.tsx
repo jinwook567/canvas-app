@@ -8,7 +8,7 @@ function useDelete() {
 
   const deleteStage = (stageToDelete: Stage) => {
     setStages(currentVal =>
-      currentVal.filter(stage => isSameStage(stage, stageToDelete))
+      currentVal.filter(stage => !isSameStage(stage, stageToDelete))
     );
   };
 

@@ -9,8 +9,8 @@ function useListStageControlBar() {
   const { deleteStage } = useDelete();
   const { selectStage } = useSelect();
 
-  const getControlBarProps = (stage: Stage) => ({
-    onAppendStage: () => {
+  const getControlBarProps = () => ({
+    onAppendStage: (stage: Stage) => {
       const newStage = giveId({
         config: { ...createStageSize(stage).size },
         nodes: [],
@@ -18,7 +18,26 @@ function useListStageControlBar() {
       createStage(newStage);
       selectStage(newStage);
     },
-    onDeleteStage: () => deleteStage(stage),
+    onDeleteStage: ({
+      prevStage,
+      stage,
+      nextStage,
+    }: {
+      prevStage?: Stage;
+      stage: Stage;
+      nextStage?: Stage;
+    }) => {
+      deleteStage(stage);
+
+      if (nextStage) {
+        selectStage(nextStage);
+        return;
+      }
+
+      if (prevStage) {
+        selectStage(prevStage);
+      }
+    },
   });
 
   return {

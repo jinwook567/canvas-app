@@ -13,10 +13,12 @@ type Props = {
 function ListStageControlBar({ stage, prevStage, nextStage }: Props) {
   const { getControlBarProps } = useListStageControlBar();
   const { selectStage } = useSelect();
+  const { onAppendStage, onDeleteStage } = getControlBarProps();
 
   return (
     <StageControlBar
-      {...getControlBarProps(stage)}
+      onAppendStage={() => onAppendStage(stage)}
+      onDeleteStage={() => onDeleteStage({ prevStage, stage, nextStage })}
       onSelectDown={nextStage && (() => selectStage(nextStage))}
       onSelectUp={prevStage && (() => selectStage(prevStage))}
     />
