@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { KonvaNodeEvents, Stage as KonvaStage } from 'react-konva';
 import Konva from 'konva';
 import Wrapper from './Wrapper/Wrapper';
+import Selector from './Selector/Selector';
 
 type Props = {
   children: React.ReactNode;
@@ -25,5 +26,6 @@ function Stage({ children, isExportRequested, onExport, ...config }: Props) {
 }
 
 Stage.Wrapper = Wrapper;
+Stage.Selector = Selector;
 
 export default Stage;
