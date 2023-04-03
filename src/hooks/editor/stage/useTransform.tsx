@@ -1,27 +1,29 @@
 import { useSetRecoilState } from 'recoil';
 import { Props as TemplateType } from '../../../components/common/editor/Preview/Preview';
-import { selectedStageState } from '../../../recoil/editor/selectors';
+import { stagesState } from '../../../recoil/editor/atoms';
 import { Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
 import { createStageSize, getSize } from '../../../utils/editor/size';
 import { giveId } from '../node/useCreate';
+import { updateStages } from '../../../utils/editor/update';
 
 function useTransform() {
-  const setSelectedStage = useSetRecoilState(selectedStageState);
+  const setStages = useSetRecoilState(stagesState);
 
-  function transformSelectedStageByTemplate(template: TemplateType) {
-    setSelectedStage(currentVal =>
-      currentVal
-        ? {
-            ...currentVal,
-            nodes: template.nodes.map(node => giveId(node)),
-            config: {
-              ...currentVal.config,
-              scaleX: getTemplateScale(template, currentVal),
-              scaleY: getTemplateScale(template, currentVal),
-            },
-          }
-        : currentVal
+  function transformSelectedStageByTemplate(
+    template: TemplateType,
+    stageToUpdate: Stage
+  ) {
+    setStages(stages =>
+      updateStages(stages, {
+        ...stageToUpdate,
+        nodes: template.nodes.map(node => giveId(node)),
+        config: {
+          ...stageToUpdate.config,
+          scaleX: getTemplateScale(template, stageToUpdate),
+          scaleY: getTemplateScale(template, stageToUpdate),
+        },
+      })
     );
 
     function getTemplateScale(template: TemplateType, stage: Stage) {
