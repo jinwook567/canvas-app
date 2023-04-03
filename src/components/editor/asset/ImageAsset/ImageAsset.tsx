@@ -1,8 +1,10 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
 import { Grid } from '@mui/material';
 import useCreate from '../../../../hooks/editor/node/useCreate';
 import ImageList from '../../../common/editor/ImageList/ImageList';
 import ImageUpload from '../../../common/editor/ImageUpload/ImageUpload';
+import { selectedStageValue } from '../../../../recoil/editor/selectors';
 
 interface Props {
   items: { src: string }[];
@@ -11,6 +13,7 @@ interface Props {
 
 function ImageAsset({ items, addItem }: Props) {
   const { createNode } = useCreate();
+  const selectedStage = useRecoilValue(selectedStageValue);
   return (
     <Grid container flexDirection="column" alignItems="center" rowGap={3}>
       <ImageUpload
@@ -24,14 +27,18 @@ function ImageAsset({ items, addItem }: Props) {
       <ImageList
         items={items}
         onClick={image =>
-          createNode({
-            type: 'image',
-            src: image.src,
-            config: {
-              width: image.width,
-              height: image.height,
+          selectedStage &&
+          createNode(
+            {
+              type: 'image',
+              src: image.src,
+              config: {
+                width: image.width,
+                height: image.height,
+              },
             },
-          })
+            selectedStage
+          )
         }
       />
     </Grid>

@@ -1,5 +1,5 @@
-import { useRecoilState } from 'recoil';
-import { selectedStageState } from '../../../recoil/editor/selectors';
+import { useSetRecoilState } from 'recoil';
+import { stagesState } from '../../../recoil/editor/atoms';
 import { Node, Size, NodeWithoutId, Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
 import {
@@ -7,25 +7,25 @@ import {
   createStageSize,
   getSize,
 } from '../../../utils/editor/size';
-import { updateNodeConfig } from '../../../utils/editor/update';
+import { updateNodeConfig, updateStages } from '../../../utils/editor/update';
 import { createUniqueId } from '../../../utils/unit';
 
 function useCreate() {
-  const [selectedStage, setSelectedStage] = useRecoilState(selectedStageState);
+  const setStages = useSetRecoilState(stagesState);
 
-  function createNode(node: NodeWithoutId) {
-    if (!selectedStage) throw new Error('there is no selected stage');
-
-    setSelectedStage({
-      ...selectedStage,
-      nodes: [
-        ...selectedStage.nodes,
-        createLocator(giveId(node), selectedStage)
-          .relocate()
-          .avoidSamePos()
-          .node(),
-      ],
-    });
+  function createNode(node: NodeWithoutId, stageToUpdate: Stage) {
+    setStages(stages =>
+      updateStages(stages, {
+        ...stageToUpdate,
+        nodes: [
+          ...stageToUpdate.nodes,
+          createLocator(giveId(node), stageToUpdate)
+            .relocate()
+            .avoidSamePos()
+            .node(),
+        ],
+      })
+    );
 
     function createLocator(node: Node, stage: Stage) {
       return {
