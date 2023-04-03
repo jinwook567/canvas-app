@@ -19,8 +19,8 @@ function ListStageControlBar({ stage, prevStage, nextStage }: Props) {
     <StageControlBar
       onAppendStage={() => onAppendStage(stage)}
       onDeleteStage={() => onDeleteStage({ prevStage, stage, nextStage })}
-      onSelectDown={nextStage && (() => selectStage(nextStage))}
-      onSelectUp={prevStage && (() => selectStage(prevStage))}
+      onSelectDown={nextStage && (() => selectStage(nextStage.id))}
+      onSelectUp={prevStage && (() => selectStage(prevStage.id))}
     />
   );
 }

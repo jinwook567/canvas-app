@@ -25,7 +25,7 @@ function useCreateInitialStage(
         },
       };
       createStage(newStage);
-      selectStage(newStage);
+      selectStage(newStage.id);
     }
 
     function isSizeCalculated() {

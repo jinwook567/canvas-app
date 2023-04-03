@@ -16,7 +16,7 @@ function useListStageControlBar() {
         nodes: [],
       });
       createStage(newStage);
-      selectStage(newStage);
+      selectStage(newStage.id);
     },
     onDeleteStage: ({
       prevStage,
@@ -30,12 +30,12 @@ function useListStageControlBar() {
       deleteStage(stage);
 
       if (nextStage) {
-        selectStage(nextStage);
+        selectStage(nextStage.id);
         return;
       }
 
       if (prevStage) {
-        selectStage(prevStage);
+        selectStage(prevStage.id);
       }
     },
   });

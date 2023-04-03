@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { selectedIdsState, stagesState } from '../../../recoil/editor/atoms';
-import { selectedStageState } from '../../../recoil/editor/selectors';
+import { selectedStageValue } from '../../../recoil/editor/selectors';
 import { Stage, Node } from '../../../types/editor';
 import usePrevious from '../../usePrevious';
 import useSelect from '../node/useSelect';
@@ -23,7 +23,7 @@ function useHistoryEffects() {
 }
 
 function useSelectEffects() {
-  const selectedStage = useRecoilValue(selectedStageState);
+  const selectedStage = useRecoilValue(selectedStageValue);
   const selectedIds = useRecoilValue(selectedIdsState);
   const { resetSelect, deselect } = useSelect();
 

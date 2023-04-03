@@ -15,8 +15,8 @@ function ListStage({ size, children, stage }: Props) {
   const { isSelected, selectStage } = useSelect();
 
   return (
-    <Stage.Wrapper isSelected={isSelected(stage)}>
-      <Stage.Selector onSelect={() => selectStage(stage)}>
+    <Stage.Wrapper isSelected={isSelected(stage.id)}>
+      <Stage.Selector onSelect={() => selectStage(stage.id)}>
         <Stage
           width={size.width}
           height={size.height}
