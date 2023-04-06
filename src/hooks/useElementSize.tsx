@@ -11,18 +11,22 @@ function useElementResize() {
 
     const newTimer = setTimeout(() => {
       if (divRef.current) {
+        const rect = divRef.current.getBoundingClientRect();
         setSize({
-          width: divRef.current.offsetWidth,
-          height: divRef.current.offsetHeight,
+          width: rect.width,
+          height: rect.height,
         });
       }
-    }, 100);
+    }, 10);
 
     timer.current = newTimer;
   }
 
   useEffect(() => {
     handleResize();
+  }, []);
+
+  useEffect(() => {
     window.addEventListener('resize', handleResize);
 
     return () => {
