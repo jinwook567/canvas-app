@@ -1,17 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-classes-per-file */
 import React, { RefObject, useRef } from 'react';
 import Konva from 'konva';
-import { ImageConfig } from 'konva/lib/shapes/Image';
-import { TextConfig } from 'konva/lib/shapes/Text';
-import { GroupConfig } from 'konva/lib/Group';
-import { LayerConfig } from 'konva/lib/Layer';
+import {
+  ImageConfig,
+  Image as ImageComponentClass,
+} from 'konva/lib/shapes/Image';
+import { TextConfig, Text as TextComponentClass } from 'konva/lib/shapes/Text';
+import { GroupConfig, Group as GroupComponentClass } from 'konva/lib/Group';
+import { LayerConfig, Layer as LayerComponentClass } from 'konva/lib/Layer';
+import { ContainerConfig } from 'konva/lib/Container';
+import { Stage as StageComponentClass } from 'konva/lib/Stage';
 import {
   Image as ImageComponent,
   Text as TextComponent,
   Group as GroupComponent,
   Layer as LayerComponent,
 } from 'react-konva';
-import { ContainerConfig } from 'konva/lib/Container';
 import { createUniqueId } from '../unit';
 
 export interface RefConfig<RefType, ConfigType> {
@@ -53,6 +58,10 @@ export class Image
   render() {
     return <ImageComponent {...this.config} ref={this._ref} />;
   }
+
+  get current() {
+    return this._ref.current || new ImageComponentClass({ ...this.config });
+  }
 }
 
 export class Text
@@ -61,6 +70,10 @@ export class Text
 {
   render() {
     return <TextComponent {...this.config} ref={this._ref} />;
+  }
+
+  get current() {
+    return this._ref.current || new TextComponentClass({ ...this.config });
   }
 }
 
@@ -80,6 +93,13 @@ export class Group<ChildType extends Utils<unknown, unknown>>
       <GroupComponent {...this.config} ref={this._ref}>
         {this.children.map(child => child.render())}
       </GroupComponent>
+    );
+  }
+
+  get current() {
+    return (
+      this._ref.current ||
+      new GroupComponentClass({ ...this.config }).add(...(this.children as any))
     );
   }
 }
@@ -102,6 +122,13 @@ export class Layer<ChildType extends Utils<unknown, unknown>>
       </LayerComponent>
     );
   }
+
+  get current() {
+    return (
+      this._ref.current ||
+      new LayerComponentClass({ ...this.config }).add(...(this.children as any))
+    );
+  }
 }
 
 export class Stage<ChildType extends Utils<unknown, unknown>> extends Ref<
@@ -119,5 +146,12 @@ export class Stage<ChildType extends Utils<unknown, unknown>> extends Ref<
     this.children = children;
     this._ref = useRef<Konva.Stage>(null);
     this._canvasRef = useRef<Konva.Layer>(null);
+  }
+
+  get current() {
+    return (
+      this._ref.current ||
+      new StageComponentClass({ ...this.config, container: '' })
+    );
   }
 }
