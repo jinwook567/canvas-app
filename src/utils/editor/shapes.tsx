@@ -20,7 +20,7 @@ export interface RefConfig<RefType, ConfigType> {
   id: string;
 }
 
-export interface Shape<Ref, Config> extends RefConfig<Ref, Config> {
+export interface Utils<Ref, Config> extends RefConfig<Ref, Config> {
   render: () => React.ReactElement;
 }
 
@@ -29,7 +29,7 @@ class Ref<RefType, ConfigType> implements RefConfig<RefType, ConfigType> {
 
   private _id: string;
 
-  protected _config: ConfigType;
+  private _config: ConfigType;
 
   constructor(config: ConfigType) {
     this._ref = useRef<RefType>(null);
@@ -37,17 +37,8 @@ class Ref<RefType, ConfigType> implements RefConfig<RefType, ConfigType> {
     this._id = createUniqueId();
   }
 
-  get current() {
-    if (!this._ref.current) throw new Error('cannot use before render');
-    return this._ref.current;
-  }
-
   get config() {
     return this._config;
-  }
-
-  set config(config: ConfigType) {
-    this._config = config;
   }
 
   get id() {
@@ -57,7 +48,7 @@ class Ref<RefType, ConfigType> implements RefConfig<RefType, ConfigType> {
 
 export class Image
   extends Ref<Konva.Image, ImageConfig>
-  implements Shape<Konva.Image, ImageConfig>
+  implements Utils<Konva.Image, ImageConfig>
 {
   render() {
     return <ImageComponent {...this.config} ref={this._ref} />;
@@ -66,16 +57,16 @@ export class Image
 
 export class Text
   extends Ref<Konva.Text, TextConfig>
-  implements Shape<Konva.Text, TextConfig>
+  implements Utils<Konva.Text, TextConfig>
 {
   render() {
     return <TextComponent {...this.config} ref={this._ref} />;
   }
 }
 
-export class Group<ChildType extends Shape<unknown, unknown>>
+export class Group<ChildType extends Utils<unknown, unknown>>
   extends Ref<Konva.Group, GroupConfig>
-  implements Shape<Konva.Group, GroupConfig>
+  implements Utils<Konva.Group, GroupConfig>
 {
   children: ChildType[];
 
@@ -93,9 +84,9 @@ export class Group<ChildType extends Shape<unknown, unknown>>
   }
 }
 
-export class Layer<ChildType extends Shape<unknown, unknown>>
+export class Layer<ChildType extends Utils<unknown, unknown>>
   extends Ref<Konva.Layer, LayerConfig>
-  implements Shape<Konva.Layer, LayerConfig>
+  implements Utils<Konva.Layer, LayerConfig>
 {
   children: ChildType[];
 
@@ -113,7 +104,7 @@ export class Layer<ChildType extends Shape<unknown, unknown>>
   }
 }
 
-export class Stage<ChildType extends Shape<unknown, unknown>> extends Ref<
+export class Stage<ChildType extends Utils<unknown, unknown>> extends Ref<
   Konva.Stage,
   ContainerConfig
 > {
