@@ -4,10 +4,12 @@ import Konva from 'konva';
 import { ImageConfig } from 'konva/lib/shapes/Image';
 import { TextConfig } from 'konva/lib/shapes/Text';
 import { GroupConfig } from 'konva/lib/Group';
+import { LayerConfig } from 'konva/lib/Layer';
 import {
   Image as ImageComponent,
   Text as TextComponent,
   Group as GroupComponent,
+  Layer as LayerComponent,
 } from 'react-konva';
 import { ContainerConfig } from 'konva/lib/Container';
 import { createUniqueId } from '../unit';
@@ -83,6 +85,26 @@ export class Group<ChildType extends Utils<unknown, unknown>>
       <GroupComponent {...this.config} ref={this._ref}>
         {this.children.map(child => child.render())}
       </GroupComponent>
+    );
+  }
+}
+
+export class Layer<ChildType extends Utils<unknown, unknown>>
+  extends Ref<Konva.Layer, LayerConfig>
+  implements Utils<Konva.Layer, LayerConfig>
+{
+  children: ChildType[];
+
+  constructor(config: LayerConfig, children = [] as ChildType[]) {
+    super(config);
+    this.children = children;
+  }
+
+  render() {
+    return (
+      <LayerComponent {...this.config} ref={this._ref}>
+        {this.children.map(child => child.render())}
+      </LayerComponent>
     );
   }
 }
