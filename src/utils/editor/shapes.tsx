@@ -1,17 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-classes-per-file */
 import React, { RefObject, useRef } from 'react';
 import Konva from 'konva';
-import { ImageConfig } from 'konva/lib/shapes/Image';
-import { TextConfig } from 'konva/lib/shapes/Text';
-import { GroupConfig } from 'konva/lib/Group';
-import { LayerConfig } from 'konva/lib/Layer';
+import {
+  ImageConfig,
+  Image as ImageComponentClass,
+} from 'konva/lib/shapes/Image';
+import { TextConfig, Text as TextComponentClass } from 'konva/lib/shapes/Text';
+import { GroupConfig, Group as GroupComponentClass } from 'konva/lib/Group';
+import { LayerConfig, Layer as LayerComponentClass } from 'konva/lib/Layer';
+import { ContainerConfig } from 'konva/lib/Container';
+import { Stage as StageComponentClass } from 'konva/lib/Stage';
 import {
   Image as ImageComponent,
   Text as TextComponent,
   Group as GroupComponent,
   Layer as LayerComponent,
 } from 'react-konva';
-import { ContainerConfig } from 'konva/lib/Container';
 import { createUniqueId } from '../unit';
 
 export interface RefConfig<RefType, ConfigType> {
@@ -20,7 +25,7 @@ export interface RefConfig<RefType, ConfigType> {
   id: string;
 }
 
-export interface Utils<Ref, Config> extends RefConfig<Ref, Config> {
+export interface Shape<Ref, Config> extends RefConfig<Ref, Config> {
   render: () => React.ReactElement;
 }
 
@@ -29,7 +34,7 @@ class Ref<RefType, ConfigType> implements RefConfig<RefType, ConfigType> {
 
   private _id: string;
 
-  private _config: ConfigType;
+  protected _config: ConfigType;
 
   constructor(config: ConfigType) {
     this._ref = useRef<RefType>(null);
@@ -37,13 +42,12 @@ class Ref<RefType, ConfigType> implements RefConfig<RefType, ConfigType> {
     this._id = createUniqueId();
   }
 
-  get current() {
-    if (!this._ref.current) throw new Error('should match component');
-    return this._ref.current;
-  }
-
   get config() {
     return this._config;
+  }
+
+  set config(config: ConfigType) {
+    this._config = config;
   }
 
   get id() {
@@ -53,25 +57,33 @@ class Ref<RefType, ConfigType> implements RefConfig<RefType, ConfigType> {
 
 export class Image
   extends Ref<Konva.Image, ImageConfig>
-  implements Utils<Konva.Image, ImageConfig>
+  implements Shape<Konva.Image, ImageConfig>
 {
   render() {
     return <ImageComponent {...this.config} ref={this._ref} />;
+  }
+
+  get current() {
+    return this._ref.current || new ImageComponentClass({ ...this.config });
   }
 }
 
 export class Text
   extends Ref<Konva.Text, TextConfig>
-  implements Utils<Konva.Text, TextConfig>
+  implements Shape<Konva.Text, TextConfig>
 {
   render() {
     return <TextComponent {...this.config} ref={this._ref} />;
   }
+
+  get current() {
+    return this._ref.current || new TextComponentClass({ ...this.config });
+  }
 }
 
-export class Group<ChildType extends Utils<unknown, unknown>>
+export class Group<ChildType extends Shape<unknown, unknown>>
   extends Ref<Konva.Group, GroupConfig>
-  implements Utils<Konva.Group, GroupConfig>
+  implements Shape<Konva.Group, GroupConfig>
 {
   children: ChildType[];
 
@@ -87,11 +99,18 @@ export class Group<ChildType extends Utils<unknown, unknown>>
       </GroupComponent>
     );
   }
+
+  get current() {
+    return (
+      this._ref.current ||
+      new GroupComponentClass({ ...this.config }).add(...(this.children as any))
+    );
+  }
 }
 
-export class Layer<ChildType extends Utils<unknown, unknown>>
+export class Layer<ChildType extends Shape<unknown, unknown>>
   extends Ref<Konva.Layer, LayerConfig>
-  implements Utils<Konva.Layer, LayerConfig>
+  implements Shape<Konva.Layer, LayerConfig>
 {
   children: ChildType[];
 
@@ -107,9 +126,16 @@ export class Layer<ChildType extends Utils<unknown, unknown>>
       </LayerComponent>
     );
   }
+
+  get current() {
+    return (
+      this._ref.current ||
+      new LayerComponentClass({ ...this.config }).add(...(this.children as any))
+    );
+  }
 }
 
-export class Stage<ChildType extends Utils<unknown, unknown>> extends Ref<
+export class Stage<ChildType extends Shape<unknown, unknown>> extends Ref<
   Konva.Stage,
   ContainerConfig
 > {
@@ -124,5 +150,12 @@ export class Stage<ChildType extends Utils<unknown, unknown>> extends Ref<
     this.children = children;
     this._ref = useRef<Konva.Stage>(null);
     this._canvasRef = useRef<Konva.Layer>(null);
+  }
+
+  get current() {
+    return (
+      this._ref.current ||
+      new StageComponentClass({ ...this.config, container: '' })
+    );
   }
 }
