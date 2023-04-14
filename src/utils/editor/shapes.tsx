@@ -12,17 +12,9 @@ import {
   Group as GroupComponent,
   Layer as LayerComponent,
 } from 'react-konva';
+import { Shape, RefConfig } from '../../types/editor';
+import { DefaultSize, GroupSize, TextSize } from './size2';
 import { createUniqueId } from '../unit';
-
-export interface RefConfig<RefType, ConfigType> {
-  current: RefObject<RefType>['current'];
-  config: ConfigType;
-  id: string;
-}
-
-export interface Utils<Ref, Config> extends RefConfig<Ref, Config> {
-  render: () => React.ReactElement;
-}
 
 abstract class Ref<RefType, ConfigType>
   implements RefConfig<RefType, ConfigType>
@@ -55,25 +47,33 @@ abstract class Ref<RefType, ConfigType>
 
 export class Image
   extends Ref<Konva.Image, ImageConfig>
-  implements Utils<Konva.Image, ImageConfig>
+  implements Shape<Konva.Image, ImageConfig>
 {
   render() {
     return <ImageComponent {...this.config} ref={this._ref} />;
+  }
+
+  get bounds() {
+    return new DefaultSize({ ...this.config });
   }
 }
 
 export class Text
   extends Ref<Konva.Text, TextConfig>
-  implements Utils<Konva.Text, TextConfig>
+  implements Shape<Konva.Text, TextConfig>
 {
   render() {
     return <TextComponent {...this.config} ref={this._ref} />;
   }
+
+  get bounds() {
+    return new TextSize({ ...this.config });
+  }
 }
 
-export class Group<ChildType extends Utils<unknown, unknown>>
+export class Group<ChildType extends Shape<unknown, unknown>>
   extends Ref<Konva.Group, GroupConfig>
-  implements Utils<Konva.Group, GroupConfig>
+  implements Shape<Konva.Group, GroupConfig>
 {
   children: ChildType[];
 
@@ -89,11 +89,15 @@ export class Group<ChildType extends Utils<unknown, unknown>>
       </GroupComponent>
     );
   }
+
+  get bounds() {
+    return new GroupSize({ ...this.config }, [...this.children]);
+  }
 }
 
-export class Layer<ChildType extends Utils<unknown, unknown>>
+export class Layer<ChildType extends Shape<unknown, unknown>>
   extends Ref<Konva.Layer, LayerConfig>
-  implements Utils<Konva.Layer, LayerConfig>
+  implements Shape<Konva.Layer, LayerConfig>
 {
   children: ChildType[];
 
@@ -109,9 +113,13 @@ export class Layer<ChildType extends Utils<unknown, unknown>>
       </LayerComponent>
     );
   }
+
+  get bounds() {
+    return new DefaultSize({ ...this.config });
+  }
 }
 
-export class Stage<ChildType extends Utils<unknown, unknown>> extends Ref<
+export class Stage<ChildType extends Shape<unknown, unknown>> extends Ref<
   Konva.Stage,
   ContainerConfig
 > {

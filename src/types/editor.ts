@@ -1,4 +1,5 @@
 import Konva from 'konva';
+import { RefObject } from 'react';
 import { RemoveIndex } from '../utils/types';
 
 export interface ImageConfigWithoutImage
@@ -44,3 +45,25 @@ export type Size = {
   width: number;
   height: number;
 };
+
+export interface RefConfig<Ref, Config> {
+  current: RefObject<Ref>['current'];
+  config: Config;
+  id: string;
+}
+
+export interface Shape<Ref, Config> extends RefConfig<Ref, Config> {
+  render: () => React.ReactElement;
+  bounds: ShapeBounds;
+}
+
+export interface ShapeBounds {
+  x: number;
+  y: number;
+  endX: number;
+  endY: number;
+  width: number;
+  height: number;
+  actualWidth: number;
+  actualHeight: number;
+}
