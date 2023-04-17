@@ -1,15 +1,34 @@
 import { useSetRecoilState } from 'recoil';
-import { stagesState } from '../../../recoil/editor/atoms';
-import { Stage } from '../../../types/editor';
+import { stageClassesState, stagesState } from '../../../recoil/editor/atoms';
+import { Stage, Shape } from '../../../types/editor';
 import { isSameStage } from '../../../utils/editor/validate';
 import { createUniqueId } from '../../../utils/unit';
+import { Stage as StageClass } from '../../../utils/editor/shapes';
 
 function useCreate() {
-  const setStages = useSetRecoilState(stagesState);
+  const setStagesOld = useSetRecoilState(stagesState);
+
+  const setStages = useSetRecoilState(stageClassesState);
+
+  function createStage2<ChildType extends Shape>(
+    stage: StageClass<ChildType>,
+    beforeStage?: StageClass<ChildType>
+  ) {
+    setStages(stages =>
+      stages.reduce((acc, cur, index) => {
+        if (
+          (beforeStage && cur.id === beforeStage.id) ||
+          (!beforeStage && index === stages.length - 1)
+        )
+          acc.push(stage);
+        return acc;
+      }, [] as StageClass<ChildType>[])
+    );
+  }
 
   function createStage(stage: Stage, beforeStage?: Stage) {
     if (beforeStage) {
-      setStages(currentVal =>
+      setStagesOld(currentVal =>
         currentVal.reduce(
           (acc, cur) =>
             isSameStage(cur, beforeStage)
@@ -19,12 +38,13 @@ function useCreate() {
         )
       );
     } else {
-      setStages(currentVal => [...currentVal, stage]);
+      setStagesOld(currentVal => [...currentVal, stage]);
     }
   }
 
   return {
     createStage,
+    createStage2,
   };
 }
 
