@@ -1,20 +1,34 @@
 import { useSetRecoilState } from 'recoil';
 import { Props as TemplateType } from '../../../components/common/editor/Preview/Preview';
-import { stagesState } from '../../../recoil/editor/atoms';
-import { Stage } from '../../../types/editor';
+import { stageClassesState, stagesState } from '../../../recoil/editor/atoms';
+import { Shape, Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
 import { createStageSize, getSize } from '../../../utils/editor/size';
 import { giveId } from '../node/useCreate';
 import { updateStages } from '../../../utils/editor/update';
+import { Stage as StageClass } from '../../../utils/editor/shapes';
 
 function useTransform() {
-  const setStages = useSetRecoilState(stagesState);
+  const setStagesOld = useSetRecoilState(stagesState);
+
+  const setStages = useSetRecoilState(stageClassesState);
+
+  function applyTemplate<ChildType extends Shape>(
+    template: StageClass<ChildType>,
+    stageToApply: StageClass<ChildType>
+  ) {
+    setStages(stages =>
+      stages.map(stage =>
+        stage.id === stageToApply.id ? template.duplicate() : stage
+      )
+    );
+  }
 
   function transformSelectedStageByTemplate(
     template: TemplateType,
     stageToUpdate: Stage
   ) {
-    setStages(stages =>
+    setStagesOld(stages =>
       updateStages(stages, {
         ...stageToUpdate,
         nodes: template.nodes.map(node => giveId(node)),
