@@ -1,7 +1,13 @@
 import { atom } from 'recoil';
-import { Stage } from '../../types/editor';
+import { Stage } from '../../utils/editor/shapes';
+import { Stage as StageType, Shape } from '../../types/editor';
 
-export const stagesState = atom<Stage[]>({
+export const stageClassesState = atom<Stage<Shape>[]>({
+  key: 'stagesClassState',
+  default: [],
+});
+
+export const stagesState = atom<StageType[]>({
   key: 'stagesState',
   default: [],
 });
@@ -17,7 +23,7 @@ export const selectedIdsState = atom<string[]>({
 });
 
 type HistoryState = {
-  stages: Stage[];
+  stages: StageType[];
   prev: HistoryState;
   next: HistoryState;
 } | null;
