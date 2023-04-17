@@ -1,7 +1,7 @@
 import { useSetRecoilState } from 'recoil';
 import { Props as TemplateType } from '../../../components/common/editor/Preview/Preview';
 import { stageClassesState, stagesState } from '../../../recoil/editor/atoms';
-import { Shape, Stage } from '../../../types/editor';
+import { Stage } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
 import { createStageSize, getSize } from '../../../utils/editor/size';
 import { giveId } from '../node/useCreate';
@@ -13,10 +13,7 @@ function useTransform() {
 
   const setStages = useSetRecoilState(stageClassesState);
 
-  function applyTemplate<ChildType extends Shape>(
-    template: StageClass<ChildType>,
-    stageToApply: StageClass<ChildType>
-  ) {
+  function applyTemplate(template: StageClass, stageToApply: StageClass) {
     setStages(stages =>
       stages.map(stage =>
         stage.id === stageToApply.id ? template.duplicate() : stage
@@ -51,6 +48,7 @@ function useTransform() {
 
   return {
     transformSelectedStageByTemplate,
+    applyTemplate,
   };
 }
 
