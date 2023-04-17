@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
-import React, { RefObject, useRef } from 'react';
+import React from 'react';
 import Konva from 'konva';
+import _ from 'lodash';
 import { ImageConfig } from 'konva/lib/shapes/Image';
 import { TextConfig } from 'konva/lib/shapes/Text';
 import { GroupConfig } from 'konva/lib/Group';
@@ -19,29 +20,34 @@ import { createUniqueId } from '../unit';
 abstract class Ref<RefType, ConfigType>
   implements RefConfig<RefType, ConfigType>
 {
-  protected _ref: RefObject<RefType>;
-
   private _id: string;
 
   private _config: ConfigType;
 
+  protected _node: RefType | null;
+
   constructor(config: ConfigType) {
-    this._ref = useRef<RefType>(null);
     this._config = config;
     this._id = createUniqueId();
+    this._node = null;
   }
 
   get config() {
     return this._config;
   }
 
+  setConfig(config: ConfigType) {
+    const result = _.clone(this);
+    result._config = config;
+    return result;
+  }
+
   get id() {
     return this._id;
   }
 
-  get current() {
-    if (!this._ref.current) throw new Error('cannot use before render');
-    return this._ref.current;
+  get node() {
+    return this._node;
   }
 }
 
@@ -50,11 +56,22 @@ export class Image
   implements Shape<Konva.Image, ImageConfig>
 {
   render() {
-    return <ImageComponent {...this.config} ref={this._ref} />;
+    return (
+      <ImageComponent
+        {...this.config}
+        ref={node => {
+          this._node = node;
+        }}
+      />
+    );
   }
 
   get bounds() {
     return new DefaultSize({ ...this.config });
+  }
+
+  duplicate() {
+    return new Image({ ...this.config });
   }
 }
 
@@ -63,15 +80,26 @@ export class Text
   implements Shape<Konva.Text, TextConfig>
 {
   render() {
-    return <TextComponent {...this.config} ref={this._ref} />;
+    return (
+      <TextComponent
+        {...this.config}
+        ref={node => {
+          this._node = node;
+        }}
+      />
+    );
   }
 
   get bounds() {
     return new TextSize({ ...this.config });
   }
+
+  duplicate() {
+    return new Text({ ...this.config });
+  }
 }
 
-export class Group<ChildType extends Shape<unknown, unknown>>
+export class Group<ChildType extends Shape>
   extends Ref<Konva.Group, GroupConfig>
   implements Shape<Konva.Group, GroupConfig>
 {
@@ -84,7 +112,12 @@ export class Group<ChildType extends Shape<unknown, unknown>>
 
   render() {
     return (
-      <GroupComponent {...this.config} ref={this._ref}>
+      <GroupComponent
+        {...this.config}
+        ref={node => {
+          this._node = node;
+        }}
+      >
         {this.children.map(child => child.render())}
       </GroupComponent>
     );
@@ -93,9 +126,16 @@ export class Group<ChildType extends Shape<unknown, unknown>>
   get bounds() {
     return new GroupSize({ ...this.config }, [...this.children]);
   }
+
+  duplicate() {
+    return new Group(
+      { ...this.config },
+      this.children.map(child => child.duplicate())
+    );
+  }
 }
 
-export class Layer<ChildType extends Shape<unknown, unknown>>
+export class Layer<ChildType extends Shape>
   extends Ref<Konva.Layer, LayerConfig>
   implements Shape<Konva.Layer, LayerConfig>
 {
@@ -108,7 +148,12 @@ export class Layer<ChildType extends Shape<unknown, unknown>>
 
   render() {
     return (
-      <LayerComponent {...this.config} ref={this._ref}>
+      <LayerComponent
+        {...this.config}
+        ref={node => {
+          this._node = node;
+        }}
+      >
         {this.children.map(child => child.render())}
       </LayerComponent>
     );
@@ -117,22 +162,37 @@ export class Layer<ChildType extends Shape<unknown, unknown>>
   get bounds() {
     return new DefaultSize({ ...this.config });
   }
+
+  duplicate() {
+    return new Layer(
+      { ...this.config },
+      this.children.map(child => child.duplicate())
+    );
+  }
 }
 
-export class Stage<ChildType extends Shape<unknown, unknown>> extends Ref<
+export class Stage<ChildType extends Shape> extends Ref<
   Konva.Stage,
   ContainerConfig
 > {
   children: ChildType[];
 
-  _ref: RefObject<Konva.Stage>;
-
-  _canvasRef: RefObject<Konva.Layer>;
+  canvasLayer: Konva.Layer | null;
 
   constructor(config: ContainerConfig, children = [] as ChildType[]) {
     super(config);
     this.children = children;
-    this._ref = useRef<Konva.Stage>(null);
-    this._canvasRef = useRef<Konva.Layer>(null);
+    this.canvasLayer = null;
+  }
+
+  set node(value: Konva.Stage | null) {
+    this._node = value;
+  }
+
+  duplicate() {
+    return new Stage(
+      { ...this.config },
+      this.children.map(child => child.duplicate())
+    );
   }
 }
