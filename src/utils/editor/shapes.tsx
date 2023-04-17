@@ -171,7 +171,7 @@ export class Layer<ChildType extends Shape>
   }
 }
 
-export class Stage<ChildType extends Shape> extends Ref<
+export class Stage<ChildType extends Shape = Shape> extends Ref<
   Konva.Stage,
   ContainerConfig
 > {
