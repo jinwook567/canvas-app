@@ -1,5 +1,6 @@
 import Konva from 'konva';
 import { NodeConfig } from 'konva/lib/Node';
+import { KonvaNodeEvents } from 'react-konva';
 import { RemoveIndex } from '../utils/types';
 
 export interface ImageConfigWithoutImage
@@ -53,9 +54,11 @@ export interface RefConfig<Ref, Config> {
   id: string;
 }
 
+export type RenderArg<CustomProps> = KonvaNodeEvents & CustomProps;
+
 export interface Shape<Ref = Konva.Node, Config = NodeConfig>
   extends RefConfig<Ref, Config> {
-  render: () => React.ReactElement;
+  render: <T>(arg?: RenderArg<T>) => React.ReactElement;
   duplicate: () => Shape<Ref, Config>;
   bounds: ShapeBounds;
 }
