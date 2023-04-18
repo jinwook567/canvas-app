@@ -13,7 +13,7 @@ import {
   Group as GroupComponent,
   Layer as LayerComponent,
 } from 'react-konva';
-import { Shape, RefConfig } from '../../types/editor';
+import { Shape, RefConfig, RenderArg } from '../../types/editor';
 import { DefaultSize, GroupSize, TextSize } from './size2';
 import { createUniqueId } from '../unit';
 
@@ -55,13 +55,14 @@ export class Image
   extends Ref<Konva.Image, ImageConfig>
   implements Shape<Konva.Image, ImageConfig>
 {
-  render() {
+  render<T>(arg?: RenderArg<T>) {
     return (
       <ImageComponent
         {...this.config}
         ref={node => {
           this._node = node;
         }}
+        {...arg}
       />
     );
   }
@@ -79,13 +80,14 @@ export class Text
   extends Ref<Konva.Text, TextConfig>
   implements Shape<Konva.Text, TextConfig>
 {
-  render() {
+  render<T>(arg?: RenderArg<T>) {
     return (
       <TextComponent
         {...this.config}
         ref={node => {
           this._node = node;
         }}
+        {...arg}
       />
     );
   }
@@ -110,13 +112,14 @@ export class Group<ChildType extends Shape>
     this.children = children;
   }
 
-  render() {
+  render<T>(arg?: RenderArg<T>) {
     return (
       <GroupComponent
         {...this.config}
         ref={node => {
           this._node = node;
         }}
+        {...arg}
       >
         {this.children.map(child => child.render())}
       </GroupComponent>
@@ -146,13 +149,14 @@ export class Layer<ChildType extends Shape>
     this.children = children;
   }
 
-  render() {
+  render<T>(arg?: RenderArg<T>) {
     return (
       <LayerComponent
         {...this.config}
         ref={node => {
           this._node = node;
         }}
+        {...arg}
       >
         {this.children.map(child => child.render())}
       </LayerComponent>
