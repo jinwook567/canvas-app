@@ -12,8 +12,9 @@ import {
   Text as TextComponent,
   Group as GroupComponent,
   Layer as LayerComponent,
+  KonvaNodeEvents,
 } from 'react-konva';
-import { Shape, RefConfig, RenderArg } from '../../types/editor';
+import { Shape, RefConfig } from '../../types/editor';
 import { DefaultSize, GroupSize, TextSize } from './size2';
 import { createUniqueId } from '../unit';
 
@@ -55,14 +56,14 @@ export class Image
   extends Ref<Konva.Image, ImageConfig>
   implements Shape<Konva.Image, ImageConfig>
 {
-  render<T>(arg?: RenderArg<T>) {
+  render(events?: KonvaNodeEvents) {
     return (
       <ImageComponent
         {...this.config}
         ref={node => {
           this._node = node;
         }}
-        {...arg}
+        {...events}
       />
     );
   }
@@ -80,14 +81,14 @@ export class Text
   extends Ref<Konva.Text, TextConfig>
   implements Shape<Konva.Text, TextConfig>
 {
-  render<T>(arg?: RenderArg<T>) {
+  render(events?: KonvaNodeEvents) {
     return (
       <TextComponent
         {...this.config}
         ref={node => {
           this._node = node;
         }}
-        {...arg}
+        {...events}
       />
     );
   }
@@ -112,14 +113,14 @@ export class Group<ChildType extends Shape>
     this.children = children;
   }
 
-  render<T>(arg?: RenderArg<T>) {
+  render(events?: KonvaNodeEvents) {
     return (
       <GroupComponent
         {...this.config}
         ref={node => {
           this._node = node;
         }}
-        {...arg}
+        {...events}
       >
         {this.children.map(child => child.render())}
       </GroupComponent>
@@ -149,14 +150,14 @@ export class Layer<ChildType extends Shape>
     this.children = children;
   }
 
-  render<T>(arg?: RenderArg<T>) {
+  render(events?: KonvaNodeEvents) {
     return (
       <LayerComponent
         {...this.config}
         ref={node => {
           this._node = node;
         }}
-        {...arg}
+        {...events}
       >
         {this.children.map(child => child.render())}
       </LayerComponent>

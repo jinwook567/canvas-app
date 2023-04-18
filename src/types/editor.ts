@@ -54,11 +54,9 @@ export interface RefConfig<Ref, Config> {
   id: string;
 }
 
-export type RenderArg<CustomProps> = KonvaNodeEvents & CustomProps;
-
 export interface Shape<Ref = Konva.Node, Config = NodeConfig>
   extends RefConfig<Ref, Config> {
-  render: <T>(arg?: RenderArg<T>) => React.ReactElement;
+  render: (events?: KonvaNodeEvents) => React.ReactElement;
   duplicate: () => Shape<Ref, Config>;
   bounds: ShapeBounds;
 }
