@@ -5,6 +5,7 @@ import { Stage as StageType, Shape } from '../../types/editor';
 export const stageClassesState = atom<Stage<Shape>[]>({
   key: 'stagesClassState',
   default: [],
+  dangerouslyAllowMutability: true,
 });
 
 export const stagesState = atom<StageType[]>({
