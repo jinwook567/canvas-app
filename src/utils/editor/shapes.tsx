@@ -52,6 +52,29 @@ abstract class Ref<RefType, ConfigType>
   }
 }
 
+abstract class RefHasChildren<
+  RefType,
+  ConfigType,
+  ChildType extends Shape = Shape
+> extends Ref<RefType, ConfigType> {
+  _children: ChildType[];
+
+  constructor(config: ConfigType) {
+    super(config);
+    this._children = [];
+  }
+
+  get children() {
+    return this._children;
+  }
+
+  setChildren(children: ChildType[]): this {
+    const result = _.clone(this);
+    result._children = children;
+    return result;
+  }
+}
+
 export class Image
   extends Ref<Konva.Image, ImageConfig>
   implements Shape<Konva.Image, ImageConfig>
@@ -102,17 +125,10 @@ export class Text
   }
 }
 
-export class Group<ChildType extends Shape>
-  extends Ref<Konva.Group, GroupConfig>
+export class Group
+  extends RefHasChildren<Konva.Group, GroupConfig>
   implements Shape<Konva.Group, GroupConfig>
 {
-  children: ChildType[];
-
-  constructor(config: GroupConfig, children: ChildType[]) {
-    super(config);
-    this.children = children;
-  }
-
   render(events?: KonvaNodeEvents) {
     return (
       <GroupComponent
@@ -132,24 +148,16 @@ export class Group<ChildType extends Shape>
   }
 
   duplicate() {
-    return new Group(
-      { ...this.config },
+    return new Group({ ...this.config }).setChildren(
       this.children.map(child => child.duplicate())
     );
   }
 }
 
-export class Layer<ChildType extends Shape>
-  extends Ref<Konva.Layer, LayerConfig>
+export class Layer
+  extends RefHasChildren<Konva.Layer, LayerConfig>
   implements Shape<Konva.Layer, LayerConfig>
 {
-  children: ChildType[];
-
-  constructor(config: LayerConfig, children = [] as ChildType[]) {
-    super(config);
-    this.children = children;
-  }
-
   render(events?: KonvaNodeEvents) {
     return (
       <LayerComponent
@@ -169,24 +177,17 @@ export class Layer<ChildType extends Shape>
   }
 
   duplicate() {
-    return new Layer(
-      { ...this.config },
+    return new Layer({ ...this.config }).setChildren(
       this.children.map(child => child.duplicate())
     );
   }
 }
 
-export class Stage<ChildType extends Shape = Shape> extends Ref<
-  Konva.Stage,
-  ContainerConfig
-> {
-  children: ChildType[];
-
+export class Stage extends RefHasChildren<Konva.Stage, ContainerConfig> {
   canvasNode: Konva.Layer | null;
 
-  constructor(config: ContainerConfig, children = [] as ChildType[]) {
+  constructor(config: ContainerConfig) {
     super(config);
-    this.children = children;
     this.canvasNode = null;
   }
 
@@ -199,8 +200,7 @@ export class Stage<ChildType extends Shape = Shape> extends Ref<
   }
 
   duplicate() {
-    return new Stage(
-      { ...this.config },
+    return new Stage({ ...this.config }).setChildren(
       this.children.map(child => child.duplicate())
     );
   }
