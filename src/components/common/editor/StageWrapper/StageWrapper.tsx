@@ -7,7 +7,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-function Wrapper({ isSelected, children, onSelect }: Props) {
+function StageWrapper({ isSelected, children, onSelect }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,4 +28,4 @@ function Wrapper({ isSelected, children, onSelect }: Props) {
   );
 }
 
-export default Wrapper;
+export default StageWrapper;
