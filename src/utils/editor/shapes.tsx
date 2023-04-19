@@ -182,16 +182,20 @@ export class Stage<ChildType extends Shape = Shape> extends Ref<
 > {
   children: ChildType[];
 
-  canvasLayer: Konva.Layer | null;
+  canvasNode: Konva.Layer | null;
 
   constructor(config: ContainerConfig, children = [] as ChildType[]) {
     super(config);
     this.children = children;
-    this.canvasLayer = null;
+    this.canvasNode = null;
   }
 
   set node(value: Konva.Stage | null) {
     this._node = value;
+  }
+
+  get bounds() {
+    return new DefaultSize({ ...this.config });
   }
 
   duplicate() {
