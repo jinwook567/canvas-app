@@ -1,5 +1,6 @@
 import Konva from 'konva';
 import { NodeConfig } from 'konva/lib/Node';
+import { ImageConfig } from 'konva/lib/shapes/Image';
 import { KonvaNodeEvents } from 'react-konva';
 import { RemoveIndex } from '../utils/types';
 
@@ -70,4 +71,7 @@ export interface ShapeBounds {
   height: number;
   actualWidth: number;
   actualHeight: number;
+  scaleX: number;
+  scaleY: number;
+  size: Size;
 }
