@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Masonry from '@mui/lab/Masonry';
 import { IconButton } from '@mui/material';
-import React from 'react';
+import React, { useId } from 'react';
 
 type Props = {
   items: { src: string }[];
@@ -16,8 +16,8 @@ function ImageList({ items, onClick }: Props) {
 
   return (
     <Masonry columns={2}>
-      {items.map(({ src }, index) => (
-        <IconButton key={index}>
+      {items.map(({ src }) => (
+        <IconButton key={useId()}>
           <img
             src={src}
             alt="asset"
