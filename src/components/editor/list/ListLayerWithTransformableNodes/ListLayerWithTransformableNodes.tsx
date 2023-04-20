@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Layer, Transformer } from 'react-konva';
 import { Node as NodeType } from '../../../../types/editor';
-import Node from '../../Node/Node';
+import Node from '../Node/Node';
 import useListLayer from './useListLayer';
 import useNodeEvents from './useNodeEvents';
 
