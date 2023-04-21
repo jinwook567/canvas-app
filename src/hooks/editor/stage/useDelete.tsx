@@ -1,7 +1,6 @@
 import { useSetRecoilState } from 'recoil';
 import { stageClassesState, stagesState } from '../../../recoil/editor/atoms';
-import { Stage, Shape } from '../../../types/editor';
-import { Stage as StageClass } from '../../../utils/editor/shapes';
+import { Stage } from '../../../types/editor';
 import { isSameStage } from '../../../utils/editor/validate';
 
 function useDelete() {
@@ -9,8 +8,8 @@ function useDelete() {
 
   const setStages = useSetRecoilState(stageClassesState);
 
-  const deleteStage2 = (stageToDelete: StageClass<Shape>) => {
-    setStages(stages => stages.filter(stage => stage.id !== stageToDelete.id));
+  const deleteStage2 = (stageId: string) => {
+    setStages(stages => stages.filter(stage => stage.id !== stageId));
   };
 
   const deleteStage = (stageToDelete: Stage) => {
