@@ -5,21 +5,21 @@ import { isSameStage } from '../../../utils/editor/validate';
 import { createUniqueId } from '../../../utils/unit';
 import { Stage as StageClass } from '../../../utils/editor/shapes';
 
-function useCreate() {
+function useAdd() {
   const setStagesOld = useSetRecoilState(stagesState);
 
   const setStages = useSetRecoilState(stageClassesState);
 
-  function createStage2(stage: StageClass, beforeStage?: StageClass) {
+  function addStage(stage: StageClass, addAfterThisStageId?: string) {
     setStages(stages =>
-      stages.reduce((acc, cur, index) => {
-        if (
-          (beforeStage && cur.id === beforeStage.id) ||
-          (!beforeStage && index === stages.length - 1)
-        )
-          acc.push(stage);
-        return acc;
-      }, [] as StageClass[])
+      stages.reduce(
+        (acc, cur, index) =>
+          (addAfterThisStageId && cur.id === addAfterThisStageId) ||
+          (!addAfterThisStageId && index === stages.length - 1)
+            ? [...acc, cur, stage]
+            : [...acc, cur],
+        [] as StageClass[]
+      )
     );
   }
 
@@ -41,7 +41,7 @@ function useCreate() {
 
   return {
     createStage,
-    createStage2,
+    addStage,
   };
 }
 
@@ -49,4 +49,4 @@ export function giveId(stageWithoutId: Omit<Stage, 'id'>): Stage {
   return { ...stageWithoutId, id: createUniqueId() };
 }
 
-export default useCreate;
+export default useAdd;
