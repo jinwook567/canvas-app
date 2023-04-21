@@ -3,23 +3,23 @@ import { useSetRecoilState } from 'recoil';
 import { stageClassesState } from '../../../recoil/editor/atoms';
 import { Shape, Size } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
-import { Stage } from '../../../utils/editor/shapes';
-import { replaceStage } from '../../../utils/editor/update2';
 
 function useAdd() {
   const setStages = useSetRecoilState(stageClassesState);
 
-  function addShapeToStage(shapeToAdd: Shape, stageToUpdate: Stage) {
-    const shape = _.chain(shapeToAdd)
-      .thru(shape => resize(shape, stageToUpdate.bounds.size, 0.35))
-      .thru(shape => center(shape, stageToUpdate.bounds.size))
-      .thru(shape => avoidSamePos(shape, stageToUpdate.children))
-      .value();
-
+  function addShapeToStage(shapeToAdd: Shape, stageId: string) {
     setStages(stages =>
-      replaceStage(
-        stages,
-        stageToUpdate.setChildren([...stageToUpdate.children, shape])
+      stages.map(stage =>
+        stage.id === stageId
+          ? stage.setChildren([
+              ...stage.children,
+              _.chain(shapeToAdd)
+                .thru(shape => resize(shape, stage.bounds.size, 0.35))
+                .thru(shape => center(shape, stage.bounds.size))
+                .thru(shape => avoidSamePos(shape, stage.children))
+                .value(),
+            ])
+          : stage
       )
     );
   }
