@@ -3,12 +3,12 @@ import { stageClassesState, stagesState } from '../../../recoil/editor/atoms';
 import { Stage } from '../../../types/editor';
 import { isSameStage } from '../../../utils/editor/validate';
 
-function useDelete() {
+function useRemove() {
   const setStagesOld = useSetRecoilState(stagesState);
 
   const setStages = useSetRecoilState(stageClassesState);
 
-  const deleteStage2 = (stageId: string) => {
+  const removeStage = (stageId: string) => {
     setStages(stages => stages.filter(stage => stage.id !== stageId));
   };
 
@@ -18,7 +18,7 @@ function useDelete() {
     );
   };
 
-  return { deleteStage, deleteStage2 };
+  return { deleteStage, removeStage };
 }
 
-export default useDelete;
+export default useRemove;
