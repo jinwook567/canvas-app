@@ -28,18 +28,17 @@ function ImageAsset({ items, addItem }: Props) {
       />
       <ImageList
         items={items}
-        onClick={image => {
-          if (stage) {
-            addShapeToStage(
-              new Image({
-                image,
-                width: image.width,
-                height: image.height,
-              }) as any,
-              stage
-            );
-          }
-        }}
+        onClick={image =>
+          stage &&
+          addShapeToStage(
+            new Image({
+              image,
+              width: image.width,
+              height: image.height,
+            }) as any,
+            stage.id
+          )
+        }
       />
     </Grid>
   );
