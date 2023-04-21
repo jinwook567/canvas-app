@@ -9,7 +9,9 @@ import TemplateAsset from '../TemplateAsset/TemplateAsset';
 import TextAsset from '../TextAsset/TextAsset';
 
 function Asset() {
-  const [imageItems, setImageItems] = useState<{ src: string }[]>([]);
+  const [imageItems, setImageItems] = useState<{ src: string }[]>([
+    { src: 'https://konvajs.github.io/assets/yoda.jpg' },
+  ]);
   const asset = [
     {
       tab: { label: '이미지', icon: <ImageIcon /> },

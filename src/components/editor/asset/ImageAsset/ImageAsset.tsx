@@ -1,10 +1,11 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { Grid } from '@mui/material';
-import useCreate from '../../../../hooks/editor/node/useCreate';
 import ImageList from '../../../common/editor/ImageList/ImageList';
 import ImageUpload from '../../../common/editor/ImageUpload/ImageUpload';
-import { selectedStageValue } from '../../../../recoil/editor/selectors';
+import useAdd from '../../../../hooks/editor/node/useAdd';
+import { Image } from '../../../../utils/editor/shapes';
+import { selectedStageClassValue } from '../../../../recoil/editor/selectors';
 
 interface Props {
   items: { src: string }[];
@@ -12,8 +13,9 @@ interface Props {
 }
 
 function ImageAsset({ items, addItem }: Props) {
-  const { createNode } = useCreate();
-  const selectedStage = useRecoilValue(selectedStageValue);
+  const stage = useRecoilValue(selectedStageClassValue);
+  const { addShapeToStage } = useAdd();
+
   return (
     <Grid container flexDirection="column" alignItems="center" rowGap={3}>
       <ImageUpload
@@ -26,20 +28,18 @@ function ImageAsset({ items, addItem }: Props) {
       />
       <ImageList
         items={items}
-        onClick={image =>
-          selectedStage &&
-          createNode(
-            {
-              type: 'image',
-              src: image.src,
-              config: {
+        onClick={image => {
+          if (stage) {
+            addShapeToStage(
+              new Image({
+                image,
                 width: image.width,
                 height: image.height,
-              },
-            },
-            selectedStage
-          )
-        }
+              }) as any,
+              stage
+            );
+          }
+        }}
       />
     </Grid>
   );
