@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Shape } from 'react-konva';
+import { Group, Shape } from 'react-konva';
 import Konva from 'konva';
 import Textarea from './Textarea';
 
@@ -15,7 +15,7 @@ function EditableText({ render, onChange, editable, onEdit, node }: Props) {
   return (
     <>
       {editable && node && <Textarea onChange={onChange} node={node} />}
-      <Shape onDblClick={() => onEdit()}>{render}</Shape>
+      <Group onDblClick={() => onEdit()}>{render}</Group>
     </>
   );
 }
