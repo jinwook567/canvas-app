@@ -13,7 +13,7 @@ function Transformer({ children }: Props) {
   const trRef = useRef<Konva.Transformer>(null);
   return (
     <>
-      {children}
+      {children(trRef)}
       <LayerComponent>
         <TransformerComponent ref={trRef} />
       </LayerComponent>
