@@ -1,19 +1,32 @@
 import React from 'react';
+import _ from 'lodash';
 import { useRecoilValue } from 'recoil';
-import { templateSample } from '../../../../fixtures/editor';
 import useTransform from '../../../../hooks/editor/stage/useTransform';
-import { selectedStageValue } from '../../../../recoil/editor/selectors';
+import { selectedStageClassValue } from '../../../../recoil/editor/selectors';
+import { Stage, Text } from '../../../../utils/editor/shapes';
 import TemplateList from '../../../common/editor/TemplateList/TemplateList';
 
 function TemplateAsset() {
-  const { transformSelectedStageByTemplate } = useTransform();
-  const selectedStage = useRecoilValue(selectedStageValue);
+  const templateSample = new Stage({ width: 500, height: 500 }).setChildren(
+    _.range(10).map(
+      num =>
+        new Text({
+          text: 'hello world',
+          fontSize: 20,
+          x: 50 * num,
+          y: 50 * num,
+        })
+    )
+  );
+
+  const { applyTemplate } = useTransform();
+  const selectedStage = useRecoilValue(selectedStageClassValue);
+
   return (
     <TemplateList
       items={[templateSample, templateSample, templateSample]}
       onClick={template =>
-        selectedStage &&
-        transformSelectedStageByTemplate(template, selectedStage)
+        selectedStage && applyTemplate(template, selectedStage)
       }
     />
   );

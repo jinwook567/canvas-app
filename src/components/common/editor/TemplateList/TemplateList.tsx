@@ -1,11 +1,12 @@
 import React from 'react';
 import Masonry from '@mui/lab/Masonry';
 import { IconButton } from '@mui/material';
-import Preview, { Props as PreviewProps } from '../Preview/Preview';
+import { Stage } from '../../../../utils/editor/shapes';
+import Preview from '../Preview/Preview';
 
 type Props = {
-  items: PreviewProps[];
-  onClick: (arg: PreviewProps) => void;
+  items: Stage[];
+  onClick: (arg: Stage) => void;
 };
 
 function TemplateList({ items, onClick }: Props) {
@@ -13,7 +14,11 @@ function TemplateList({ items, onClick }: Props) {
     <Masonry columns={2}>
       {items.map((item, index) => (
         <IconButton key={index} onClick={() => onClick(item)}>
-          <Preview {...item} />
+          <Preview
+            width={item.bounds.width}
+            height={item.bounds.height}
+            shapes={item.children}
+          />
         </IconButton>
       ))}
     </Masonry>
