@@ -1,5 +1,5 @@
 import { selector } from 'recoil';
-import { selectedStageIdState, stagesState } from './atoms';
+import { selectedStageIdState, stageClassesState, stagesState } from './atoms';
 
 export const stagesCountValue = selector({
   key: 'stagesCountState',
@@ -13,4 +13,14 @@ export const selectedStageValue = selector({
     const selectedId = get(selectedStageIdState);
     return stages.find(stage => stage.id === selectedId);
   },
+});
+
+export const selectedStageClassValue = selector({
+  key: 'selectedStageClassValue',
+  get: ({ get }) => {
+    const stages = get(stageClassesState);
+    const selectedId = get(selectedStageIdState);
+    return stages.find(stage => stage.id === selectedId);
+  },
+  dangerouslyAllowMutability: true,
 });
