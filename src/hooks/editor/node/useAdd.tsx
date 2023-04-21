@@ -1,5 +1,3 @@
-import Konva from 'konva';
-import { NodeConfig } from 'konva/lib/Node';
 import _ from 'lodash';
 import { useSetRecoilState } from 'recoil';
 import { stageClassesState } from '../../../recoil/editor/atoms';
@@ -36,7 +34,7 @@ function resize(shapeToUpdate: Shape, size: Size, ratio: number) {
   return shapeToUpdate.setConfig({
     ...shapeToUpdate.config,
     scaleX: shapeToUpdate.bounds.scaleX * scale,
-    scaleY: shapeToUpdate.bounds.scaleY,
+    scaleY: shapeToUpdate.bounds.scaleY * scale,
   });
 }
 
@@ -52,7 +50,10 @@ function avoidSamePos(shapeToUpdate: Shape, shapes: Shape[]): Shape {
   const properties = ['x', 'y', 'actualWidth', 'actualHeight'];
 
   const samePosShape = shapes.find(shape =>
-    _.isEqual(_.pick(shapeToUpdate, properties), _.pick(shape, properties))
+    _.isEqual(
+      _.pick(shapeToUpdate.bounds, properties),
+      _.pick(shape.bounds, properties)
+    )
   );
 
   return samePosShape
