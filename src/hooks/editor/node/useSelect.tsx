@@ -17,7 +17,7 @@ function useSelect() {
   };
 
   const appendSelect = (id: string) => {
-    setSelectedIds(currentVal => [...currentVal, id]);
+    setSelectedIds(currentVal => [...new Set([...currentVal, id])]);
   };
 
   const changeSelect = (id: string) => {
