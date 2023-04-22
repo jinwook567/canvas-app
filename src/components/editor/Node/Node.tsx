@@ -2,16 +2,16 @@ import { ReactElement, useEffect } from 'react';
 
 type Props = {
   isSelected: boolean;
-  updateTransformer: () => void;
+  updateTransformer: (isSelected: boolean) => void;
   render: ReactElement;
 };
 
 function Node({ isSelected, updateTransformer, render }: Props) {
   useEffect(() => {
-    updateTransformer();
+    updateTransformer(isSelected);
 
     return () => {
-      updateTransformer();
+      updateTransformer(isSelected);
     };
   }, [isSelected]);
 
