@@ -11,7 +11,7 @@ function Node({ isSelected, updateTransformer, render }: Props) {
     updateTransformer(isSelected);
 
     return () => {
-      updateTransformer(isSelected);
+      updateTransformer(false);
     };
   }, [isSelected]);
 
