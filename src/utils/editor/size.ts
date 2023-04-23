@@ -1,59 +1,38 @@
 /* eslint-disable max-classes-per-file */
-import { Node, Image, Group, Text, Stage } from '../../types/editor';
+import { GroupConfig } from 'konva/lib/Group';
+import { NodeConfig } from 'konva/lib/Node';
+import { TextConfig } from 'konva/lib/shapes/Text';
+import { ShapeBounds, Shape } from '../../types/editor';
 
-export function createNodeSize(node: Node) {
-  switch (node.type) {
-    case 'image':
-      return new ImageSize(node);
+export class DefaultSize<Config extends NodeConfig> implements ShapeBounds {
+  _config: Config;
 
-    case 'text':
-      return new TextSize(node);
-
-    case 'group':
-      return new GroupSize(node);
-
-    default:
-      return new NodeSize(node);
-  }
-}
-
-export function createStageSize(stage: Stage) {
-  return new StageSize(stage);
-}
-
-class NodeSize {
-  _node: Node;
-
-  constructor(node: Node) {
-    this._node = node;
+  constructor(config: Config) {
+    this._config = config;
   }
 
   get x() {
-    return this._node.config.x || 0;
+    return this._config.x || 0;
   }
 
   get y() {
-    return this._node.config.y || 0;
+    return this._config.y || 0;
   }
 
   get scaleX() {
-    return this._node.config.scaleX || 1;
+    return this._config.scaleX || 1;
   }
 
   get scaleY() {
-    return this._node.config.scaleY || 1;
+    return this._config.scaleY || 1;
   }
 
   get width() {
-    return this._node.config.width || 0;
+    return this._config.width || 0;
   }
 
   get height() {
-    return this._node.config.height || 0;
-  }
-
-  get size() {
-    return getSize(this.width, this.height);
+    return this._config.height || 0;
   }
 
   get actualWidth() {
@@ -64,50 +43,26 @@ class NodeSize {
     return this.height * this.scaleY;
   }
 
-  get minX() {
-    return this.x;
-  }
-
-  get maxX() {
+  get endX() {
     return this.x + this.actualWidth;
   }
 
-  get minY() {
-    return this.y;
-  }
-
-  get maxY() {
+  get endY() {
     return this.y + this.actualHeight;
   }
 
-  get node() {
-    return this._node;
+  get size() {
+    return { width: this.actualWidth, height: this.actualHeight };
   }
 }
 
-class ImageSize extends NodeSize {
-  _node: Image;
-
-  constructor(node: Image) {
-    super(node);
-    this._node = node;
-  }
-}
-
-class TextSize extends NodeSize {
-  _node: Text;
-
-  constructor(node: Text) {
-    super(node);
-    this._node = node;
-  }
-
+export class TextSize<Config extends TextConfig> extends DefaultSize<Config> {
   get fontSize() {
-    return this._node.config.fontSize || 0;
+    return this._config.fontSize || 0;
   }
 
   get text() {
-    return this._node.config.text || '';
+    return this._config.text || '';
   }
 
   get width() {
@@ -124,79 +79,50 @@ class TextSize extends NodeSize {
   }
 }
 
-class GroupSize extends NodeSize {
-  _node: Group;
+export class GroupSize<
+  Config extends GroupConfig,
+  ChildType extends Shape
+> extends DefaultSize<Config> {
+  children: ChildType[];
 
-  constructor(node: Group) {
-    super(node);
-    this._node = node;
+  constructor(config: Config, children: ChildType[]) {
+    super(config);
+    this.children = children;
   }
 
-  get minX(): number {
-    return this._node.nodes.reduce(
-      (acc, node) => Math.min(acc, createNodeSize(node).minX),
-      0
+  get x() {
+    return (
+      this.children.reduce((acc, cur) => Math.min(acc, cur.bounds.x), 0) +
+      super.x
     );
   }
 
-  get maxX(): number {
-    return this._node.nodes.reduce(
-      (acc, node) => Math.max(acc, createNodeSize(node).maxX),
-      0
+  get y() {
+    return (
+      this.children.reduce((acc, cur) => Math.min(acc, cur.bounds.y), 0) +
+      super.y
     );
   }
 
-  get minY(): number {
-    return this._node.nodes.reduce(
-      (acc, node) => Math.min(acc, createNodeSize(node).minY),
-      0
+  get endX() {
+    return (
+      this.children.reduce((acc, cur) => Math.max(acc, cur.bounds.endX), 0) +
+      super.x
     );
   }
 
-  get maxY(): number {
-    return this._node.nodes.reduce(
-      (acc, node) => Math.max(acc, createNodeSize(node).maxY),
-      0
+  get endY() {
+    return (
+      this.children.reduce((acc, cur) => Math.max(acc, cur.bounds.endY), 0) +
+      super.y
     );
   }
 
   get width() {
-    return this.maxX - this.minX;
+    return super.width || this.endX - this.x;
   }
 
   get height() {
-    return this.maxY - this.maxX;
+    return super.height || this.endY - this.y;
   }
-}
-
-export class StageSize {
-  _stage: Stage;
-
-  constructor(stage: Stage) {
-    this._stage = stage;
-  }
-
-  get width() {
-    return this._stage.config.width || 0;
-  }
-
-  get height() {
-    return this._stage.config.height || 0;
-  }
-
-  get scaleX() {
-    return this._stage.config.scaleX || 1;
-  }
-
-  get scaleY() {
-    return this._stage.config.scaleY || 1;
-  }
-
-  get size() {
-    return getSize(this.width, this.height);
-  }
-}
-
-export function getSize(width: number, height: number) {
-  return { width, height };
 }

@@ -14,11 +14,12 @@ import {
   Layer as LayerComponent,
   KonvaNodeEvents,
 } from 'react-konva';
+import { NodeConfig } from 'konva/lib/Node';
 import { Shape, RefConfig } from '../../types/editor';
-import { DefaultSize, GroupSize, TextSize } from './size2';
+import { DefaultSize, GroupSize, TextSize } from './size';
 import { createUniqueId } from '../unit';
 
-abstract class Ref<RefType, ConfigType>
+abstract class Ref<RefType extends Konva.Node, ConfigType extends NodeConfig>
   implements RefConfig<RefType, ConfigType>
 {
   private _id: string;
@@ -33,14 +34,14 @@ abstract class Ref<RefType, ConfigType>
     this._node = null;
   }
 
-  get config() {
-    return this._config;
-  }
-
   setConfig(config: ConfigType) {
     const result = _.clone(this);
     result._config = config;
     return result;
+  }
+
+  get config() {
+    return this._config;
   }
 
   get id() {
@@ -53,9 +54,9 @@ abstract class Ref<RefType, ConfigType>
 }
 
 abstract class RefHasChildren<
-  RefType,
-  ConfigType,
-  ChildType extends Shape = Shape
+  RefType extends Konva.Node,
+  ConfigType extends NodeConfig,
+  ChildType
 > extends Ref<RefType, ConfigType> {
   _children: ChildType[];
 
@@ -68,7 +69,7 @@ abstract class RefHasChildren<
     return this._children;
   }
 
-  setChildren(children: ChildType[]): this {
+  setChildren(children: ChildType[]) {
     const result = _.clone(this);
     result._children = children;
     return result;
@@ -82,6 +83,7 @@ export class Image
   render(events?: KonvaNodeEvents) {
     return (
       <ImageComponent
+        id={this.id}
         {...this.config}
         ref={node => {
           this._node = node;
@@ -107,6 +109,7 @@ export class Text
   render(events?: KonvaNodeEvents) {
     return (
       <TextComponent
+        id={this.id}
         {...this.config}
         ref={node => {
           this._node = node;
@@ -126,12 +129,13 @@ export class Text
 }
 
 export class Group
-  extends RefHasChildren<Konva.Group, GroupConfig>
+  extends RefHasChildren<Konva.Group, GroupConfig, Shape>
   implements Shape<Konva.Group, GroupConfig>
 {
   render(events?: KonvaNodeEvents) {
     return (
       <GroupComponent
+        id={this.id}
         {...this.config}
         ref={node => {
           this._node = node;
@@ -155,12 +159,13 @@ export class Group
 }
 
 export class Layer
-  extends RefHasChildren<Konva.Layer, LayerConfig>
+  extends RefHasChildren<Konva.Layer, LayerConfig, Shape>
   implements Shape<Konva.Layer, LayerConfig>
 {
   render(events?: KonvaNodeEvents) {
     return (
       <LayerComponent
+        id={this.id}
         {...this.config}
         ref={node => {
           this._node = node;
@@ -183,7 +188,7 @@ export class Layer
   }
 }
 
-export class Stage extends RefHasChildren<Konva.Stage, ContainerConfig> {
+export class Stage extends RefHasChildren<Konva.Stage, ContainerConfig, Shape> {
   canvasNode: Konva.Layer | null;
 
   constructor(config: ContainerConfig) {

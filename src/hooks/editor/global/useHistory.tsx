@@ -1,11 +1,11 @@
 import { useRef, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { historyState, stagesState } from '../../../recoil/editor/atoms';
-import { Stage } from '../../../types/editor';
+import { historyState, stageClassesState } from '../../../recoil/editor/atoms';
+import { Stage } from '../../../utils/editor/shapes';
 
 function useHistory() {
   const [history, setHistory] = useRecoilState(historyState);
-  const setStages = useSetRecoilState(stagesState);
+  const setStages = useSetRecoilState(stageClassesState);
   const isHistoryFunctionTriggered = useRef(false);
 
   const createHistory = (stages: Stage[]) => {
