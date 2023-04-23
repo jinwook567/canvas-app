@@ -17,7 +17,11 @@ function TextAsset() {
         { fontSize: 11, text: '작은 텍스트 추가하기' },
       ]}
       onClick={textConfig =>
-        selectedStage && addShapeToStage(new Text(textConfig), selectedStage.id)
+        selectedStage &&
+        addShapeToStage(
+          new Text({ ...textConfig, draggable: true }),
+          selectedStage.id
+        )
       }
     />
   );
