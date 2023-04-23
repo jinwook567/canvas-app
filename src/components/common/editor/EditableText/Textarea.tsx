@@ -16,18 +16,18 @@ function Textarea({ onChange, node }: Props) {
     <Html
       divProps={{
         style: {
-          top: `${(node.y() || 0) - 5}px`,
-          left: `${(node.x() || 0) - 5}px`,
+          top: `${node.y()}px`,
+          left: `${node.x()}px`,
         },
       }}
     >
       <textarea
         onChange={handleChange}
         value={node.text()}
-        rows={node.text().split('/\n').length}
+        rows={node.textArr.length}
         style={{
-          width: `${node.width() + 50}px`,
-          height: `${node.height() + 10}px`,
+          width: `${node.textWidth * node.scaleX()}px`,
+          height: `${node.textHeight * node.textArr.length * node.scaleY()}px`,
           border: 'none',
           outline: 'none',
           resize: 'none',
@@ -36,8 +36,10 @@ function Textarea({ onChange, node }: Props) {
           caretColor: 'black',
           background: 'transparent',
           zIndex: -1,
-          fontSize: `${node.height()}px`,
-          lineHeight: `${node.lineHeight()}px`,
+          fontSize: `${node.fontSize() * node.scaleY()}px`,
+          lineHeight: `${
+            node.lineHeight() * node.fontSize() * node.scaleY()
+          }px`,
           letterSpacing: `${node.letterSpacing()}px`,
           fontFamily: node.fontFamily() || 'inherit',
           fontVariant: node.fontVariant(),

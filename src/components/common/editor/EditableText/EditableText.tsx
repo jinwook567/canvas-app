@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Group, Shape } from 'react-konva';
+import { Group } from 'react-konva';
 import Konva from 'konva';
 import Textarea from './Textarea';
 
