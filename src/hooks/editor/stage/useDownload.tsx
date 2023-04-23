@@ -5,6 +5,7 @@ function useDownload() {
   const zip = new JSZip();
 
   const requestExport = async (dataUrls: string[]) => {
+    if (dataUrls.length === 0) return;
     if (dataUrls.length === 1) {
       saveAs(dataUrls[0], 'image.png');
       return;

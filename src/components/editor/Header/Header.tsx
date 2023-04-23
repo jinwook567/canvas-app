@@ -22,7 +22,7 @@ function Header() {
   const handleRequestExport = () => {
     requestExport(
       _.chain(stages)
-        .map(stage => stage.node?.toDataURL())
+        .map(stage => stage.canvasNode?.toDataURL())
         .compact()
         .value()
     );
