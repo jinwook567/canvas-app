@@ -1,21 +1,20 @@
-import React, { ForwardedRef } from 'react';
+import React from 'react';
+import { IconButton } from '@mui/material';
 import useImage from 'use-image';
-import Konva from 'konva';
-import { Image as KonvaImage } from 'react-konva';
 
-type Props = Konva.ImageConfig | (Konva.ImageConfig & { src: string });
+type Props = {
+  src: string;
+  onClick: (image?: HTMLImageElement) => void;
+};
 
-function Image(
-  { src, image, ...config }: Props,
-  ref: ForwardedRef<Konva.Image>
-) {
+function Image({ src, onClick }: Props) {
+  const [image] = useImage(src, 'anonymous');
+
   return (
-    <KonvaImage
-      {...config}
-      image={src ? useImage(src, 'anonymous')[0] : image}
-      ref={ref}
-    />
+    <IconButton onClick={() => onClick(image)}>
+      <img src={src} alt="asset" style={{ width: '100%' }} />
+    </IconButton>
   );
 }
 
-export default React.forwardRef(Image);
+export default Image;

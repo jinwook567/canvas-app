@@ -10,7 +10,7 @@ import TextAsset from '../TextAsset/TextAsset';
 
 function Asset() {
   const [imageItems, setImageItems] = useState<{ src: string }[]>([
-    { src: 'https://konvajs.github.io/assets/yoda.jpg' },
+    { src: `${process.env.PUBLIC_URL}/yoda.jpg` },
   ]);
   const asset = [
     {
