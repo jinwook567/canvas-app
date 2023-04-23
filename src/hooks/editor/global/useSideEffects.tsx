@@ -1,84 +1,19 @@
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import { selectedIdsState, stagesState } from '../../../recoil/editor/atoms';
-import { selectedStageValue } from '../../../recoil/editor/selectors';
-import { Stage, Node } from '../../../types/editor';
-import usePrevious from '../../usePrevious';
-import useSelect from '../node/useSelect';
+import { stageClassesState } from '../../../recoil/editor/atoms';
 import useHistory from './useHistory';
 
 function useSideEffects() {
   useHistoryEffects();
-  useSelectEffects();
-  useCreateSelectEffects();
 }
 
 function useHistoryEffects() {
-  const stages = useRecoilValue(stagesState);
+  const stages = useRecoilValue(stageClassesState);
   const { createHistory } = useHistory();
 
   useEffect(() => {
     createHistory(stages);
   }, [stages]);
-}
-
-function useSelectEffects() {
-  const selectedStage = useRecoilValue(selectedStageValue);
-  const selectedIds = useRecoilValue(selectedIdsState);
-  const { resetSelect, deselect } = useSelect();
-
-  useEffect(() => {
-    if (!selectedStage) {
-      if (selectedIds.length !== 0) resetSelect();
-      return;
-    }
-
-    const areSelectedNodesInSelectedStage = selectedIds.every(selectedId =>
-      selectedStage.nodes.find(node => node.id === selectedId)
-    );
-
-    if (!areSelectedNodesInSelectedStage) {
-      selectedIds
-        .filter(
-          selectedId =>
-            !selectedStage.nodes.find(node => node.id === selectedId)
-        )
-        .forEach(id => deselect(id));
-    }
-  }, [selectedStage, selectedIds]);
-}
-
-function useCreateSelectEffects() {
-  const stages = useRecoilValue(stagesState);
-  const previous = usePrevious(hash(stages));
-  const { replaceSelect } = useSelect();
-
-  useEffect(() => {
-    if (!previous) return;
-
-    const newNodeIds = hash(stages).reduce((acc, node) => {
-      if (!previous.some(prevNode => prevNode.id === node.id)) {
-        acc.push(node.id);
-      }
-      return acc;
-    }, [] as string[]);
-
-    if (isNewNodeCreated()) {
-      replaceSelect(newNodeIds);
-    }
-
-    function isNewNodeCreated() {
-      return newNodeIds.length > 0;
-    }
-  }, [stages]);
-
-  function hash(stages: Stage[]) {
-    const arr: Node[] = [];
-    stages.forEach(stage => {
-      stage.nodes.forEach(node => arr.push(node));
-    });
-    return arr;
-  }
 }
 
 export default useSideEffects;
