@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import Konva from 'konva';
 import EditableText from '../../common/editor/EditableText/EditableText';
 
@@ -14,6 +14,10 @@ function Text({ node, render, isSelected }: Props) {
   const handleChange = (text: string) => {
     console.log(text);
   };
+
+  useEffect(() => {
+    if (!isSelected) setEditable(false);
+  }, [isSelected]);
 
   return (
     <EditableText
