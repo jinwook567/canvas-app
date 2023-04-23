@@ -4,7 +4,7 @@ import Layout from './components/common/Layout/Layout';
 import Asset from './components/editor/asset/Asset/Asset';
 import GlobalEffect from './components/editor/GlobalEffect/GlobalEffect';
 import Header from './components/editor/Header/Header';
-import List from './components/editor/list/List/List';
+import List from './components/editor/List/List';
 
 function App() {
   return (
