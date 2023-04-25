@@ -2,7 +2,7 @@
 import { GroupConfig } from 'konva/lib/Group';
 import { NodeConfig } from 'konva/lib/Node';
 import { TextConfig } from 'konva/lib/shapes/Text';
-import { ShapeBounds, Shape } from '../../types/editor';
+import { ShapeBounds } from '../../types/editor';
 
 export class DefaultSize<Config extends NodeConfig> implements ShapeBounds {
   _config: Config;
@@ -81,7 +81,7 @@ export class TextSize<Config extends TextConfig> extends DefaultSize<Config> {
 
 export class GroupSize<
   Config extends GroupConfig,
-  ChildType extends Shape
+  ChildType extends { bounds: ShapeBounds }
 > extends DefaultSize<Config> {
   children: ChildType[];
 
