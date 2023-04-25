@@ -1,5 +1,5 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-classes-per-file */
-import React from 'react';
 import Konva from 'konva';
 import _ from 'lodash';
 import { ImageConfig } from 'konva/lib/shapes/Image';
@@ -12,7 +12,6 @@ import {
   Text as TextComponent,
   Group as GroupComponent,
   Layer as LayerComponent,
-  KonvaNodeEvents,
 } from 'react-konva';
 import { NodeConfig } from 'konva/lib/Node';
 import { Shape, RefConfig } from '../../types/editor';
@@ -29,15 +28,18 @@ abstract class Ref<RefType extends Konva.Node, ConfigType extends NodeConfig>
   protected _node: RefType | null;
 
   constructor(config: ConfigType) {
-    this._config = config;
     this._id = createUniqueId();
+    this._config = config;
     this._node = null;
   }
 
+  clone() {
+    return _.clone(this);
+  }
+
   setConfig(config: ConfigType) {
-    const result = _.clone(this);
-    result._config = config;
-    return result;
+    this._config = config;
+    return this;
   }
 
   get config() {
@@ -50,6 +52,10 @@ abstract class Ref<RefType extends Konva.Node, ConfigType extends NodeConfig>
 
   get node() {
     return this._node;
+  }
+
+  set node(node: RefType | null) {
+    this._node = node;
   }
 }
 
@@ -70,9 +76,8 @@ abstract class RefHasChildren<
   }
 
   setChildren(children: ChildType[]) {
-    const result = _.clone(this);
-    result._children = children;
-    return result;
+    this._children = children;
+    return this;
   }
 }
 
@@ -80,21 +85,12 @@ export class Image
   extends Ref<Konva.Image, ImageConfig>
   implements Shape<Konva.Image, ImageConfig>
 {
-  render(events?: KonvaNodeEvents) {
-    return (
-      <ImageComponent
-        id={this.id}
-        {...this.config}
-        ref={node => {
-          this._node = node;
-        }}
-        {...events}
-      />
-    );
-  }
-
   get bounds() {
     return new DefaultSize({ ...this.config });
+  }
+
+  get component() {
+    return ImageComponent;
   }
 
   duplicate() {
@@ -106,21 +102,12 @@ export class Text
   extends Ref<Konva.Text, TextConfig>
   implements Shape<Konva.Text, TextConfig>
 {
-  render(events?: KonvaNodeEvents) {
-    return (
-      <TextComponent
-        id={this.id}
-        {...this.config}
-        ref={node => {
-          this._node = node;
-        }}
-        {...events}
-      />
-    );
-  }
-
   get bounds() {
     return new TextSize({ ...this.config });
+  }
+
+  get component() {
+    return TextComponent;
   }
 
   duplicate() {
@@ -128,27 +115,18 @@ export class Text
   }
 }
 
+type Child = Shape;
+
 export class Group
-  extends RefHasChildren<Konva.Group, GroupConfig, Shape>
+  extends RefHasChildren<Konva.Group, GroupConfig, Child>
   implements Shape<Konva.Group, GroupConfig>
 {
-  render(events?: KonvaNodeEvents) {
-    return (
-      <GroupComponent
-        id={this.id}
-        {...this.config}
-        ref={node => {
-          this._node = node;
-        }}
-        {...events}
-      >
-        {this.children.map(child => child.render())}
-      </GroupComponent>
-    );
-  }
-
   get bounds() {
     return new GroupSize({ ...this.config }, [...this.children]);
+  }
+
+  get component() {
+    return GroupComponent;
   }
 
   duplicate() {
@@ -162,23 +140,12 @@ export class Layer
   extends RefHasChildren<Konva.Layer, LayerConfig, Shape>
   implements Shape<Konva.Layer, LayerConfig>
 {
-  render(events?: KonvaNodeEvents) {
-    return (
-      <LayerComponent
-        id={this.id}
-        {...this.config}
-        ref={node => {
-          this._node = node;
-        }}
-        {...events}
-      >
-        {this.children.map(child => child.render())}
-      </LayerComponent>
-    );
-  }
-
   get bounds() {
     return new DefaultSize({ ...this.config });
+  }
+
+  get component() {
+    return LayerComponent;
   }
 
   duplicate() {
@@ -188,7 +155,7 @@ export class Layer
   }
 }
 
-export class Stage extends RefHasChildren<Konva.Stage, ContainerConfig, Shape> {
+export class Stage extends RefHasChildren<Konva.Stage, ContainerConfig, Child> {
   canvasNode: Konva.Layer | null;
 
   constructor(config: ContainerConfig) {
