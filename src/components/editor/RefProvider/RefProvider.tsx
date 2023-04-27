@@ -5,9 +5,9 @@ type Props = {
   children: (ref: RefObject<Konva.Node | null>) => React.ReactNode;
 };
 
-function NodeProvider({ children }: Props) {
+function RefProvider({ children }: Props) {
   const ref = useRef<Konva.Node>(null);
   return children(ref);
 }
 
-export default NodeProvider;
+export default RefProvider;
