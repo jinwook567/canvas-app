@@ -1,3 +1,4 @@
+import { NodeConfig } from 'konva/lib/Node';
 import _ from 'lodash';
 import { useSetRecoilState } from 'recoil';
 import { stageClassesState } from '../../../recoil/editor/atoms';
@@ -7,7 +8,10 @@ import { getResizeScale } from '../../../utils/editor/scale';
 function useAdd() {
   const setStages = useSetRecoilState(stageClassesState);
 
-  function addShapeToStage(shapeToAdd: Shape, stageId: string) {
+  function addShapeToStage<Config extends NodeConfig>(
+    shapeToAdd: Shape<Config>,
+    stageId: string
+  ) {
     setStages(stages =>
       stages.map(stage =>
         stage.id === stageId
@@ -29,7 +33,11 @@ function useAdd() {
   };
 }
 
-function resize(shapeToUpdate: Shape, size: Size, ratio: number) {
+function resize<Config extends NodeConfig>(
+  shapeToUpdate: Shape<Config>,
+  size: Size,
+  ratio: number
+) {
   const scale = getResizeScale(shapeToUpdate.bounds.size, size, ratio);
   return shapeToUpdate.setConfig({
     ...shapeToUpdate.config,
@@ -38,7 +46,10 @@ function resize(shapeToUpdate: Shape, size: Size, ratio: number) {
   });
 }
 
-function center(shapeToUpdate: Shape, size: Size) {
+function center<Config extends NodeConfig>(
+  shapeToUpdate: Shape<Config>,
+  size: Size
+) {
   return shapeToUpdate.setConfig({
     ...shapeToUpdate.config,
     x: (size.width - shapeToUpdate.bounds.actualWidth) / 2,
@@ -46,7 +57,10 @@ function center(shapeToUpdate: Shape, size: Size) {
   });
 }
 
-function avoidSamePos(shapeToUpdate: Shape, shapes: Shape[]): Shape {
+function avoidSamePos<Config extends NodeConfig>(
+  shapeToUpdate: Shape<Config>,
+  shapes: Shape[]
+): Shape<Config> {
   const properties = ['x', 'y', 'actualWidth', 'actualHeight'];
 
   const samePosShape = shapes.find(shape =>

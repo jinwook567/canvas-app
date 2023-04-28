@@ -7,7 +7,7 @@ function useTransform() {
   const setStages = useSetRecoilState(stageClassesState);
 
   const transformNodes = (
-    data: { id: string; config?: NodeConfig; node?: Konva.Node }[],
+    data: { id: string; config: NodeConfig }[],
     stageId: string
   ) => {
     setStages(stages =>
@@ -16,15 +16,9 @@ function useTransform() {
           ? stage.setChildren([
               ...data.reduce(
                 (acc, cur) =>
-                  acc.map(child => {
-                    if (child.id === cur.id) {
-                      const newChild = child.clone();
-                      if (cur.config) newChild.setConfig(cur.config);
-                      if (cur.node) newChild.node = cur.node;
-                      return newChild;
-                    }
-                    return child;
-                  }),
+                  acc.map(child =>
+                    child.id === cur.id ? child.setConfig(cur.config) : child
+                  ),
                 stage.children
               ),
             ])
