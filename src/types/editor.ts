@@ -1,4 +1,3 @@
-import Konva from 'konva';
 import { NodeConfig } from 'konva/lib/Node';
 import { KonvaNodeComponent } from 'react-konva';
 
@@ -7,21 +6,14 @@ export type Size = {
   height: number;
 };
 
-export interface RefConfig<Ref extends Konva.Node, Config extends NodeConfig> {
-  node: Ref | null;
+export interface Shape<Config extends NodeConfig = NodeConfig> {
+  readonly id: string;
+  readonly bounds: ShapeBounds;
+
+  component: KonvaNodeComponent<any, any>;
   config: Config;
   setConfig: (config: Config) => this;
-  clone: () => this;
-  id: string;
-}
-
-export interface Shape<
-  Ref extends Konva.Node = Konva.Node,
-  Config extends NodeConfig = NodeConfig
-> extends RefConfig<Ref, Config> {
-  component: KonvaNodeComponent<Ref, any>;
-  duplicate: () => Shape<Ref, Config>;
-  bounds: ShapeBounds;
+  duplicate(): Shape<Config>;
   children?: Shape[];
 }
 
