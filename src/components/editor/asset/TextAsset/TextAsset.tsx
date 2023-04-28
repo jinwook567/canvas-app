@@ -8,6 +8,7 @@ import TextList from '../../../common/editor/TextList/TextList';
 function TextAsset() {
   const { addShapeToStage } = useAdd();
   const selectedStage = useRecoilValue(selectedStageClassValue);
+
   return (
     <TextList
       items={[
@@ -18,10 +19,7 @@ function TextAsset() {
       ]}
       onClick={textConfig =>
         selectedStage &&
-        addShapeToStage(
-          new Text({ ...textConfig, draggable: true }),
-          selectedStage.id
-        )
+        addShapeToStage(new Text({ ...textConfig }), selectedStage.id)
       }
     />
   );

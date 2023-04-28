@@ -8,25 +8,24 @@ type Props<Ref extends Konva.Node, Config extends NodeConfig> = {
   config: Config;
   component: KonvaNodeComponent<Ref, Config>;
   childNodes?: Props<Ref, Config>[];
-  setNode?: (node: Ref | null) => void;
+  setNode?: (node: Konva.Node | null) => void;
 } & KonvaNodeEvents;
 
-// children 관련 타입 생각해보기.
-
-function KonvaComponent<Ref extends Konva.Node, Config extends NodeConfig>({
+function KonvaComponent<Node extends Konva.Node, Config extends NodeConfig>({
   id,
-  setNode,
   component: Component,
   config,
   childNodes,
+  setNode,
   ...events
-}: Props<Ref, Config>) {
+}: Props<Node, Config>) {
   const ref = useCallback(
-    (node: Ref) => {
+    (node: Node) => {
       if (node && setNode) setNode(node);
     },
     [setNode]
   );
+
   return (
     <Component ref={ref} {...config} {...events} id={id}>
       {childNodes?.map(child => (

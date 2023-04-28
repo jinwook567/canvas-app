@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { RefObject } from 'react';
 import { useRecoilValue } from 'recoil';
 import Konva from 'konva';
@@ -11,10 +12,11 @@ import usePressedKey from '../../../hooks/editor/global/usePressedKey';
 import { selectedStageIdState } from '../../../recoil/editor/atoms';
 import KonvaComponent from '../KonvaComponent/KonvaComponent';
 import useTransform from '../../../hooks/editor/node/useTransform';
+import RefProvider from '../RefProvider/RefProvider';
 
 type CanvasShape = Pick<
   Shape,
-  'id' | 'node' | 'config' | 'setConfig' | 'component' | 'children'
+  'id' | 'config' | 'setConfig' | 'component' | 'children'
 >;
 
 type Props = {
@@ -24,7 +26,9 @@ type Props = {
 };
 
 function CanvasLayer({ setNode, shapes, trRef }: Props) {
+  const selectedStageId = useRecoilValue(selectedStageIdState);
   const { isSelected, appendSelect, changeSelect, deselect } = useSelect();
+  const { transformNodes } = useTransform();
   const pressedKeyRef = usePressedKey();
 
   const selectNode = (id: string) =>
@@ -47,65 +51,60 @@ function CanvasLayer({ setNode, shapes, trRef }: Props) {
     },
   });
 
-  const selectedStageId = useRecoilValue(selectedStageIdState);
-
-  const { transformNodes } = useTransform();
-
-  const handleNode = <T extends Konva.Node>(node: T | null) => {
-    if (!node) return;
-
-    const stage = node.getStage();
-    if (!stage) return;
-
-    transformNodes([{ id: node.id(), node }], stage.id());
-  };
-
   return (
     <LayerComponent ref={node => setNode(node)}>
-      {shapes.map(shape => {
-        const konvaComponent = (
-          <KonvaComponent
-            id={shape.id}
-            config={{ ...shape.config, draggable: true }}
-            component={shape.component}
-            setNode={node => !shape.node && handleNode(node)}
-            {...nodeEvents(isSelected(shape.id), shape.id)}
-            childNodes={shape.children}
-          />
-        );
-        return (
-          <Node
-            key={shape.id}
-            isSelected={isSelected(shape.id)}
-            isInSelectedStage={shape.node?.getStage()?.id() === selectedStageId}
-            select={() => changeSelect(shape.id)}
-            deselect={() => deselect(shape.id)}
-            render={
-              shape instanceof TextClass ? (
-                <Text
-                  isSelected={isSelected(shape.id)}
-                  node={shape.node}
-                  render={konvaComponent}
-                />
-              ) : (
-                konvaComponent
-              )
-            }
-            updateTransformer={isSelected => {
-              if (!trRef.current) return;
+      {shapes.map(shape => (
+        <RefProvider key={shape.id}>
+          {ref => {
+            const render = (
+              <KonvaComponent
+                id={shape.id}
+                config={{ ...shape.config, draggable: true }}
+                component={shape.component}
+                setNode={node => {
+                  ref.current = node;
+                }}
+                {...nodeEvents(isSelected(shape.id), shape.id)}
+                childNodes={shape.children}
+              />
+            );
+            return (
+              <Node
+                key={shape.id}
+                isSelected={isSelected(shape.id)}
+                isInSelectedStage={
+                  ref.current?.getStage()?.id() === selectedStageId
+                }
+                select={() => changeSelect(shape.id)}
+                deselect={() => deselect(shape.id)}
+                render={
+                  shape instanceof TextClass ? (
+                    <Text
+                      isSelected={isSelected(shape.id)}
+                      node={ref.current as Konva.Text | null}
+                      render={render}
+                    />
+                  ) : (
+                    render
+                  )
+                }
+                updateTransformer={isSelected => {
+                  if (!trRef.current) return;
 
-              trRef.current.nodes(
-                isSelected && shape.node
-                  ? [...trRef.current.nodes(), shape.node]
-                  : trRef.current
-                      .nodes()
-                      .filter(trNode => trNode.id() !== shape.id)
-              );
-              trRef.current.getLayer()?.batchDraw();
-            }}
-          />
-        );
-      })}
+                  trRef.current.nodes(
+                    isSelected && ref.current
+                      ? [...trRef.current.nodes(), ref.current]
+                      : trRef.current
+                          .nodes()
+                          .filter(trNode => trNode.id() !== shape.id)
+                  );
+                  trRef.current.getLayer()?.batchDraw();
+                }}
+              />
+            );
+          }}
+        </RefProvider>
+      ))}
     </LayerComponent>
   );
 }

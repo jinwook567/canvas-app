@@ -35,8 +35,7 @@ function ImageAsset({ items, addItem }: Props) {
               image,
               width: image.width,
               height: image.height,
-              draggable: true,
-            }) as any,
+            }),
             stage.id
           )
         }
