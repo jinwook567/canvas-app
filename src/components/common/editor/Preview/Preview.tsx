@@ -6,7 +6,7 @@ import { getResizeScale } from '../../../../utils/editor/scale';
 export type Props = {
   width: number;
   height: number;
-  shapes: { render: () => ReactElement }[];
+  shapes: ReactElement[];
 };
 
 function Preview({ width, height, shapes }: Props) {
@@ -28,7 +28,7 @@ function Preview({ width, height, shapes }: Props) {
           scaleX={scale}
           scaleY={scale}
         >
-          <Layer>{shapes.map(shape => shape.render())}</Layer>
+          <Layer>{shapes.map(shape => shape)}</Layer>
         </Stage>
       )}
     </div>

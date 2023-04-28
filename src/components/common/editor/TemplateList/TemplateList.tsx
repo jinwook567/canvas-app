@@ -3,6 +3,7 @@ import Masonry from '@mui/lab/Masonry';
 import { IconButton } from '@mui/material';
 import { Stage } from '../../../../utils/editor/shapes';
 import Preview from '../Preview/Preview';
+import KonvaComponent from '../../../editor/KonvaComponent/KonvaComponent';
 
 type Props = {
   items: Stage[];
@@ -17,7 +18,14 @@ function TemplateList({ items, onClick }: Props) {
           <Preview
             width={item.bounds.width}
             height={item.bounds.height}
-            shapes={item.children}
+            shapes={item.children.map(shape => (
+              <KonvaComponent
+                key={shape.id}
+                id={shape.id}
+                component={shape.component}
+                config={shape.config}
+              />
+            ))}
           />
         </IconButton>
       ))}
