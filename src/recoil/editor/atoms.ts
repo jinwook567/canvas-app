@@ -4,7 +4,6 @@ import { Stage } from '../../utils/editor/shapes';
 export const stageClassesState = atom<Stage[]>({
   key: 'stagesClassState',
   default: [],
-  dangerouslyAllowMutability: true,
 });
 
 export const selectedStageIdState = atom<string | null>({
@@ -26,5 +25,4 @@ type HistoryState = {
 export const historyState = atom<HistoryState>({
   key: 'historyState',
   default: null,
-  dangerouslyAllowMutability: true,
 });

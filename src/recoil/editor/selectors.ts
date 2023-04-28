@@ -8,5 +8,4 @@ export const selectedStageClassValue = selector({
     const selectedId = get(selectedStageIdState);
     return stages.find(stage => stage.id === selectedId);
   },
-  dangerouslyAllowMutability: true,
 });

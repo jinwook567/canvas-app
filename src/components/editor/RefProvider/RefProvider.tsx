@@ -1,13 +1,13 @@
-import React, { useRef, RefObject } from 'react';
+import React, { useRef, MutableRefObject } from 'react';
 import Konva from 'konva';
 
 type Props = {
-  children: (ref: RefObject<Konva.Node | null>) => React.ReactNode;
+  children: (ref: MutableRefObject<Konva.Node | null>) => React.ReactNode;
 };
 
-function RefProvider({ children }: Props) {
-  const ref = useRef<Konva.Node>(null);
-  return children(ref);
+function RefProvider<Node extends Konva.Node>({ children }: Props) {
+  const ref = useRef<Node>(null);
+  return <>{children(ref)}</>;
 }
 
 export default RefProvider;
