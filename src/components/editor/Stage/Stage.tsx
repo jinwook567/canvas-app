@@ -9,7 +9,7 @@ import useSelectNode from '../../../hooks/editor/node/useSelect';
 type Props = {
   id: string;
   children: React.ReactNode;
-  setNode: (node: Konva.Stage | null) => void;
+  setNode?: (node: Konva.Stage | null) => void;
   config: ContainerConfig;
 };
 
@@ -22,7 +22,7 @@ function Stage({ children, config, setNode, id }: Props) {
       <StageComponent
         {...config}
         id={id}
-        ref={node => setNode(node)}
+        ref={node => setNode && setNode(node)}
         style={{ background: 'white' }}
         onTouchStart={e => e.target.getStage() === e.target && resetSelect()}
         onMouseDown={e => e.target.getStage() === e.target && resetSelect()}
