@@ -1,17 +1,21 @@
 import { Grid, Link } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from './components/common/Layout/Layout';
 import Asset from './components/editor/asset/Asset/Asset';
 import GlobalEffect from './components/editor/GlobalEffect/GlobalEffect';
 import Header from './components/editor/Header/Header';
 import List from './components/editor/List/List';
+import useDownload from './hooks/editor/stage/useDownload';
 
 function App() {
+  const [isExportRequested, setIsExportRequested] = useState(false);
+  const { requestExport } = useDownload();
+
   return (
     <Layout>
       <GlobalEffect />
       <Layout.Header>
-        <Header />
+        <Header onRequestExport={() => setIsExportRequested(true)} />
       </Layout.Header>
 
       <Layout.Main>
@@ -20,7 +24,13 @@ function App() {
         </Grid>
 
         <Grid lg={9} item>
-          <List />
+          <List
+            isExportRequested={isExportRequested}
+            onExport={data => {
+              requestExport(data);
+              setIsExportRequested(false);
+            }}
+          />
         </Grid>
       </Layout.Main>
 

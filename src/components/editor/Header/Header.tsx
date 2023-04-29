@@ -1,14 +1,12 @@
-import _ from 'lodash';
 import React from 'react';
-import { useRecoilValue } from 'recoil';
 import useHistory from '../../../hooks/editor/global/useHistory';
-import useDownload from '../../../hooks/editor/stage/useDownload';
-import { stageClassesState } from '../../../recoil/editor/atoms';
 import HeadControlBar from '../../common/editor/HeadControlBar/HeadControlBar';
 
-function Header() {
-  const stages = useRecoilValue(stageClassesState);
-  const { requestExport } = useDownload();
+type Props = {
+  onRequestExport: () => void;
+};
+
+function Header({ onRequestExport }: Props) {
   const { historyBack, historyForward } = useHistory();
 
   const handleRedo = () => {
@@ -19,20 +17,11 @@ function Header() {
     historyBack();
   };
 
-  const handleRequestExport = () => {
-    requestExport(
-      _.chain(stages)
-        .map(stage => stage.canvasNode?.toDataURL())
-        .compact()
-        .value()
-    );
-  };
-
   return (
     <HeadControlBar
       onRedo={handleRedo}
       onUndo={handleUndo}
-      onRequestExport={handleRequestExport}
+      onRequestExport={onRequestExport}
     />
   );
 }

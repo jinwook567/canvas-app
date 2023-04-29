@@ -4,15 +4,15 @@ import { saveAs } from 'file-saver';
 function useDownload() {
   const zip = new JSZip();
 
-  const requestExport = async (dataUrls: string[]) => {
-    if (dataUrls.length === 0) return;
-    if (dataUrls.length === 1) {
-      saveAs(dataUrls[0], 'image.png');
+  const requestExport = async (data: { url: string; name: string }[]) => {
+    if (data.length === 0) return;
+    if (data.length === 1) {
+      saveAs(data[0].url, `${data[0].name}.png`);
       return;
     }
 
-    dataUrls.forEach((dataUrl, index) => {
-      zip.file(`${index}.png`, dataUrl.split(',')[1], { base64: true });
+    data.forEach(({ url, name }) => {
+      zip.file(`${name}.png`, url.split(',')[1], { base64: true });
     });
 
     const result = await zip.generateAsync({ type: 'blob' });
