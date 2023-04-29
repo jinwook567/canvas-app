@@ -1,18 +1,33 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactElement } from 'react';
 import Konva from 'konva';
+import { TextConfig } from 'konva/lib/shapes/Text';
 import EditableText from '../../common/editor/EditableText/EditableText';
+import useTransform from '../../../hooks/editor/node/useTransform';
+import { ShapeBounds } from '../../../types/editor';
 
 type Props = {
   isSelected: boolean;
-  node: Konva.Text | null;
   render: ReactElement;
+  config: TextConfig;
+  bounds: ShapeBounds;
+  node: Konva.Text | null;
 };
 
-function Text({ node, render, isSelected }: Props) {
+function Text({ isSelected, render, config, bounds, node }: Props) {
   const [editable, setEditable] = useState(false);
 
+  const { transformNodes } = useTransform();
+
   const handleChange = (text: string) => {
-    console.log(text);
+    if (!node) return;
+
+    const stage = node.getStage();
+    if (!stage) return;
+
+    transformNodes(
+      [{ id: node.id(), config: { ...config, text } }],
+      stage.id()
+    );
   };
 
   useEffect(() => {
@@ -25,7 +40,8 @@ function Text({ node, render, isSelected }: Props) {
       onChange={handleChange}
       onEdit={() => setEditable(true)}
       render={render}
-      node={node}
+      config={config}
+      bounds={bounds}
     />
   );
 }
