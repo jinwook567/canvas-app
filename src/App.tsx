@@ -23,7 +23,7 @@ function App() {
           <Asset />
         </Grid>
 
-        <Grid lg={9} item>
+        <Grid item sx={{ flex: 1 }}>
           <List
             isExportRequested={isExportRequested}
             onExport={data => {
