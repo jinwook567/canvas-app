@@ -10,15 +10,17 @@ function useTransform() {
 
   function applyTemplate(template: StageClass, stageToApply: StageClass) {
     const scale = getResizeScale(
-      template.bounds.size,
-      stageToApply.bounds.size,
+      template.bounds.originSize,
+      stageToApply.bounds.originSize,
       1
     );
 
     const duplicated = template.duplicate().setConfig({
       ...template.config,
-      scaleX: scale,
-      scaleY: scale,
+      width: scale * template.bounds.width,
+      height: scale * template.bounds.height,
+      scaleX: scale * template.bounds.scaleX,
+      scaleY: scale * template.bounds.scaleY,
     });
 
     setStages(stages =>
