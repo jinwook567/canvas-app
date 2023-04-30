@@ -17,7 +17,7 @@ function useElementResize() {
           height: rect.height,
         });
       }
-    }, 10);
+    }, 100);
 
     timer.current = newTimer;
   }

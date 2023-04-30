@@ -11,6 +11,7 @@ import * as Styled from './List.styles';
 import StageControlBar from '../StageControlBar/StageControlBar';
 import useSelect from '../../../hooks/editor/stage/useSelect';
 import NodeControlBar from '../NodeControlBar/NodeControlBar';
+import { getResizeScale } from '../../../utils/editor/scale';
 
 type Props = {
   isExportRequested: boolean;
@@ -24,15 +25,33 @@ function List({ isExportRequested, onExport }: Props) {
 
   useEffect(() => {
     if (size.width && size.height && stages.length === 0) {
+      const stageSize = { width: 500, height: 500 };
+      const scale = getResizeScale(stageSize, size, 0.65);
+
       const stage = new StageClass({
-        width: size.width * 0.6,
-        height: size.width * 0.6,
+        width: stageSize.width * scale,
+        height: stageSize.height * scale,
       });
 
       setStages([stage]);
       selectStage(stage.id);
     }
   }, [size, stages]);
+
+  useEffect(() => {
+    setStages(stages =>
+      stages.map(stage => {
+        const scale = getResizeScale(stage.bounds.originSize, size, 0.65);
+        return stage.setConfig({
+          ...stage.config,
+          width: scale * stage.bounds.width,
+          height: scale * stage.bounds.height,
+          scaleX: scale * stage.bounds.scaleX,
+          scaleY: scale * stage.bounds.scaleY,
+        });
+      })
+    );
+  }, [size]);
 
   const canvasRef = useRef<Map<string, Konva.Layer | null> | undefined>();
 
