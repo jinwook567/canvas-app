@@ -54,6 +54,10 @@ export class DefaultSize<Config extends NodeConfig> implements ShapeBounds {
   get size() {
     return { width: this.actualWidth, height: this.actualHeight };
   }
+
+  get originSize() {
+    return { width: this.width, height: this.height };
+  }
 }
 
 export class TextSize<Config extends TextConfig> extends DefaultSize<Config> {
