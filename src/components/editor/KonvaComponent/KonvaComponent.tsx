@@ -7,7 +7,7 @@ type Props<Ref extends Konva.Node, Config extends NodeConfig> = {
   id: string;
   config: Config;
   component: KonvaNodeComponent<Ref, Config>;
-  childNodes?: Props<Ref, Config>[];
+  childNodes?: (Props<Ref, Config> & { children?: Props<Ref, Config>[] })[];
   setNode?: (node: Konva.Node | null) => void;
 } & KonvaNodeEvents;
 
@@ -34,6 +34,7 @@ function KonvaComponent<Node extends Konva.Node, Config extends NodeConfig>({
           id={child.id}
           config={{ ...child.config, draggable: false }}
           component={child.component}
+          childNodes={child.children}
         />
       ))}
     </Component>
