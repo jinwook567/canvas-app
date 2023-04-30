@@ -61,8 +61,8 @@ function EditableText({
         <Textarea
           onChange={onChange}
           text={config.text || ''}
-          x={bounds.x}
-          y={bounds.y}
+          x={bounds.x - 2}
+          y={bounds.y - 3}
           rows={(config.text || '').split('\n').length}
           style={style}
         />

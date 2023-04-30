@@ -82,7 +82,17 @@ function CanvasLayer({ setNode, shapes, trRef }: Props) {
                     <Text
                       isSelected={isSelected(shape.id)}
                       config={shape.config}
-                      bounds={shape.bounds}
+                      bounds={
+                        shape.setConfig({
+                          ...shape.config,
+                          x:
+                            shape.bounds.x *
+                            (ref.current?.getStage()?.scaleX() || 1),
+                          y:
+                            shape.bounds.y *
+                            (ref.current?.getStage()?.scaleY() || 1),
+                        }).bounds
+                      }
                       render={render}
                       node={ref.current as Konva.Text | null}
                     />
