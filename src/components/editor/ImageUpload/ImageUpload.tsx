@@ -3,12 +3,17 @@ import { Button } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 type Props = {
-  onSubmit: (files: FileList | null) => void;
+  onComplete: (files: File) => void;
 };
 
-function ImageUpload({ onSubmit }: Props) {
+function ImageUpload({ onComplete }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onSubmit(e.target.files);
+    const { files } = e.target;
+    if (files) {
+      for (let i = 0; i < files.length; i += 1) {
+        onComplete(files[i]);
+      }
+    }
   };
 
   return (

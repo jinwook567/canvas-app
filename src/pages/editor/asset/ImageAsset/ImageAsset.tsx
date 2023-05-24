@@ -19,12 +19,7 @@ function ImageAsset({ items, addItem }: Props) {
   return (
     <Grid container flexDirection="column" alignItems="center" rowGap={3}>
       <ImageUpload
-        onSubmit={files => {
-          if (!files) return;
-          for (let i = 0; i < files.length; i += 1) {
-            readImageFileAsURL(files[i], src => addItem(src));
-          }
-        }}
+        onComplete={file => readImageFileAsURL(file, src => addItem(src))}
       />
       <ImageList
         items={items}
@@ -39,6 +34,7 @@ function ImageAsset({ items, addItem }: Props) {
             stage.id
           )
         }
+        columns={2}
       />
     </Grid>
   );
