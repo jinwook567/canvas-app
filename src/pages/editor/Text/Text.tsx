@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ReactElement } from 'react';
 import Konva from 'konva';
 import { TextConfig } from 'konva/lib/shapes/Text';
-import EditableText from '../../common/editor/EditableText/EditableText';
+import EditableText from '../../../components/editor/EditableText/EditableText';
 import useTransform from '../../../hooks/editor/node/useTransform';
 import { ShapeBounds } from '../../../types/editor';
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import Masonry from '@mui/lab/Masonry';
 import { IconButton } from '@mui/material';
-import { Stage } from '../../../../utils/editor/shapes';
+import { Stage } from '../../../utils/editor/shapes';
 import Preview from '../Preview/Preview';
-import KonvaComponent from '../../../editor/KonvaComponent/KonvaComponent';
+import KonvaComponent from '../../../pages/editor/KonvaComponent/KonvaComponent';
 
 type Props = {
   items: Stage[];

@@ -1,6 +1,6 @@
 import React from 'react';
 import useHistory from '../../../hooks/editor/global/useHistory';
-import HeadControlBar from '../../common/editor/HeadControlBar/HeadControlBar';
+import HeadControlBar from '../../../components/editor/HeadControlBar/HeadControlBar';
 
 type Props = {
   onRequestExport: () => void;

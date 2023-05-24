@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { Grid } from '@mui/material';
-import ImageList from '../../../common/editor/ImageList/ImageList';
-import ImageUpload from '../../../common/editor/ImageUpload/ImageUpload';
+import ImageList from '../../../../components/editor/ImageList/ImageList';
+import ImageUpload from '../../../../components/editor/ImageUpload/ImageUpload';
 import useAdd from '../../../../hooks/editor/node/useAdd';
 import { Image } from '../../../../utils/editor/shapes';
 import { selectedStageClassValue } from '../../../../recoil/editor/selectors';

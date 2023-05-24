@@ -2,7 +2,7 @@ import React from 'react';
 import Konva from 'konva';
 import { Stage as StageComponent } from 'react-konva';
 import { ContainerConfig } from 'konva/lib/Container';
-import StageWrapper from '../../common/editor/StageWrapper/StageWrapper';
+import StageWrapper from '../../../components/editor/StageWrapper/StageWrapper';
 import useSelect from '../../../hooks/editor/stage/useSelect';
 import useSelectNode from '../../../hooks/editor/node/useSelect';
 

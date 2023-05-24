@@ -1,10 +1,10 @@
 import { Grid, Link } from '@mui/material';
 import React, { useState } from 'react';
 import Layout from './components/common/Layout/Layout';
-import Asset from './components/editor/asset/Asset/Asset';
-import GlobalEffect from './components/editor/GlobalEffect/GlobalEffect';
-import Header from './components/editor/Header/Header';
-import List from './components/editor/List/List';
+import Asset from './pages/editor/asset/Asset/Asset';
+import GlobalEffect from './pages/editor/GlobalEffect/GlobalEffect';
+import Header from './pages/editor/Header/Header';
+import List from './pages/editor/List/List';
 import useDownload from './hooks/editor/stage/useDownload';
 
 function App() {

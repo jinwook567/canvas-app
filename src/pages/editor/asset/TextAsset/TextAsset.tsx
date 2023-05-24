@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import useAdd from '../../../../hooks/editor/node/useAdd';
 import { selectedStageClassValue } from '../../../../recoil/editor/selectors';
 import { Text } from '../../../../utils/editor/shapes';
-import TextList from '../../../common/editor/TextList/TextList';
+import TextList from '../../../../components/editor/TextList/TextList';
 
 function TextAsset() {
   const { addShapeToStage } = useAdd();

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { TextConfig } from 'konva/lib/shapes/Text';
 import { Group } from 'react-konva';
 import Textarea from './Textarea';
-import { ShapeBounds } from '../../../../types/editor';
+import { ShapeBounds } from '../../../types/editor';
 
 type Props = {
   onChange: (text: string) => void;

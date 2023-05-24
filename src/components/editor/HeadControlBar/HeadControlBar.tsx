@@ -2,7 +2,7 @@ import React from 'react';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import DownloadIcon from '@mui/icons-material/Download';
-import IconButtonList from '../../IconButtonList/IconButtonList';
+import IconButtonList from '../../common/IconButtonList/IconButtonList';
 
 type Props = {
   onRequestExport: () => void;

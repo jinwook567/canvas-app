@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Stage, Layer } from 'react-konva';
-import useElementResize from '../../../../hooks/useElementSize';
-import { getResizeScale } from '../../../../utils/editor/scale';
+import useElementResize from '../../../hooks/useElementSize';
+import { getResizeScale } from '../../../utils/editor/scale';
 
 export type Props = {
   width: number;

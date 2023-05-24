@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil';
 import useTransform from '../../../../hooks/editor/stage/useTransform';
 import { selectedStageClassValue } from '../../../../recoil/editor/selectors';
 import { Stage, Text } from '../../../../utils/editor/shapes';
-import TemplateList from '../../../common/editor/TemplateList/TemplateList';
+import TemplateList from '../../../../components/editor/TemplateList/TemplateList';
 
 function TemplateAsset() {
   const templateSample = new Stage({ width: 500, height: 500 }).setChildren(
