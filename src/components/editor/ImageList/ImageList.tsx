@@ -5,17 +5,14 @@ import Image from '../Image/Image';
 type Props = {
   items: { src: string }[];
   onClick: (image: HTMLImageElement) => void;
+  columns: number;
 };
 
-function ImageList({ items, onClick }: Props) {
+function ImageList({ items, onClick, columns }: Props) {
   return (
-    <Masonry columns={2}>
+    <Masonry columns={columns}>
       {items.map(({ src }, index) => (
-        <Image
-          src={src}
-          onClick={image => image && onClick(image)}
-          key={index}
-        />
+        <Image src={src} onClick={image => onClick(image)} key={index} />
       ))}
     </Masonry>
   );
