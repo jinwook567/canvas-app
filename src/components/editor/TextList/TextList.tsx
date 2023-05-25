@@ -1,9 +1,14 @@
-import { Button, Grid, Typography } from '@mui/material';
 import React from 'react';
+import { Button, Grid, Typography } from '@mui/material';
+
+interface Item {
+  fontSize: number;
+  text: string;
+}
 
 type Props = {
-  items: { fontSize: number; text: string }[];
-  onClick: (arg: { fontSize: number; text: string }) => void;
+  items: Item[];
+  onClick: (arg: Item) => void;
 };
 
 function TextList({ items, onClick }: Props) {
