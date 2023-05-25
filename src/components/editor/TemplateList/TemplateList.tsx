@@ -3,7 +3,7 @@ import { Layer } from 'react-konva';
 import Masonry from '@mui/lab/Masonry';
 import { IconButton } from '@mui/material';
 import { Stage } from '../../../utils/editor/shapes';
-import KonvaComponent from '../../../pages/editor/KonvaComponent/KonvaComponent';
+import KonvaComponent from '../KonvaComponent/KonvaComponent';
 import ResponsiveStage from '../ResponsiveStage/ResponsiveStage';
 
 type Props = {

@@ -4,15 +4,15 @@ import { useRecoilValue } from 'recoil';
 import Konva from 'konva';
 import { KonvaNodeEvents, Layer as LayerComponent } from 'react-konva';
 import { Shape } from '../../../types/editor';
-import Node from '../Node/Node';
+import Node from '../../../components/editor/Node/Node';
 import { Text as TextClass } from '../../../utils/editor/shapes';
 import Text from '../Text/Text';
 import useSelect from '../../../hooks/editor/node/useSelect';
 import usePressedKey from '../../../hooks/editor/global/usePressedKey';
 import { selectedStageIdState } from '../../../recoil/editor/atoms';
-import KonvaComponent from '../KonvaComponent/KonvaComponent';
+import KonvaComponent from '../../../components/editor/KonvaComponent/KonvaComponent';
 import useTransform from '../../../hooks/editor/node/useTransform';
-import RefProvider from '../RefProvider/RefProvider';
+import RefProvider from '../../../components/editor/RefProvider/RefProvider';
 
 type CanvasShape = Pick<
   Shape,
