@@ -7,10 +7,9 @@ type Props = {
   x: number;
   y: number;
   style: React.CSSProperties;
-  rows: number;
 };
 
-function Textarea({ onChange, text, x, y, style, rows }: Props) {
+function Textarea({ onChange, text, x, y, style }: Props) {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
   };
@@ -27,7 +26,7 @@ function Textarea({ onChange, text, x, y, style, rows }: Props) {
       <textarea
         onChange={handleChange}
         value={text}
-        rows={rows}
+        rows={text.split('\n').length}
         style={style}
       />
     </Html>

@@ -3,10 +3,11 @@ import { TextConfig } from 'konva/lib/shapes/Text';
 import { Group } from 'react-konva';
 import Textarea from './Textarea';
 import { ShapeBounds } from '../../../types/editor';
+import { textareaStyle } from './Textarea.style';
 
 type Props = {
   onChange: (text: string) => void;
-  onEdit: () => void;
+  onDbClick: () => void;
   editable: boolean;
   render: ReactElement;
   config: TextConfig;
@@ -15,46 +16,12 @@ type Props = {
 
 function EditableText({
   onChange,
+  onDbClick,
   editable,
-  onEdit,
   render,
   config,
   bounds,
 }: Props) {
-  const style: React.CSSProperties = {
-    border: 'none',
-    outline: 'none',
-    resize: 'none',
-    overflow: 'hidden',
-    color: 'transparent',
-    caretColor: 'black',
-    background: 'transparent',
-    zIndex: -1,
-    margin: '0px',
-    transformOrigin: 'top left',
-    width: `${bounds.actualWidth}px`,
-    height: `${bounds.actualHeight}px`,
-    fontSize: `${(config.fontSize || 1) * bounds.scaleY}px`,
-    lineHeight: `${
-      (config.lineHeight || 1) * (config.fontSize || 1) * bounds.scaleY
-    }px`,
-    letterSpacing: `${config.letterSpacing || 0}px`,
-    fontFamily: config.fontFamily || 'Arial',
-    fontVariant: config.fontVariant || 'normal',
-    fontStyle: config.fontStyle || 'normal',
-    fontWeight: config.fontVariant || 'normal',
-    transform: `rotate(${config.rotation || 0}deg)`,
-    textAlign: (config.align || 'left') as
-      | 'start'
-      | 'end'
-      | 'left'
-      | 'right'
-      | 'center'
-      | 'justify'
-      | 'match-parent',
-    verticalAlign: config.verticalAlign || 'top',
-  };
-
   return (
     <>
       {editable && (
@@ -63,11 +30,10 @@ function EditableText({
           text={config.text || ''}
           x={bounds.x - 2}
           y={bounds.y - 3}
-          rows={(config.text || '').split('\n').length}
-          style={style}
+          style={textareaStyle(bounds, config)}
         />
       )}
-      <Group onDblClick={() => onEdit()}>{render}</Group>
+      <Group onDblClick={() => onDbClick()}>{render}</Group>
     </>
   );
 }

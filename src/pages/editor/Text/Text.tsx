@@ -38,7 +38,7 @@ function Text({ isSelected, render, config, bounds, node }: Props) {
     <EditableText
       editable={editable && isSelected}
       onChange={handleChange}
-      onEdit={() => setEditable(true)}
+      onDbClick={() => setEditable(true)}
       render={render}
       config={config}
       bounds={bounds}
