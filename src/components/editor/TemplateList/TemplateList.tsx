@@ -3,7 +3,7 @@ import { Layer } from 'react-konva';
 import Masonry from '@mui/lab/Masonry';
 import { IconButton } from '@mui/material';
 import { Stage } from '../../../utils/editor/shapes';
-import KonvaComponent from '../KonvaComponent/KonvaComponent';
+import KonvaMatcher from '../KonvaMatcher/KonvaMatcher';
 import ResponsiveStage from '../ResponsiveStage/ResponsiveStage';
 
 type Props = {
@@ -26,7 +26,7 @@ function TemplateList({ items, onClick }: Props) {
           >
             <Layer>
               {item.children.map(shape => (
-                <KonvaComponent
+                <KonvaMatcher
                   key={shape.id}
                   id={shape.id}
                   component={shape.component}

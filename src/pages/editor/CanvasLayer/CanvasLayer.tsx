@@ -10,7 +10,7 @@ import Text from '../Text/Text';
 import useSelect from '../../../hooks/editor/node/useSelect';
 import usePressedKey from '../../../hooks/editor/global/usePressedKey';
 import { selectedStageIdState } from '../../../recoil/editor/atoms';
-import KonvaComponent from '../../../components/editor/KonvaComponent/KonvaComponent';
+import KonvaMatcher from '../../../components/editor/KonvaMatcher/KonvaMatcher';
 import useTransform from '../../../hooks/editor/node/useTransform';
 import RefProvider from '../../../components/editor/RefProvider/RefProvider';
 
@@ -52,12 +52,12 @@ function CanvasLayer({ setNode, shapes, trRef }: Props) {
   });
 
   return (
-    <LayerComponent ref={node => setNode(node)}>
+    <LayerComponent ref={setNode}>
       {shapes.map(shape => (
         <RefProvider key={shape.id}>
           {ref => {
             const render = (
-              <KonvaComponent
+              <KonvaMatcher
                 id={shape.id}
                 config={{ ...shape.config, draggable: true }}
                 component={shape.component}

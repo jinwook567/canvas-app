@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { KonvaNodeComponent, KonvaNodeEvents } from 'react-konva';
 import Konva from 'konva';
 import { NodeConfig } from 'konva/lib/Node';
@@ -8,10 +8,10 @@ type Props<Ref extends Konva.Node, Config extends NodeConfig> = {
   config: Config;
   component: KonvaNodeComponent<Ref, Config>;
   childNodes?: (Props<Ref, Config> & { children?: Props<Ref, Config>[] })[];
-  setNode?: (node: Konva.Node | null) => void;
+  setNode?: (node: Ref | null) => void;
 } & KonvaNodeEvents;
 
-function KonvaComponent<Node extends Konva.Node, Config extends NodeConfig>({
+function KonvaMatcher<Node extends Konva.Node, Config extends NodeConfig>({
   id,
   component: Component,
   config,
@@ -19,17 +19,10 @@ function KonvaComponent<Node extends Konva.Node, Config extends NodeConfig>({
   setNode,
   ...events
 }: Props<Node, Config>) {
-  const ref = useCallback(
-    (node: Node) => {
-      if (node && setNode) setNode(node);
-    },
-    [setNode]
-  );
-
   return (
-    <Component ref={ref} {...config} {...events} id={id}>
+    <Component id={id} ref={setNode} {...config} {...events}>
       {childNodes?.map(child => (
-        <KonvaComponent
+        <KonvaMatcher
           key={child.id}
           id={child.id}
           config={{ ...child.config, draggable: false }}
@@ -41,4 +34,4 @@ function KonvaComponent<Node extends Konva.Node, Config extends NodeConfig>({
   );
 }
 
-export default KonvaComponent;
+export default KonvaMatcher;
