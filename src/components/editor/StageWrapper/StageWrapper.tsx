@@ -22,7 +22,7 @@ function StageWrapper({ isSelected, children, onSelect }: Props) {
   }, [isSelected]);
 
   return (
-    <Styled.Div isSelected={isSelected} ref={ref} onClick={() => onSelect()}>
+    <Styled.Div isSelected={isSelected} ref={ref} onClick={onSelect}>
       {children}
     </Styled.Div>
   );
