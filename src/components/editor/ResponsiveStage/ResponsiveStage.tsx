@@ -1,56 +1,38 @@
 import React from 'react';
 import { Stage, StageProps } from 'react-konva';
 import { getResizeScale } from '../../../utils/editor/scale';
-import DivSize from '../DivSize/DivSize';
 
 type Size = {
   width: number;
   height: number;
 };
 
-type Props = StageProps &
-  Size & {
-    parentRatio: number;
-    handleParentSize?: (size: Size) => Size;
-  };
+type Props = StageProps & {
+  size: Size;
+  parentSize: Size;
+  parentRatio: number;
+  children: React.ReactNode;
+};
 
 function ResponsiveStage({
-  width,
-  height,
+  size,
+  parentSize,
   parentRatio,
   children,
-  handleParentSize,
   ...props
 }: Props) {
-  const calcScale = (targetSize: { width: number; height: number }) =>
-    getResizeScale(
-      {
-        width,
-        height,
-      },
-      targetSize,
-      parentRatio
-    );
+  const scale = getResizeScale(size, parentSize, parentRatio);
 
   return (
-    <DivSize style={{ width: '100%', height: '100%' }}>
-      {divSize => {
-        const scale = calcScale(
-          handleParentSize ? handleParentSize(divSize) : divSize
-        );
-        return (
-          <Stage
-            width={width * scale}
-            height={height * scale}
-            scaleX={scale}
-            scaleY={scale}
-            {...props}
-          >
-            {children}
-          </Stage>
-        );
-      }}
-    </DivSize>
+    <Stage
+      width={size.width * scale}
+      height={size.height * scale}
+      scaleX={scale}
+      scaleY={scale}
+      {...props}
+    >
+      {children}
+    </Stage>
   );
 }
 
