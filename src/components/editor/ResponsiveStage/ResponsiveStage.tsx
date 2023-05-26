@@ -1,4 +1,5 @@
 import React from 'react';
+import Konva from 'konva';
 import { Stage, StageProps } from 'react-konva';
 import { getResizeScale } from '../../../utils/editor/scale';
 
@@ -12,6 +13,7 @@ type Props = StageProps & {
   parentSize: Size;
   parentRatio: number;
   children: React.ReactNode;
+  setRef?: (ref: Konva.Stage | null) => void;
 };
 
 function ResponsiveStage({
@@ -19,17 +21,19 @@ function ResponsiveStage({
   parentSize,
   parentRatio,
   children,
+  setRef,
   ...props
 }: Props) {
   const scale = getResizeScale(size, parentSize, parentRatio);
 
   return (
     <Stage
+      {...props}
       width={size.width * scale}
       height={size.height * scale}
       scaleX={scale}
       scaleY={scale}
-      {...props}
+      ref={setRef}
     >
       {children}
     </Stage>
