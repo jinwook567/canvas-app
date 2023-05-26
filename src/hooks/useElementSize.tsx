@@ -1,40 +1,43 @@
 import { useEffect, useRef, useState } from 'react';
+import { debounceTime, Observable } from 'rxjs';
 
-function useElementResize() {
-  const divRef = useRef<HTMLDivElement>(null);
-  const timer = useRef<NodeJS.Timeout | null>(null);
-
+function useElementSize<T extends Element>() {
+  const ref = useRef<T>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
+  const isInitial = useRef(true);
 
-  function handleResize() {
-    if (timer.current) clearTimeout(timer.current);
+  const resizeObserver = (element: Element) =>
+    new Observable<ResizeObserverEntry>(subscriber => {
+      const observer = new ResizeObserver(entries => {
+        entries.forEach(entry => subscriber.next(entry));
+      });
 
-    const newTimer = setTimeout(() => {
-      if (divRef.current) {
-        const rect = divRef.current.getBoundingClientRect();
-        setSize({
-          width: rect.width,
-          height: rect.height,
-        });
-      }
-    }, 100);
-
-    timer.current = newTimer;
-  }
+      observer.observe(element);
+      return () => {
+        observer.unobserve(element);
+      };
+    });
 
   useEffect(() => {
-    handleResize();
-  }, []);
+    const { current } = ref;
+    if (!current) return () => {};
 
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
+    const observable = resizeObserver(current);
+
+    const subscription = observable
+      .pipe(debounceTime(isInitial.current ? 0 : 300))
+      .subscribe(entry => {
+        isInitial.current = false;
+        const { width, height } = entry.contentRect;
+        setSize({ width, height });
+      });
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      subscription.unsubscribe();
     };
   }, []);
 
-  return { size, divRef };
+  return { size, ref };
 }
 
-export default useElementResize;
+export default useElementSize;
