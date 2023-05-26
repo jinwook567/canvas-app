@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Konva from 'konva';
 import { useRecoilState } from 'recoil';
-import useElementResize from '../../../hooks/useElementSize';
+import useElementSize from '../../../hooks/useElementSize';
 import { stageClassesState } from '../../../recoil/editor/atoms';
 import { Stage as StageClass } from '../../../utils/editor/shapes';
 import CanvasLayer from '../CanvasLayer/CanvasLayer';
@@ -11,7 +11,6 @@ import * as Styled from './List.styles';
 import StageControlBar from '../StageControlBar/StageControlBar';
 import useSelect from '../../../hooks/editor/stage/useSelect';
 import NodeControlBar from '../NodeControlBar/NodeControlBar';
-import { getResizeScale } from '../../../utils/editor/scale';
 
 type Props = {
   isExportRequested: boolean;
@@ -19,39 +18,19 @@ type Props = {
 };
 
 function List({ isExportRequested, onExport }: Props) {
-  const { size, divRef } = useElementResize();
+  const { size, ref } = useElementSize<HTMLDivElement>();
   const [stages, setStages] = useRecoilState(stageClassesState);
   const { selectStage } = useSelect();
 
   useEffect(() => {
-    if (size.width && size.height && stages.length === 0) {
-      const stageSize = { width: 500, height: 500 };
-      const scale = getResizeScale(stageSize, size, 0.65);
+    const stage = new StageClass({
+      width: 500,
+      height: 500,
+    });
 
-      const stage = new StageClass({
-        width: stageSize.width * scale,
-        height: stageSize.height * scale,
-      });
-
-      setStages([stage]);
-      selectStage(stage.id);
-    }
-  }, [size, stages]);
-
-  useEffect(() => {
-    setStages(stages =>
-      stages.map(stage => {
-        const scale = getResizeScale(stage.bounds.originSize, size, 0.65);
-        return stage.setConfig({
-          ...stage.config,
-          width: scale * stage.bounds.width,
-          height: scale * stage.bounds.height,
-          scaleX: scale * stage.bounds.scaleX,
-          scaleY: scale * stage.bounds.scaleY,
-        });
-      })
-    );
-  }, [size]);
+    setStages([stage]);
+    selectStage(stage.id);
+  }, []);
 
   const canvasRef = useRef<Map<string, Konva.Layer | null> | undefined>();
 
@@ -73,7 +52,7 @@ function List({ isExportRequested, onExport }: Props) {
   }, [isExportRequested]);
 
   return (
-    <Styled.Grid ref={divRef} rowGap={3}>
+    <Styled.Grid ref={ref} rowGap={3}>
       <NodeControlBar />
       {stages.map((stage, index) => (
         <div key={stage.id}>
@@ -82,7 +61,15 @@ function List({ isExportRequested, onExport }: Props) {
             prevStage={stages[index - 1]}
             nextStage={stages[index + 1]}
           />
-          <Stage key={stage.id} id={stage.id} config={stage.config}>
+
+          <Stage
+            key={stage.id}
+            id={stage.id}
+            config={stage.config}
+            size={stage.bounds.size}
+            parentSize={size}
+            parentRatio={0.65}
+          >
             <Transformer>
               {trRef => (
                 <CanvasLayer
