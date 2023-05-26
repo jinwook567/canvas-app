@@ -5,7 +5,7 @@ import { IconButton } from '@mui/material';
 import { Stage } from '../../../utils/editor/shapes';
 import KonvaMatcher from '../KonvaMatcher/KonvaMatcher';
 import ResponsiveStage from '../ResponsiveStage/ResponsiveStage';
-import DivSize from '../DivSize/DivSize';
+import DivSize from '../../common/DivSize/DivSize';
 
 type Props = {
   items: Stage[];
