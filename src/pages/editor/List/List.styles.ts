@@ -9,6 +9,7 @@ export const Grid = styled(MuiGrid)`
   flex-direction: column;
   min-height: 100%;
   max-height: 90vh;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   align-items: center;
 `;
