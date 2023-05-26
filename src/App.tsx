@@ -1,21 +1,29 @@
+import React from 'react';
+import { pipe } from 'ramda';
 import { Grid, Link } from '@mui/material';
-import React, { useState } from 'react';
+import Konva from 'konva';
 import Layout from './components/common/Layout/Layout';
 import Asset from './pages/editor/asset/Asset/Asset';
 import GlobalEffect from './pages/editor/GlobalEffect/GlobalEffect';
 import Header from './pages/editor/Header/Header';
 import List from './pages/editor/List/List';
 import useDownload from './hooks/editor/stage/useDownload';
+import useMultipleRef from './hooks/useMultipleRef';
 
 function App() {
-  const [isExportRequested, setIsExportRequested] = useState(false);
+  const { setRef, mapRef } = useMultipleRef<Konva.Layer | null>();
   const { requestExport } = useDownload();
+
+  const exportZip = pipe(
+    () => mapRef((id, node) => ({ url: node.toDataURL(), name: id })),
+    requestExport
+  );
 
   return (
     <Layout>
       <GlobalEffect />
       <Layout.Header>
-        <Header onRequestExport={() => setIsExportRequested(true)} />
+        <Header onRequestExport={exportZip} />
       </Layout.Header>
 
       <Layout.Main>
@@ -24,13 +32,7 @@ function App() {
         </Grid>
 
         <Grid item sx={{ flex: 1 }}>
-          <List
-            isExportRequested={isExportRequested}
-            onExport={data => {
-              requestExport(data);
-              setIsExportRequested(false);
-            }}
-          />
+          <List setRef={setRef} />
         </Grid>
       </Layout.Main>
 
