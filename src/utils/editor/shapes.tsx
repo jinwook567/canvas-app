@@ -1,5 +1,3 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable max-classes-per-file */
 import _ from 'lodash';
 import { ImageConfig } from 'konva/lib/shapes/Image';
 import { TextConfig } from 'konva/lib/shapes/Text';
