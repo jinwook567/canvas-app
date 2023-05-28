@@ -18,24 +18,8 @@ function useAdd() {
           ? stage.setChildren([
               ...stage.children,
               _.chain(shapeToAdd)
-                .thru(shape =>
-                  shape.setConfig({
-                    ...shape.config,
-                    scaleX: shape.bounds.scaleX * stage.bounds.scaleX,
-                    scaleY: shape.bounds.scaleY * stage.bounds.scaleY,
-                  })
-                )
-                .thru(shape => resize(shape, stage.bounds.originSize, 0.35))
+                .thru(shape => resize(shape, stage.bounds.originSize, 0.5))
                 .thru(shape => center(shape, stage.bounds.originSize))
-                .thru(shape =>
-                  shape.setConfig({
-                    ...shape.config,
-                    scaleX: shape.bounds.scaleX / stage.bounds.scaleX,
-                    scaleY: shape.bounds.scaleY / stage.bounds.scaleY,
-                    x: shape.bounds.x / stage.bounds.scaleX,
-                    y: shape.bounds.y / stage.bounds.scaleY,
-                  })
-                )
                 .thru(shape => avoidSamePos(shape, stage.children))
                 .value(),
             ])
