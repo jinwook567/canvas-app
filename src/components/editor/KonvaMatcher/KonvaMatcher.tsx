@@ -8,7 +8,7 @@ type Props<Ref extends Konva.Node, Config extends NodeConfig> = {
   config: Config;
   component: KonvaNodeComponent<Ref, Config>;
   childNodes?: (Props<Ref, Config> & { children?: Props<Ref, Config>[] })[];
-  setNode?: (node: Ref | null) => void;
+  setRef?: (node: Ref | null) => void;
 } & KonvaNodeEvents;
 
 function KonvaMatcher<Node extends Konva.Node, Config extends NodeConfig>({
@@ -16,11 +16,11 @@ function KonvaMatcher<Node extends Konva.Node, Config extends NodeConfig>({
   component: Component,
   config,
   childNodes,
-  setNode,
+  setRef,
   ...events
 }: Props<Node, Config>) {
   return (
-    <Component id={id} ref={setNode} {...config} {...events}>
+    <Component id={id} ref={setRef} {...config} {...events}>
       {childNodes?.map(child => (
         <KonvaMatcher
           key={child.id}
