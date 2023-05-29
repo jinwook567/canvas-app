@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 class Maybe {
-  static just<T>(a: T) {
+  static just<T>(a: NonNullable<T>) {
     return new Just(a);
   }
 
@@ -11,24 +11,12 @@ class Maybe {
   static fromNullable<T>(a: T): Nothing | Just<T> {
     return a === null || a === undefined ? Maybe.nothing() : Maybe.just(a);
   }
-
-  static of<T>(a: T) {
-    return Maybe.just(a);
-  }
-
-  get isNothing() {
-    return false;
-  }
-
-  get isJust() {
-    return false;
-  }
 }
 
 class Just<T> extends Maybe {
-  private val: T;
+  private val: NonNullable<T>;
 
-  constructor(val: T) {
+  constructor(val: NonNullable<T>) {
     super();
     this.val = val;
   }
@@ -37,7 +25,7 @@ class Just<T> extends Maybe {
     return this.val;
   }
 
-  map<P>(f: (val: T) => P) {
+  map<P>(f: (val: NonNullable<T>) => P) {
     return Maybe.fromNullable(f(this.val));
   }
 
@@ -45,17 +33,17 @@ class Just<T> extends Maybe {
     return this.val;
   }
 
-  filter<P>(f: (val: T) => P) {
+  filter<P>(f: (val: NonNullable<T>) => P) {
     return Maybe.fromNullable(f(this.val) ? this.val : null);
   }
 
-  chain<P>(f: (val: T) => P) {
+  chain<P>(f: (val: NonNullable<T>) => P) {
     return f(this.val);
   }
 }
 
 class Nothing {
-  map<T, P>(f: (arg: T) => P) {
+  map() {
     return this;
   }
 
@@ -67,11 +55,11 @@ class Nothing {
     return other;
   }
 
-  filter<T, P>(f: (arg: T) => P) {
+  filter() {
     return this;
   }
 
-  chain<T, P>(f: (arg: T) => P) {
+  chain() {
     return this;
   }
 }
