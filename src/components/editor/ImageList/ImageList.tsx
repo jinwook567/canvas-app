@@ -12,7 +12,7 @@ function ImageList({ items, onClick, columns }: Props) {
   return (
     <Masonry columns={columns}>
       {items.map(({ src }, index) => (
-        <Image src={src} onClick={image => onClick(image)} key={index} />
+        <Image src={src} onClick={onClick} key={index} />
       ))}
     </Masonry>
   );

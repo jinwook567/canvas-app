@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 type Props = {
-  onComplete: (files: File) => void;
+  onComplete: (base64Image: string) => void;
 };
 
 function ImageUpload({ onComplete }: Props) {
@@ -11,7 +11,7 @@ function ImageUpload({ onComplete }: Props) {
     const { files } = e.target;
     if (files) {
       for (let i = 0; i < files.length; i += 1) {
-        onComplete(files[i]);
+        readImageFileAsURL(files[i], onComplete);
       }
     }
   };
@@ -33,6 +33,20 @@ function ImageUpload({ onComplete }: Props) {
       />
     </Button>
   );
+}
+
+function readImageFileAsURL(file: File, callback: (result: string) => void) {
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    if (reader.result) {
+      if (reader.result instanceof ArrayBuffer) {
+        callback(Buffer.from(reader.result).toString('base64'));
+      } else {
+        callback(reader.result);
+      }
+    }
+  };
+  reader.readAsDataURL(file);
 }
 
 export default ImageUpload;

@@ -18,9 +18,7 @@ function ImageAsset({ items, addItem }: Props) {
 
   return (
     <Grid container flexDirection="column" alignItems="center" rowGap={3}>
-      <ImageUpload
-        onComplete={file => readImageFileAsURL(file, src => addItem(src))}
-      />
+      <ImageUpload onComplete={addItem} />
       <ImageList
         items={items}
         onClick={image =>
@@ -38,20 +36,6 @@ function ImageAsset({ items, addItem }: Props) {
       />
     </Grid>
   );
-}
-
-function readImageFileAsURL(file: File, callback: (result: string) => void) {
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    if (reader.result) {
-      if (reader.result instanceof ArrayBuffer) {
-        callback(Buffer.from(reader.result).toString('base64'));
-      } else {
-        callback(reader.result);
-      }
-    }
-  };
-  reader.readAsDataURL(file);
 }
 
 export default ImageAsset;
