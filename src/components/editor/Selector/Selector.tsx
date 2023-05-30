@@ -2,21 +2,21 @@ import React, { useEffect } from 'react';
 import { Group } from 'react-konva';
 
 type Props = {
-  select: () => void;
-  deselect: () => void;
+  onSelect: () => void;
+  onDeselect: () => void;
   children: React.ReactNode;
 };
 
-function Selector({ select, deselect, children }: Props) {
+function Selector({ onSelect, onDeselect, children }: Props) {
   useEffect(() => {
-    select();
+    onSelect();
     return () => {
-      deselect();
+      onDeselect();
     };
   }, []);
 
   return (
-    <Group onClick={select} onTouchStart={select} onMouseDown={select}>
+    <Group onClick={onSelect} onTouchStart={onSelect} onMouseDown={onSelect}>
       {children}
     </Group>
   );
