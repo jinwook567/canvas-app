@@ -39,7 +39,7 @@ function TransformableLayer({ children, onTransform, setRef }: Props) {
   const detachNode: DetachNode = nodeId => {
     if (!ref.current) return;
 
-    ref.current.nodes().filter(node => node.id() !== nodeId);
+    ref.current.nodes(ref.current.nodes().filter(node => node.id() !== nodeId));
     batchDraw();
   };
 
