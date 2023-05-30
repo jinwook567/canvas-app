@@ -1,35 +1,41 @@
-import { useEffect, useRef, MutableRefObject } from 'react';
+import { useEffect, useRef } from 'react';
+import { fromEvent, merge } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 
 function usePressedKey() {
   const initialValue = {
     Shift: false,
+    Control: false,
   };
 
   const pressedKeyRef = useRef<{ [key in string]: boolean }>(initialValue);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (pressedKeyRef.current[e.key] !== undefined) {
-      pressedKeyRef.current[e.key] = true;
-    }
-  };
+  const keyDown$ = fromEvent<KeyboardEvent>(window, 'keydown').pipe(
+    filter(e => pressedKeyRef.current[e.key] !== undefined),
+    map(e => ({ key: e.key, isPressed: true }))
+  );
 
-  const handleKeyUp = (e: KeyboardEvent) => {
-    if (pressedKeyRef.current[e.key] !== undefined) {
-      pressedKeyRef.current[e.key] = false;
-    }
-  };
+  const keyUp$ = fromEvent<KeyboardEvent>(window, 'keyup').pipe(
+    filter(e => pressedKeyRef.current[e.key] !== undefined),
+    map(e => ({ key: e.key, isPressed: false }))
+  );
+
+  const key$ = merge(keyDown$, keyUp$);
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
+    const subscription = key$.subscribe(({ key, isPressed }) => {
+      pressedKeyRef.current[key] = isPressed;
+    });
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+      subscription.unsubscribe();
     };
   }, []);
 
-  return pressedKeyRef as MutableRefObject<typeof initialValue>;
+  return {
+    isKeyPressed: (...keys: (keyof typeof initialValue)[]) =>
+      keys.every(key => pressedKeyRef.current[key]),
+  };
 }
 
 export default usePressedKey;
