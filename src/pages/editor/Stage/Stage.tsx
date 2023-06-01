@@ -5,7 +5,7 @@ import StageWrapper from '../../../components/editor/StageWrapper/StageWrapper';
 import useSelect from '../../../hooks/editor/stage/useSelect';
 import useSelectNode from '../../../hooks/editor/node/useSelect';
 import ResponsiveStage from '../../../components/editor/ResponsiveStage/ResponsiveStage';
-import { Size } from '../../../types/editor';
+import { Size } from '../../../utils/editor/size';
 
 type Props = {
   id: string;

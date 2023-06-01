@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 class Maybe {
   static just<T>(a: NonNullable<T>) {
     return new Just(a);

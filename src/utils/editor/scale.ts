@@ -1,4 +1,4 @@
-import { Size } from '../../types/editor';
+import { Size } from './size';
 
 function getResizeScale(targetSize: Size, standardSize: Size, ratio: number) {
   if (getRatio(targetSize) > getRatio(standardSize)) {

@@ -3,7 +3,7 @@ import Konva from 'konva';
 import { TextConfig } from 'konva/lib/shapes/Text';
 import EditableText from '../../../components/editor/EditableText/EditableText';
 import useTransform from '../../../hooks/editor/node/useTransform';
-import { ShapeBounds } from '../../../types/editor';
+import { ShapeBounds } from '../../../utils/editor/size';
 
 type Props = {
   isSelected: boolean;

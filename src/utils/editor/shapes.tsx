@@ -13,8 +13,8 @@ import {
 import { LayerConfig } from 'konva/lib/Layer';
 import { ContainerConfig } from 'konva/lib/Container';
 import { NodeConfig } from 'konva/lib/Node';
-import { Shape, ShapeBounds } from '../../types/editor';
-import { DefaultSize, GroupSize, TextSize } from './size';
+import { Shape } from '../../types/editor';
+import { DefaultSize, GroupSize, TextSize, ShapeBounds } from './size';
 import { createUniqueId } from '../unit';
 
 abstract class Base<ConfigType extends NodeConfig>

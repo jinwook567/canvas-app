@@ -1,5 +1,5 @@
 import { TextConfig } from 'konva/lib/shapes/Text';
-import { ShapeBounds } from '../../../types/editor';
+import { ShapeBounds } from '../../../utils/editor/size';
 
 export const textareaStyle = (
   bounds: ShapeBounds,

@@ -2,8 +2,9 @@ import { NodeConfig } from 'konva/lib/Node';
 import _ from 'lodash';
 import { useSetRecoilState } from 'recoil';
 import { stageClassesState } from '../../../recoil/editor/atoms';
-import { Shape, Size } from '../../../types/editor';
+import { Shape } from '../../../types/editor';
 import { getResizeScale } from '../../../utils/editor/scale';
+import { Size } from '../../../utils/editor/size';
 
 function useAdd() {
   const setStages = useSetRecoilState(stageClassesState);
@@ -18,7 +19,7 @@ function useAdd() {
           ? stage.setChildren([
               ...stage.children,
               _.chain(shapeToAdd)
-                .thru(shape => resize(shape, stage.bounds.originSize, 0.5))
+                .thru(shape => resize(shape, stage.bounds.originSize, 0.35))
                 .thru(shape => center(shape, stage.bounds.originSize))
                 .thru(shape => avoidSamePos(shape, stage.children))
                 .value(),
