@@ -83,9 +83,9 @@ abstract class HasChildren<T extends NodeConfig> extends Base<T> {
     this._children = [];
   }
 
-  addChild(child: Child): this {
+  addChild(...child: Child[]): this {
     const res = clone(this);
-    res._children.push(child);
+    res._children.push(...child);
     return res;
   }
 
