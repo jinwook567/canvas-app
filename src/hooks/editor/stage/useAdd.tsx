@@ -1,22 +1,26 @@
 import { useSetRecoilState } from 'recoil';
-import { stageClassesState } from '../../../recoil/editor/atoms';
-import { Stage as StageClass } from '../../../utils/editor/shapes';
+import { stagesState } from '../../../recoil/editor/atoms';
+import { Stage } from '../../../utils/editor/node';
+import S, { Stages } from '../../../utils/editor/stages';
 
 function useAdd() {
-  const setStages = useSetRecoilState(stageClassesState);
+  const setStages = useSetRecoilState(stagesState);
 
-  function addStage(stage: StageClass, addAfterThisStageId?: string) {
-    setStages(stages =>
-      stages.reduce(
-        (acc, cur, index) =>
-          (addAfterThisStageId && cur.id === addAfterThisStageId) ||
-          (!addAfterThisStageId && index === stages.length - 1)
-            ? [...acc, cur, stage]
-            : [...acc, cur],
-        [] as StageClass[]
-      )
-    );
-  }
+  const addStage = (stageToAdd: Stage, addAfterThisStage?: Stage) => {
+    if (addAfterThisStage) {
+      setStages(
+        S.reduce(
+          (acc, stage) =>
+            S.equals(stage, addAfterThisStage)
+              ? S.add(stage, stageToAdd)(acc as Stages)
+              : S.add(stage)(acc as Stages),
+          []
+        )
+      );
+    } else {
+      setStages(S.add(stageToAdd));
+    }
+  };
 
   return {
     addStage,
