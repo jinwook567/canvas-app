@@ -63,11 +63,15 @@ abstract class Base<T extends NodeConfig> {
     return res;
   }
 
-  duplicate() {
+  duplicate(): Node {
     const node = nodeFactory(this.type);
-    return isImage(node)
+    const configUpdated = isImage(node)
       ? node.map(() => this._config as unknown as ImageConfig)
       : node.map(() => this._config);
+
+    return hasChildren(configUpdated)
+      ? configUpdated.mapChild(child => child.duplicate() as Child)
+      : configUpdated;
   }
 
   get config() {
@@ -104,11 +108,6 @@ abstract class HasChildren<T extends NodeConfig> extends Base<T> {
   reduceChild<T>(f: (acc: T, child: Child) => T, initialValue: T) {
     const res = clone(this);
     return res._children.reduce(f, initialValue);
-  }
-
-  duplicate(): Group | Stage {
-    const node = nodeFactory(this.type) as Group | Stage;
-    return node.mapChild(child => child.duplicate() as Child);
   }
 
   get children() {
