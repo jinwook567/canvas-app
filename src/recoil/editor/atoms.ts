@@ -7,7 +7,7 @@ export const stagesState = atom<Stages>({
   default: [],
 });
 
-export const selectedStageIdState = atom<string | null>({
+const selectedStageIdState = atom<string | null>({
   key: 'selectedStageIdState',
   default: null,
 });
