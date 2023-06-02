@@ -1,19 +1,26 @@
 import { useRecoilState } from 'recoil';
-import { selectedStageIdState } from '../../../recoil/editor/atoms';
+import { selectedStageState } from '../../../recoil/editor/atoms';
+import { Stage } from '../../../utils/editor/node';
+import S from '../../../utils/editor/stages';
 
 function useSelect() {
-  const [selectedStageId, setSelectedStageId] =
-    useRecoilState(selectedStageIdState);
+  const [selectedStage, setSelectedStage] = useRecoilState(selectedStageState);
 
-  const isSelected = (stageId: string) => selectedStageId === stageId;
+  const isSelected = (stage: Stage) =>
+    selectedStage && S.equals(stage, selectedStage);
 
-  const selectStage = (stageId: string) => {
-    setSelectedStageId(stageId);
+  const selectStage = (stage: Stage) => {
+    setSelectedStage(stage);
+  };
+
+  const deSelectStage = () => {
+    setSelectedStage(null);
   };
 
   return {
     selectStage,
     isSelected,
+    deSelectStage,
   };
 }
 

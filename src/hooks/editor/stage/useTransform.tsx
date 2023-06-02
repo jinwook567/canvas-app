@@ -1,32 +1,18 @@
 import { useSetRecoilState } from 'recoil';
-import { stageClassesState } from '../../../recoil/editor/atoms';
-import { getResizeScale } from '../../../utils/editor/scale';
-import { Stage as StageClass } from '../../../utils/editor/shapes';
+import { stagesState } from '../../../recoil/editor/atoms';
+import { Stage } from '../../../utils/editor/node';
+import S from '../../../utils/editor/stages';
 import useSelect from './useSelect';
 
 function useTransform() {
-  const setStages = useSetRecoilState(stageClassesState);
+  const setStages = useSetRecoilState(stagesState);
   const { selectStage } = useSelect();
 
-  function applyTemplate(template: StageClass, stageToApply: StageClass) {
-    const scale = getResizeScale(
-      template.bounds.originSize,
-      stageToApply.bounds.originSize,
-      1
-    );
+  function applyTemplate(template: Stage, stageToApply: Stage) {
+    const duplicated = template.duplicate();
 
-    const duplicated = template.duplicate().setConfig({
-      ...template.config,
-      width: scale * template.bounds.width,
-      height: scale * template.bounds.height,
-      scaleX: scale * template.bounds.scaleX,
-      scaleY: scale * template.bounds.scaleY,
-    });
-
-    setStages(stages =>
-      stages.map(stage => (stage.id === stageToApply.id ? duplicated : stage))
-    );
-    selectStage(duplicated.id);
+    setStages(S.replace(stageToApply, duplicated));
+    selectStage(duplicated);
   }
 
   return {
