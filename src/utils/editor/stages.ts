@@ -3,10 +3,14 @@ import { Stage } from './node';
 
 export type Stages = Stage[];
 
-const equals = curry((stage1: Stage, stage2: Stage) => stage1.id === stage2.id);
+const equals = curry(
+  (stage1: Pick<Stage, 'id'>, stage2: Pick<Stage, 'id'>) =>
+    stage1.id === stage2.id
+);
 
 const notEquals = curry(
-  (stage1: Stage, stage2: Stage) => stage1.id !== stage2.id
+  (stage1: Pick<Stage, 'id'>, stage2: Pick<Stage, 'id'>) =>
+    stage1.id !== stage2.id
 );
 
 const map = curry(<T>(f: (stage: Stage) => T, stages: Stages) => stages.map(f));
@@ -21,9 +25,9 @@ const reduce = curry(
 );
 
 const replace = curry(
-  (stageToReplace: Stage, stages: Stages): Stages =>
+  (stageToBeReplaced: Stage, stageToReplace: Stage, stages: Stages): Stages =>
     map(
-      stage => (equals(stage, stageToReplace) ? stageToReplace : stage),
+      stage => (equals(stage, stageToBeReplaced) ? stageToReplace : stage),
       stages
     )
 );
