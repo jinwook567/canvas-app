@@ -5,7 +5,8 @@ import {
   Text as KonvaText,
 } from 'react-konva';
 import { NodeConfig } from 'konva/lib/Node';
-import { ImageConfig } from 'konva/lib/shapes/Image';
+import { IRect } from 'konva/lib/types';
+import { ShapeConfig } from 'konva/lib/Shape';
 import { GroupConfig } from 'konva/lib/Group';
 import { TextConfig } from 'konva/lib/shapes/Text';
 import { ContainerConfig } from 'konva/lib/Container';
@@ -58,6 +59,10 @@ abstract class Base<T extends NodeConfig> {
     this._config = {} as T;
   }
 
+  equals(node: Node) {
+    return this.id === node.id;
+  }
+
   map(f: (config: T) => T) {
     const res = clone(this);
     res._config = f(clone(res._config));
@@ -92,6 +97,10 @@ abstract class HasChildren<T extends NodeConfig> extends Base<T> {
     return res;
   }
 
+  hasChild(child: Child) {
+    return !!this.children.find(c => c.equals(child));
+  }
+
   mapChild(f: (arg: Child) => Child): this {
     const res = clone(this);
     res._children = res._children.map(f);
@@ -114,7 +123,9 @@ abstract class HasChildren<T extends NodeConfig> extends Base<T> {
   }
 }
 
-export class Image extends Base<ImageConfig> {
+export class Image extends Base<
+  ShapeConfig & { image?: CanvasImageSource; rect?: IRect }
+> {
   get component() {
     return KonvaImage;
   }
