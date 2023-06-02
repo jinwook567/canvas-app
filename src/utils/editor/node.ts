@@ -17,14 +17,15 @@ export type NodeType = 'image' | 'text' | 'group' | 'stage';
 export type Node = Image | Text | Group | Stage;
 export type Child = Exclude<Node, Stage>;
 
-export function isImage(node: Node): node is Image {
-  return node.type === 'image';
-}
-
 export function hasChildren(node: { type: NodeType }): node is Group | Stage {
   return node.type === 'group' || node.type === 'stage';
 }
 
+export function nodeFactory(type: NodeType): Node;
+export function nodeFactory(type: 'image'): Image;
+export function nodeFactory(type: 'text'): Text;
+export function nodeFactory(type: 'group'): Group;
+export function nodeFactory(type: 'stage'): Stage;
 export function nodeFactory(type: NodeType): Node {
   switch (type) {
     case 'image':
@@ -63,11 +64,9 @@ abstract class Base<T extends NodeConfig> {
     return res;
   }
 
-  duplicate(): Node {
-    const node = nodeFactory(this.type);
-    const configUpdated = isImage(node)
-      ? node.map(() => this._config as unknown as ImageConfig)
-      : node.map(() => this._config);
+  duplicate(): this {
+    const node = nodeFactory(this.type) as unknown as this;
+    const configUpdated = node.map(() => this._config);
 
     return hasChildren(configUpdated)
       ? configUpdated.mapChild(child => child.duplicate() as Child)
