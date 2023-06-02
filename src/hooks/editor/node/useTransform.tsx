@@ -1,31 +1,17 @@
-import { NodeConfig } from 'konva/lib/Node';
 import { useSetRecoilState } from 'recoil';
-import { stageClassesState } from '../../../recoil/editor/atoms';
+import { stagesState } from '../../../recoil/editor/atoms';
+import { Child } from '../../../utils/editor/node';
+import S from '../../../utils/editor/stages';
 
 function useTransform() {
-  const setStages = useSetRecoilState(stageClassesState);
+  const setStages = useSetRecoilState(stagesState);
 
-  const transformNodes = (
-    data: { id: string; config: NodeConfig }[],
-    stageId: string
-  ) => {
-    setStages(stages =>
-      stages.map(stage =>
-        stage.id === stageId
-          ? stage.setChildren([
-              ...data.reduce(
-                (acc, cur) =>
-                  acc.map(child =>
-                    child.id === cur.id
-                      ? child.setConfig({ ...cur.config })
-                      : child
-                  ),
-                stage.children
-              ),
-            ])
-          : stage
-      )
-    );
+  const transformNodes = (nodes: Child[]) => {
+    const update = (child: Child) => {
+      const nodeToTransform = nodes.find(node => node.equals(child));
+      return nodeToTransform || child;
+    };
+    setStages(S.map(stage => stage.mapChild(update)));
   };
 
   return {

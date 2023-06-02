@@ -1,17 +1,15 @@
 import { useSetRecoilState } from 'recoil';
-import { stageClassesState } from '../../../recoil/editor/atoms';
+import { stagesState } from '../../../recoil/editor/atoms';
+import { Child } from '../../../utils/editor/node';
+import S from '../../../utils/editor/stages';
 
 function useRemove() {
-  const setStages = useSetRecoilState(stageClassesState);
+  const setStages = useSetRecoilState(stagesState);
 
-  const removeNodes = (nodeIds: string[], stageId: string) => {
-    setStages(stages =>
-      stages.map(stage =>
-        stage.id === stageId
-          ? stage.setChildren([
-              ...stage.children.filter(node => !nodeIds.includes(node.id)),
-            ])
-          : stage
+  const removeNodes = (nodes: Child[]) => {
+    setStages(
+      S.map(stage =>
+        stage.filterChild(child => !nodes.find(node => node.equals(child)))
       )
     );
   };

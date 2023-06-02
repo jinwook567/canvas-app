@@ -1,31 +1,32 @@
 import { useRecoilState } from 'recoil';
 import { selectedIdsState } from '../../../recoil/editor/atoms';
+import { Child } from '../../../utils/editor/node';
 
 function useSelect() {
   const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);
 
-  const isSelected = (id: string) => selectedIds.includes(id);
+  const isSelected = (node: Child) => selectedIds.includes(node.id);
 
   const resetSelect = () => {
     setSelectedIds([]);
   };
 
-  const deselect = (id: string) => {
+  const deselect = (node: Child) => {
     setSelectedIds(currentVal =>
-      currentVal.filter(selectedId => selectedId !== id)
+      currentVal.filter(selectedId => selectedId !== node.id)
     );
   };
 
-  const appendSelect = (id: string) => {
-    setSelectedIds(currentVal => [...new Set([...currentVal, id])]);
+  const appendSelect = (node: Child) => {
+    setSelectedIds(currentVal => [...new Set([...currentVal, node.id])]);
   };
 
-  const changeSelect = (id: string) => {
-    setSelectedIds([id]);
+  const changeSelect = (node: Child) => {
+    setSelectedIds([node.id]);
   };
 
-  const replaceSelect = (ids: string[]) => {
-    setSelectedIds(ids);
+  const replaceSelect = (nodes: Child[]) => {
+    setSelectedIds(nodes.map(node => node.id));
   };
 
   return {

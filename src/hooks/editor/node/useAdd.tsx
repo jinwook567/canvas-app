@@ -1,86 +1,62 @@
-import { NodeConfig } from 'konva/lib/Node';
-import _ from 'lodash';
+import { partial, pick, pipe } from 'ramda';
 import { useSetRecoilState } from 'recoil';
-import { stageClassesState } from '../../../recoil/editor/atoms';
-import { Shape } from '../../../types/editor';
+import { stagesState } from '../../../recoil/editor/atoms';
+import { Child, Stage } from '../../../utils/editor/node';
 import { getResizeScale } from '../../../utils/editor/scale';
-import { Size } from '../../../utils/editor/size';
+import S from '../../../utils/editor/stages';
 
 function useAdd() {
-  const setStages = useSetRecoilState(stageClassesState);
+  const setStages = useSetRecoilState(stagesState);
 
-  function addShapeToStage<Config extends NodeConfig>(
-    shapeToAdd: Shape<Config>,
-    stageId: string
-  ) {
-    setStages(stages =>
-      stages.map(stage =>
-        stage.id === stageId
-          ? stage.setChildren([
-              ...stage.children,
-              _.chain(shapeToAdd)
-                .thru(shape => resize(shape, stage.bounds.originSize, 0.35))
-                .thru(shape => center(shape, stage.bounds.originSize))
-                .thru(shape => avoidSamePos(shape, stage.children))
-                .value(),
-            ])
-          : stage
-      )
+  function addNodeToStage(node: Child, stage: Stage) {
+    const locate = pipe(
+      partial(resize(0.35), [stage]),
+      partial(center, [stage]),
+      partial(avoidSamePos, [stage])
     );
+
+    setStages(S.replace(stage, stage.addChild(locate(node))));
   }
 
   return {
-    addShapeToStage,
+    addNodeToStage,
   };
 }
 
-function resize<Config extends NodeConfig>(
-  shapeToUpdate: Shape<Config>,
-  size: Size,
-  ratio: number
-) {
-  const scale = getResizeScale(shapeToUpdate.bounds.size, size, ratio);
-  return shapeToUpdate.setConfig({
-    ...shapeToUpdate.config,
-    scaleX: shapeToUpdate.bounds.scaleX * scale,
-    scaleY: shapeToUpdate.bounds.scaleY * scale,
-  });
-}
+const resize = (ratio: number) => (stage: Stage, node: Child) => {
+  const scale = getResizeScale(node.bounds.size, stage.bounds.size, ratio);
+  return node.map(config => ({
+    ...config,
+    scaleX: node.bounds.scaleX * scale,
+    scaleY: node.bounds.scaleY * scale,
+  }));
+};
 
-function center<Config extends NodeConfig>(
-  shapeToUpdate: Shape<Config>,
-  size: Size
-) {
-  return shapeToUpdate.setConfig({
-    ...shapeToUpdate.config,
-    x: (size.width - shapeToUpdate.bounds.actualWidth) / 2,
-    y: (size.height - shapeToUpdate.bounds.actualHeight) / 2,
-  });
-}
+const center = (stage: Stage, node: Child): Child =>
+  node.map(config => ({
+    ...config,
+    x: (stage.bounds.width - node.bounds.actualWidth) / 2,
+    y: (stage.bounds.height - node.bounds.actualHeight) / 2,
+  }));
 
-function avoidSamePos<Config extends NodeConfig>(
-  shapeToUpdate: Shape<Config>,
-  shapes: Shape[]
-): Shape<Config> {
+const avoidSamePos = (stage: Stage, node: Child): Child => {
   const properties = ['x', 'y', 'actualWidth', 'actualHeight'];
 
-  const samePosShape = shapes.find(shape =>
-    _.isEqual(
-      _.pick(shapeToUpdate.bounds, properties),
-      _.pick(shape.bounds, properties)
-    )
-  );
+  const hasSamePosChild =
+    stage.filterChild(
+      child => pick(properties, child.bounds) === pick(properties, node.bounds)
+    ).children.length !== 0;
 
-  return samePosShape
-    ? avoidSamePos(
-        shapeToUpdate.setConfig({
-          ...shapeToUpdate.config,
-          x: shapeToUpdate.bounds.x + 10,
-          y: shapeToUpdate.bounds.y + 10,
-        }),
-        shapes
-      )
-    : shapeToUpdate;
-}
+  if (hasSamePosChild)
+    return avoidSamePos(
+      stage,
+      node.map(config => ({
+        ...config,
+        x: node.bounds.x + 10,
+        y: node.bounds.y + 10,
+      }))
+    );
+  return node;
+};
 
 export default useAdd;
