@@ -2,10 +2,10 @@ import React from 'react';
 import { Layer } from 'react-konva';
 import Masonry from '@mui/lab/Masonry';
 import { IconButton } from '@mui/material';
-import { Stage } from '../../../utils/editor/shapes';
 import KonvaMatcher from '../KonvaMatcher/KonvaMatcher';
 import ResponsiveStage from '../ResponsiveStage/ResponsiveStage';
 import DivSize from '../../common/DivSize/DivSize';
+import { Stage } from '../../../utils/editor/node';
 
 type Props = {
   items: Stage[];
@@ -25,12 +25,12 @@ function TemplateList({ items, onClick }: Props) {
                 parentRatio={1}
               >
                 <Layer>
-                  {item.children.map(shape => (
+                  {item.children.map(child => (
                     <KonvaMatcher
-                      key={shape.id}
-                      id={shape.id}
-                      component={shape.component}
-                      config={shape.config}
+                      key={child.id}
+                      id={child.id}
+                      component={child.component}
+                      config={child.config}
                     />
                   ))}
                 </Layer>
