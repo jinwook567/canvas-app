@@ -4,8 +4,8 @@ import { Grid } from '@mui/material';
 import ImageList from '../../../../components/editor/ImageList/ImageList';
 import ImageUpload from '../../../../components/editor/ImageUpload/ImageUpload';
 import useAdd from '../../../../hooks/editor/node/useAdd';
-import { Image } from '../../../../utils/editor/shapes';
-import { selectedStageClassValue } from '../../../../recoil/editor/selectors';
+import { selectedStageState } from '../../../../recoil/editor/atoms';
+import { nodeFactory } from '../../../../utils/editor/node';
 
 interface Props {
   items: { src: string }[];
@@ -13,8 +13,8 @@ interface Props {
 }
 
 function ImageAsset({ items, addItem }: Props) {
-  const stage = useRecoilValue(selectedStageClassValue);
-  const { addShapeToStage } = useAdd();
+  const selectedStage = useRecoilValue(selectedStageState);
+  const { addNodeToStage } = useAdd();
 
   return (
     <Grid container flexDirection="column" alignItems="center" rowGap={3}>
@@ -22,14 +22,14 @@ function ImageAsset({ items, addItem }: Props) {
       <ImageList
         items={items}
         onClick={image =>
-          stage &&
-          addShapeToStage(
-            new Image({
+          selectedStage &&
+          addNodeToStage(
+            nodeFactory('image').map(() => ({
               image,
               width: image.width,
               height: image.height,
-            }),
-            stage.id
+            })),
+            selectedStage
           )
         }
         columns={2}

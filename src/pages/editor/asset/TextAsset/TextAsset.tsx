@@ -1,13 +1,13 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import useAdd from '../../../../hooks/editor/node/useAdd';
-import { selectedStageClassValue } from '../../../../recoil/editor/selectors';
-import { Text } from '../../../../utils/editor/shapes';
 import TextList from '../../../../components/editor/TextList/TextList';
+import { selectedStageState } from '../../../../recoil/editor/atoms';
+import { nodeFactory } from '../../../../utils/editor/node';
 
 function TextAsset() {
-  const { addShapeToStage } = useAdd();
-  const selectedStage = useRecoilValue(selectedStageClassValue);
+  const { addNodeToStage } = useAdd();
+  const selectedStage = useRecoilValue(selectedStageState);
 
   return (
     <TextList
@@ -19,7 +19,10 @@ function TextAsset() {
       ]}
       onClick={textConfig =>
         selectedStage &&
-        addShapeToStage(new Text({ ...textConfig }), selectedStage.id)
+        addNodeToStage(
+          nodeFactory('text').map(() => textConfig),
+          selectedStage
+        )
       }
     />
   );
