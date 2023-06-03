@@ -1,5 +1,5 @@
 import { atom, DefaultValue, selector } from 'recoil';
-import { Stage } from '../../utils/editor/node';
+import { Child, Stage } from '../../utils/editor/node';
 import S, { Stages } from '../../utils/editor/stages';
 
 export const stagesState = atom<Stages>({
@@ -32,6 +32,18 @@ export const selectedStageState = selector<Stage | null>({
 export const selectedIdsState = atom<string[]>({
   key: 'selectedIdsState',
   default: [],
+});
+
+export const selectedNodesState = selector<Child[]>({
+  key: 'selectedChildState',
+  get: ({ get }) => {
+    const stages = get(stagesState);
+    const selectedIds = get(selectedIdsState);
+    const allNodes = S.iter(stages).flatMap(stage => stage.children);
+
+    const isSelected = (child: Child) => selectedIds.includes(child.id);
+    return allNodes.filter(isSelected);
+  },
 });
 
 type HistoryState = {
