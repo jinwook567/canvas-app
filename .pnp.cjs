@@ -40,7 +40,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/eslint", "npm:8.4.10"],\
             ["@types/file-saver", "npm:2.0.5"],\
             ["@types/jest", "npm:29.2.4"],\
-            ["@types/lodash", "npm:4.14.191"],\
             ["@types/node", "npm:16.18.9"],\
             ["@types/ramda", "npm:0.29.2"],\
             ["@types/react", "npm:18.0.26"],\
@@ -62,7 +61,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:29.3.1"],\
             ["jszip", "npm:3.10.1"],\
             ["konva", "npm:8.3.14"],\
-            ["lodash", "npm:4.17.21"],\
             ["ramda", "npm:0.29.0"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.0"],\
@@ -5864,15 +5862,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@types/lodash", [\
-        ["npm:4.14.191", {\
-          "packageLocation": "./.yarn/cache/@types-lodash-npm-4.14.191-67a04a969b-ba0d5434e1.zip/node_modules/@types/lodash/",\
-          "packageDependencies": [\
-            ["@types/lodash", "npm:4.14.191"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@types/mime", [\
         ["npm:3.0.1", {\
           "packageLocation": "./.yarn/cache/@types-mime-npm-3.0.1-dec03536dc-4040fac73f.zip/node_modules/@types/mime/",\
@@ -7904,7 +7893,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/eslint", "npm:8.4.10"],\
             ["@types/file-saver", "npm:2.0.5"],\
             ["@types/jest", "npm:29.2.4"],\
-            ["@types/lodash", "npm:4.14.191"],\
             ["@types/node", "npm:16.18.9"],\
             ["@types/ramda", "npm:0.29.2"],\
             ["@types/react", "npm:18.0.26"],\
@@ -7926,7 +7914,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:29.3.1"],\
             ["jszip", "npm:3.10.1"],\
             ["konva", "npm:8.3.14"],\
-            ["lodash", "npm:4.17.21"],\
             ["ramda", "npm:0.29.0"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:79abd4cff2997114b6381869be8e23a105c00970d9954318f9b51a4469abb639c600b0dfdefa756f9cf558abaef34884d7b34986d76d47c038f4c1c20ba5c98e#npm:18.2.0"],\
