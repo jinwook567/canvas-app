@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { KonvaNodeComponent, KonvaNodeEvents } from 'react-konva';
 import Konva from 'konva';
@@ -6,7 +7,7 @@ import { NodeConfig } from 'konva/lib/Node';
 type Props<Ref extends Konva.Node, Config extends NodeConfig> = {
   id: string;
   config: Config;
-  component: KonvaNodeComponent<Ref, Config>;
+  component: KonvaNodeComponent<any, any>;
   childNodes?: (Props<Ref, Config> & { children?: Props<Ref, Config>[] })[];
   setRef?: (node: Ref | null) => void;
 } & KonvaNodeEvents;
