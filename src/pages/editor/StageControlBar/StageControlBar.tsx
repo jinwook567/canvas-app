@@ -1,20 +1,17 @@
 import React from 'react';
-import { ContainerConfig } from 'konva/lib/Container';
 import useAdd from '../../../hooks/editor/stage/useAdd';
 import useRemove from '../../../hooks/editor/stage/useRemove';
 import useSelect from '../../../hooks/editor/stage/useSelect';
-import { Stage } from '../../../utils/editor/shapes';
+import { nodeFactory, Stage } from '../../../utils/editor/node';
 import ControlBar from '../../../components/editor/StageControlBar/StageControlBar';
 
-type StageProps<T> = { config: ContainerConfig; children: T[]; id: string };
-
-type Props<T> = {
-  stage: StageProps<T>;
-  prevStage?: StageProps<T>;
-  nextStage?: StageProps<T>;
+type Props = {
+  stage: Stage;
+  prevStage?: Stage;
+  nextStage?: Stage;
 };
 
-function StageControlBar<T>({ stage, prevStage, nextStage }: Props<T>) {
+function StageControlBar({ stage, prevStage, nextStage }: Props) {
   const { selectStage } = useSelect();
   const { addStage } = useAdd();
   const { removeStage } = useRemove();
@@ -22,17 +19,17 @@ function StageControlBar<T>({ stage, prevStage, nextStage }: Props<T>) {
   return (
     <ControlBar
       onAppendStage={() => {
-        const stageToAdd = new Stage({ ...stage.config });
-        addStage(stageToAdd, stage.id);
-        selectStage(stageToAdd.id);
+        const stageToAdd = nodeFactory('stage').map(() => stage.config);
+        addStage(stageToAdd, stage);
+        selectStage(stageToAdd);
       }}
       onDeleteStage={() => {
-        removeStage(stage.id);
-        if (prevStage) selectStage(prevStage.id);
-        if (nextStage) selectStage(nextStage.id);
+        removeStage(stage);
+        if (prevStage) selectStage(prevStage);
+        if (nextStage) selectStage(nextStage);
       }}
-      onSelectDown={nextStage && (() => selectStage(nextStage.id))}
-      onSelectUp={prevStage && (() => selectStage(prevStage.id))}
+      onSelectDown={nextStage && (() => selectStage(nextStage))}
+      onSelectUp={prevStage && (() => selectStage(prevStage))}
     />
   );
 }
