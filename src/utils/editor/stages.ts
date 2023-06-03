@@ -1,4 +1,4 @@
-import { curry } from 'ramda';
+import { curry, identity } from 'ramda';
 import { Stage } from './node';
 
 export type Stages = Stage[];
@@ -32,6 +32,8 @@ const replace = curry(
     )
 );
 
+const iter = (stages: Stages): Stage[] => stages.map(identity);
+
 const add =
   (...stagesToAdd: Stages) =>
   (stages: Stages) =>
@@ -45,6 +47,7 @@ const S = {
   reduce,
   replace,
   add,
+  iter,
 };
 
 export default S;
