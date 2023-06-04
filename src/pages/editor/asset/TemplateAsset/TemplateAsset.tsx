@@ -2,7 +2,7 @@ import React from 'react';
 import { range } from 'ramda';
 import { useRecoilValue } from 'recoil';
 import useTransform from '../../../../hooks/editor/stage/useTransform';
-import { selectedStageClassValue } from '../../../../recoil/editor/selectors';
+import { selectedStageState } from '../../../../recoil/editor/atoms';
 import TemplateList from '../../../../components/editor/TemplateList/TemplateList';
 import { nodeFactory } from '../../../../utils/editor/node';
 
@@ -21,7 +21,7 @@ function TemplateAsset() {
     nodeFactory('stage').addChild(...texts(num + 10))
   );
   const { applyTemplate } = useTransform();
-  const selectedStage = useRecoilValue(selectedStageClassValue);
+  const selectedStage = useRecoilValue(selectedStageState);
 
   return (
     <TemplateList
