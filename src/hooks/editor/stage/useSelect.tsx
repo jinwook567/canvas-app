@@ -7,9 +7,9 @@ function useSelect() {
   const [selectedStage, setSelectedStage] = useRecoilState(selectedStageState);
 
   const isSelected = (stage: Stage) =>
-    selectedStage && S.equals(stage, selectedStage);
+    selectedStage ? S.equals(stage, selectedStage) : false;
 
-  const selectStage = (stage: Stage) => {
+  const selectStage = (stage: Stage | null) => {
     setSelectedStage(stage);
   };
 
@@ -21,6 +21,7 @@ function useSelect() {
     selectStage,
     isSelected,
     deSelectStage,
+    selectedStage,
   };
 }
 
