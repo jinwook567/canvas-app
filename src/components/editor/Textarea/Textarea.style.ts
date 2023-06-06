@@ -1,7 +1,7 @@
 import { TextConfig } from 'konva/lib/shapes/Text';
 import { ShapeBounds } from '../../../utils/editor/size';
 
-export const textareaStyle = (
+export const style = (
   bounds: ShapeBounds,
   config: TextConfig
 ): React.CSSProperties => ({
