@@ -28,15 +28,15 @@ function useGroup() {
           ? stage
               .filterChild(child => !child.equals(node))
               .addChild(
-                ...node.mapChild(child =>
+                ...node.iterChild(child =>
                   child.map(config => ({
                     ...config,
-                    x: node.bounds.x * child.bounds.scaleX + child.bounds.x,
-                    y: node.bounds.y * child.bounds.scaleY + child.bounds.y,
-                    scaleX: node.bounds.scaleX * child.bounds.scaleX,
-                    scaleY: node.bounds.scaleY * child.bounds.scaleY,
+                    x: child.bounds.x * node.bounds.scaleX + node.bounds.x,
+                    y: child.bounds.y * node.bounds.scaleY + node.bounds.y,
+                    scaleX: child.bounds.scaleX * node.bounds.scaleX,
+                    scaleY: child.bounds.scaleY * node.bounds.scaleY,
                   }))
-                ).children
+                )
               )
           : stage
       )
