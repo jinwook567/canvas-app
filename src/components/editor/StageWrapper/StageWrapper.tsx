@@ -3,17 +3,16 @@ import * as Styled from './StageWrapper.styles';
 
 type Props = {
   isSelected: boolean;
-  onSelect: () => void;
   children: React.ReactNode;
 };
 
-function StageWrapper({ isSelected, children, onSelect }: Props) {
+function StageWrapper({ isSelected, children }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isSelected && ref.current) {
-      ref.current?.focus();
-      ref.current?.scrollIntoView({
+      ref.current.focus();
+      ref.current.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
         inline: 'nearest',
@@ -22,7 +21,7 @@ function StageWrapper({ isSelected, children, onSelect }: Props) {
   }, [isSelected]);
 
   return (
-    <Styled.Div isSelected={isSelected} ref={ref} onClick={onSelect}>
+    <Styled.Div isSelected={isSelected} ref={ref}>
       {children}
     </Styled.Div>
   );
