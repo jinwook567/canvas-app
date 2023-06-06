@@ -42,7 +42,11 @@ function ControlButton({
   onClick?: () => void;
 }) {
   return (
-    <Button variant="outlined" disabled={!onClick}>
+    <Button
+      variant="outlined"
+      disabled={!onClick}
+      onClick={() => onClick && onClick()}
+    >
       <Typography variant="body2">{name}</Typography>
     </Button>
   );
