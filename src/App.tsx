@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import { pipe } from 'ramda';
 import { Grid, Link } from '@mui/material';
 import Konva from 'konva';
@@ -6,9 +7,12 @@ import Layout from './components/common/Layout/Layout';
 import Asset from './pages/editor/asset/Asset/Asset';
 import GlobalEffect from './pages/editor/GlobalEffect/GlobalEffect';
 import Header from './pages/editor/Header/Header';
-import List from './pages/editor/List/List';
+import StageList from './pages/editor/StageList/StageList';
 import useDownload from './hooks/editor/stage/useDownload';
+import useAdd from './hooks/editor/stage/useAdd';
 import useMultipleRef from './hooks/useMultipleRef';
+import { stagesState } from './recoil/editor/atoms';
+import { nodeFactory } from './utils/editor/node';
 
 function App() {
   const { setRef, mapRef } = useMultipleRef<Konva.Layer | null>();
@@ -18,6 +22,14 @@ function App() {
     () => mapRef((id, node) => ({ url: node.toDataURL(), name: id })),
     requestExport
   );
+
+  const stages = useRecoilValue(stagesState);
+  const { addStage } = useAdd();
+
+  useEffect(() => {
+    if (stages.length === 0)
+      addStage(nodeFactory('stage').map(() => ({ width: 500, height: 500 })));
+  }, [stages]);
 
   return (
     <Layout>
@@ -32,7 +44,7 @@ function App() {
         </Grid>
 
         <Grid item sx={{ flex: 1 }}>
-          <List setRef={setRef} />
+          <StageList setRef={setRef} items={stages} />
         </Grid>
       </Layout.Main>
 
