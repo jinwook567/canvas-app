@@ -18,6 +18,10 @@ export type NodeType = 'image' | 'text' | 'group' | 'stage';
 export type Node = Image | Text | Group | Stage;
 export type Child = Exclude<Node, Stage>;
 
+export function isNode(node: unknown) {
+  return node instanceof Base;
+}
+
 export function hasChildren(node: { type: NodeType }): node is Group | Stage {
   return node.type === 'group' || node.type === 'stage';
 }
@@ -71,11 +75,7 @@ abstract class Base<T extends NodeConfig> {
 
   duplicate(): this {
     const node = nodeFactory(this.type) as unknown as this;
-    const configUpdated = node.map(() => this._config);
-
-    return hasChildren(configUpdated)
-      ? configUpdated.mapChild(child => child.duplicate() as Child)
-      : configUpdated;
+    return node.map(() => this._config);
   }
 
   get config() {
@@ -115,6 +115,11 @@ abstract class HasChildren<T extends NodeConfig> extends Base<T> {
 
   iterChild<T>(f: (arg: Child) => T): T[] {
     return this._children.map(f);
+  }
+
+  duplicate(): this {
+    const duplicated = super.duplicate();
+    return duplicated.addChild(...this.iterChild(child => child.duplicate()));
   }
 
   get children() {
