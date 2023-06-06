@@ -1,4 +1,4 @@
-import { partial, pick, pipe } from 'ramda';
+import { partial, pick, pipe, equals } from 'ramda';
 import { useSetRecoilState } from 'recoil';
 import { stagesState } from '../../../recoil/editor/atoms';
 import { Child, Stage } from '../../../utils/editor/node';
@@ -43,8 +43,8 @@ const avoidSamePos = (stage: Stage, node: Child): Child => {
   const properties = ['x', 'y', 'actualWidth', 'actualHeight'];
 
   const hasSamePosChild =
-    stage.filterChild(
-      child => pick(properties, child.bounds) === pick(properties, node.bounds)
+    stage.filterChild(child =>
+      equals(pick(properties, child.bounds), pick(properties, node.bounds))
     ).children.length !== 0;
 
   if (hasSamePosChild)
