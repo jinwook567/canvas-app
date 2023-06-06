@@ -18,7 +18,9 @@ function TemplateAsset() {
     );
 
   const templates = range(0, 3).map(num =>
-    nodeFactory('stage').addChild(...texts(num + 10))
+    nodeFactory('stage')
+      .map(() => ({ width: 500, height: 500 }))
+      .addChild(...texts(num + 7))
   );
   const { applyTemplate } = useTransform();
   const selectedStage = useRecoilValue(selectedStageState);
