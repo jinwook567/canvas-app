@@ -18,16 +18,13 @@ function StageControlBar({ stage, prevStage, nextStage }: Props) {
 
   return (
     <ControlBar
-      onAppendStage={() => {
-        const stageToAdd = nodeFactory('stage').map(() => stage.config);
-        addStage(stageToAdd, stage);
-        selectStage(stageToAdd);
-      }}
-      onDeleteStage={() => {
-        removeStage(stage);
-        if (prevStage) selectStage(prevStage);
-        if (nextStage) selectStage(nextStage);
-      }}
+      onAppendStage={() =>
+        addStage(
+          nodeFactory('stage').map(() => stage.config),
+          stage
+        )
+      }
+      onDeleteStage={() => removeStage(stage)}
       onSelectDown={nextStage && (() => selectStage(nextStage))}
       onSelectUp={prevStage && (() => selectStage(prevStage))}
     />
