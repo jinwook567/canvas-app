@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <RecoilRoot>
-      <DebugObserver />
+      {process.env.NODE_ENV === 'development' && <DebugObserver />}
       <App />
     </RecoilRoot>
   </React.StrictMode>
