@@ -1,11 +1,11 @@
 import React from 'react';
 import Konva from 'konva';
-import NodeList from '../NodeList/NodeList';
+import ShapeList from '../ShapeList/ShapeList';
 import useElementSize from '../../../hooks/useElementSize';
 import Stage from '../Stage/Stage';
 import * as Styled from './StageList.styles';
 import StageControlBar from '../StageControlBar/StageControlBar';
-import NodeControlBar from '../NodeControlBar/NodeControlBar';
+import ShapeControlBar from '../ShapeControlBar/ShapeControlBar';
 import TransformableLayer from '../../../components/editor/TransformableLayer/TransformableLayer';
 import useTransform from '../../../hooks/editor/node/useTransform';
 import { Stage as StageType } from '../../../utils/editor/node';
@@ -35,7 +35,7 @@ function StageList({ setRef, items }: Props) {
 
   return (
     <Styled.Grid ref={ref} rowGap={3}>
-      <NodeControlBar />
+      <ShapeControlBar />
       {items.map((stage, index) => {
         const prevStage = items[index - 1];
         const nextStage = items[index + 1];
@@ -63,9 +63,9 @@ function StageList({ setRef, items }: Props) {
                   onTransform={transformNodes}
                 >
                   {({ attachNode, detachNode }) => (
-                    <NodeList
-                      updateTransformer={(node, id, isSelected) =>
-                        isSelected ? attachNode(node) : detachNode(id)
+                    <ShapeList
+                      updateTransformer={(konvaNode, id, isSelected) =>
+                        isSelected ? attachNode(konvaNode) : detachNode(id)
                       }
                       items={stage.children}
                     />

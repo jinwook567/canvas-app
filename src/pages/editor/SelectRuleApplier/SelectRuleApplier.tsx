@@ -5,14 +5,14 @@ import Maybe from '../../../utils/maybe';
 import useSelect from '../../../hooks/editor/stage/useSelect';
 
 type Props = {
-  node: Konva.Node | null;
+  konvaNode: Konva.Node | null;
   deselect: () => void;
 };
 
-function SelectRuleApplier({ node, deselect }: Props) {
+function SelectRuleApplier({ konvaNode, deselect }: Props) {
   const { selectedStage } = useSelect();
 
-  const isInSelectedStage = Maybe.fromNullable(node)
+  const isInSelectedStage = Maybe.fromNullable(konvaNode)
     .map(node => node.getStage())
     .map(stage => stage.id())
     .map(id => id === selectedStage?.id);

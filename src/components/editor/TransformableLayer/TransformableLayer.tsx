@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Layer, Transformer } from 'react-konva';
 import Konva from 'konva';
 
-export type AttachNode = <T extends Konva.Node>(node: T | null) => void;
+export type AttachNode = <T extends Konva.Node>(konvaNode: T | null) => void;
 export type DetachNode = (nodeId: string) => void;
 
 type Props = {

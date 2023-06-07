@@ -7,7 +7,7 @@ type Props = {
   onRemove?: () => void;
 };
 
-function NodeControlBar({ onGroup, onRemove, onUnGroup }: Props) {
+function ShapeControlBar({ onGroup, onRemove, onUnGroup }: Props) {
   const buttons = [
     { name: '그룹화', onClick: onGroup },
     { name: '그룹해제', onClick: onUnGroup },
@@ -52,4 +52,4 @@ function ControlButton({
   );
 }
 
-export default NodeControlBar;
+export default ShapeControlBar;

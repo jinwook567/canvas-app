@@ -3,11 +3,11 @@ import { useRecoilValue } from 'recoil';
 import useGroup from '../../../hooks/editor/node/useGroup';
 import useRemove from '../../../hooks/editor/node/useRemove';
 import { selectedNodesState } from '../../../recoil/editor/atoms';
-import * as Styled from './NodeControlBar.styles';
-import ControlBar from '../../../components/editor/NodeControlBar/NodeControlBar';
+import * as Styled from './ShapeControlBar.styles';
+import ControlBar from '../../../components/editor/ShapeControlBar/ShapeControlBar';
 import { Group } from '../../../utils/editor/node';
 
-function NodeControlBar() {
+function ShapeControlBar() {
   const { removeNodes } = useRemove();
   const { group, ungroup } = useGroup();
   const selectedNodes = useRecoilValue(selectedNodesState);
@@ -33,4 +33,4 @@ function NodeControlBar() {
   );
 }
 
-export default NodeControlBar;
+export default ShapeControlBar;

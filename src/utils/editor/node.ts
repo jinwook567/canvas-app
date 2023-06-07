@@ -16,14 +16,14 @@ import { DefaultSize, GroupSize, TextSize, ShapeBounds } from './size';
 
 export type NodeType = 'image' | 'text' | 'group' | 'stage';
 export type Node = Image | Text | Group | Stage;
-export type Child = Exclude<Node, Stage>;
+export type Shape = Exclude<Node, Stage>;
 
 export function isNode(node: unknown) {
   return node instanceof Base;
 }
 
-export function hasChildren(node: { type: NodeType }): node is Group | Stage {
-  return node.type === 'group' || node.type === 'stage';
+export function hasChildren(node: Node): node is Group | Stage {
+  return node instanceof Container;
 }
 
 export function nodeFactory(type: NodeType): Node;
@@ -83,37 +83,37 @@ abstract class Base<T extends NodeConfig> {
   }
 }
 
-abstract class HasChildren<T extends NodeConfig> extends Base<T> {
-  protected _children: Child[];
+abstract class Container<T extends NodeConfig> extends Base<T> {
+  protected _children: Shape[];
 
   constructor(type: NodeType) {
     super(type);
     this._children = [];
   }
 
-  addChild(...child: Child[]): this {
+  addChild(...child: Shape[]): this {
     const res = clone(this);
     res._children.push(...child);
     return res;
   }
 
-  hasChild(child: Child) {
+  hasChild(child: Shape) {
     return !!this.children.find(c => c.equals(child));
   }
 
-  mapChild(f: (arg: Child) => Child): this {
+  mapChild(f: (arg: Shape) => Shape): this {
     const res = clone(this);
     res._children = res._children.map(f);
     return res;
   }
 
-  filterChild(f: (arg: Child) => boolean): this {
+  filterChild(f: (arg: Shape) => boolean): this {
     const res = clone(this);
     res._children = res._children.filter(f);
     return res;
   }
 
-  iterChild<T>(f: (arg: Child) => T): T[] {
+  iterChild<T>(f: (arg: Shape) => T): T[] {
     return this._children.map(f);
   }
 
@@ -149,7 +149,7 @@ export class Text extends Base<TextConfig> {
   }
 }
 
-export class Group extends HasChildren<GroupConfig> {
+export class Group extends Container<GroupConfig> {
   get component() {
     return KonvaGroup;
   }
@@ -159,7 +159,7 @@ export class Group extends HasChildren<GroupConfig> {
   }
 }
 
-export class Stage extends HasChildren<ContainerConfig> {
+export class Stage extends Container<ContainerConfig> {
   get component() {
     return KonvaStage;
   }

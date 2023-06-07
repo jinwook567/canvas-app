@@ -1,5 +1,5 @@
 import { atom, DefaultValue, selector } from 'recoil';
-import { Child, Stage } from '../../utils/editor/node';
+import { Shape, Stage } from '../../utils/editor/node';
 import S, { Stages } from '../../utils/editor/stages';
 
 export const stagesState = atom<Stages>({
@@ -34,14 +34,14 @@ export const selectedIdsState = atom<string[]>({
   default: [],
 });
 
-export const selectedNodesState = selector<Child[]>({
+export const selectedNodesState = selector<Shape[]>({
   key: 'selectedChildState',
   get: ({ get }) => {
     const stages = get(stagesState);
     const selectedIds = get(selectedIdsState);
     const allNodes = S.iter(stages).flatMap(stage => stage.children);
 
-    const isSelected = (child: Child) => selectedIds.includes(child.id);
+    const isSelected = (child: Shape) => selectedIds.includes(child.id);
     return allNodes.filter(isSelected);
   },
 });

@@ -4,25 +4,25 @@ import RefProvider from '../../../components/editor/RefProvider/RefProvider';
 import usePressedKey from '../../../hooks/editor/global/usePressedKey';
 import useSelect from '../../../hooks/editor/node/useSelect';
 import Selector from '../../../components/editor/Selector/Selector';
-import { Child } from '../../../utils/editor/node';
+import { Shape } from '../../../utils/editor/node';
 import TransformerUpdater from '../TransformerUpdater/TransformerUpdater';
 import SelectRuleApplier from '../SelectRuleApplier/SelectRuleApplier';
-import Node from '../Node/Node';
+import ShapeMatcher from '../ShapeMatcher/ShapeMatcher';
 
 type Props = {
-  items: Child[];
+  items: Shape[];
   updateTransformer: (
-    node: Konva.Node | null,
+    konvaNode: Konva.Node | null,
     id: string,
     isSelected: boolean
   ) => void;
 };
 
-function NodeList({ items, updateTransformer }: Props) {
+function ShapeList({ items, updateTransformer }: Props) {
   const { isSelected, appendSelect, changeSelect, deselect } = useSelect();
   const { isKeyPressed } = usePressedKey();
 
-  const select = (item: Child) =>
+  const select = (item: Shape) =>
     isKeyPressed('Shift') ? appendSelect(item) : changeSelect(item);
 
   const curriedUpdateTransformer =
@@ -48,9 +48,9 @@ function NodeList({ items, updateTransformer }: Props) {
                     updateTransformer(false);
                   }}
                 >
-                  <Node
+                  <ShapeMatcher
                     setRef={setRef}
-                    node={item}
+                    shape={item}
                     konvaNode={safeRef().getOrElse(null)}
                   />
                 </Selector>
@@ -60,7 +60,7 @@ function NodeList({ items, updateTransformer }: Props) {
                   update={updateTransformer}
                 />
                 <SelectRuleApplier
-                  node={safeRef().getOrElse(null)}
+                  konvaNode={safeRef().getOrElse(null)}
                   deselect={() => deselect(item)}
                 />
               </>
@@ -72,4 +72,4 @@ function NodeList({ items, updateTransformer }: Props) {
   );
 }
 
-export default NodeList;
+export default ShapeList;
