@@ -31,8 +31,12 @@ function useGroup() {
                 ...node.iterChild(child =>
                   child.map(config => ({
                     ...config,
-                    x: child.bounds.x * node.bounds.scaleX + node.bounds.x,
-                    y: child.bounds.y * node.bounds.scaleY + node.bounds.y,
+                    x:
+                      (config.x || 0) * node.bounds.scaleX +
+                      (node.config.x || 0),
+                    y:
+                      (config.y || 0) * node.bounds.scaleY +
+                      (node.config.y || 0),
                     scaleX: child.bounds.scaleX * node.bounds.scaleX,
                     scaleY: child.bounds.scaleY * node.bounds.scaleY,
                   }))
