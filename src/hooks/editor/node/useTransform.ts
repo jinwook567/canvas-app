@@ -1,8 +1,8 @@
 import Konva from 'konva';
 import { useSetRecoilState } from 'recoil';
-import { stagesState } from '../../../recoil/editor/atoms';
-import { Shape, isNode } from '../../../utils/editor/node';
-import S from '../../../utils/editor/stages';
+import { stagesState } from 'recoils/editor/atoms';
+import { Shape, isNode } from 'utils/editor/node';
+import S from 'utils/editor/stages';
 
 function useTransform() {
   const setStages = useSetRecoilState(stagesState);

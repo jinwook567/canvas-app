@@ -1,4 +1,4 @@
-import { Size } from './size';
+import { Size } from 'utils/editor/size';
 
 function getResizeScale(targetSize: Size, standardSize: Size, ratio: number) {
   if (getRatio(targetSize) > getRatio(standardSize)) {

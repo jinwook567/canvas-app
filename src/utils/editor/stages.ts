@@ -1,5 +1,5 @@
 import { curry, identity } from 'ramda';
-import { Stage } from './node';
+import { Stage } from 'utils/editor/node';
 
 export type Stages = Stage[];
 

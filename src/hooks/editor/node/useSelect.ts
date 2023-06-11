@@ -1,6 +1,6 @@
 import { useRecoilState } from 'recoil';
-import { selectedIdsState } from '../../../recoil/editor/atoms';
-import { Shape } from '../../../utils/editor/node';
+import { selectedIdsState } from 'recoils/editor/atoms';
+import { Shape } from 'utils/editor/node';
 
 function useSelect() {
   const [selectedIds, setSelectedIds] = useRecoilState(selectedIdsState);

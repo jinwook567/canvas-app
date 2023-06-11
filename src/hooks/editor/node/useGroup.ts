@@ -1,8 +1,8 @@
 import { includes } from 'ramda';
 import { useSetRecoilState } from 'recoil';
-import { stagesState } from '../../../recoil/editor/atoms';
-import { Shape, nodeFactory, Group } from '../../../utils/editor/node';
-import S from '../../../utils/editor/stages';
+import { stagesState } from 'recoils/editor/atoms';
+import { Shape, nodeFactory, Group } from 'utils/editor/node';
+import S from 'utils/editor/stages';
 
 function useGroup() {
   const setStages = useSetRecoilState(stagesState);

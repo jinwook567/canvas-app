@@ -4,7 +4,7 @@ import { RecoilRoot } from 'recoil';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import DebugObserver from './components/common/DebugObserver/DebugObserver';
+import DebugObserver from './components/common/DebugObserver';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

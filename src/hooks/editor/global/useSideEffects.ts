@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import { stagesState } from '../../../recoil/editor/atoms';
-import useHistory from './useHistory';
+import { stagesState } from 'recoils/editor/atoms';
+import useHistory from 'hooks/editor/global/useHistory';
 
 function useSideEffects() {
   useHistoryEffects();

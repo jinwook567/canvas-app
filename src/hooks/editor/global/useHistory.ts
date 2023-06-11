@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { historyState, stagesState } from '../../../recoil/editor/atoms';
-import { Stage } from '../../../utils/editor/node';
+import { Stage } from 'utils/editor/node';
+import { historyState, stagesState } from 'recoils/editor/atoms';
 
 function useHistory() {
   const [history, setHistory] = useRecoilState(historyState);

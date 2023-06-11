@@ -11,8 +11,8 @@ import { GroupConfig } from 'konva/lib/Group';
 import { TextConfig } from 'konva/lib/shapes/Text';
 import { ContainerConfig } from 'konva/lib/Container';
 import { clone, identity } from 'ramda';
-import { createUniqueId } from '../unit';
-import { DefaultSize, GroupSize, TextSize, ShapeBounds } from './size';
+import { createUniqueId } from 'utils/unit';
+import { DefaultSize, GroupSize, TextSize, ShapeBounds } from 'utils/editor/size';
 
 export type NodeType = 'image' | 'text' | 'group' | 'stage';
 export type Node = Image | Text | Group | Stage;

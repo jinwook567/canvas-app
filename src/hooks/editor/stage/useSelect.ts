@@ -1,7 +1,7 @@
 import { useRecoilState } from 'recoil';
-import { selectedStageState } from '../../../recoil/editor/atoms';
-import { Stage } from '../../../utils/editor/node';
-import S from '../../../utils/editor/stages';
+import { selectedStageState } from 'recoils/editor/atoms';
+import { Stage } from 'utils/editor/node';
+import S from 'utils/editor/stages';
 
 function useSelect() {
   const [selectedStage, setSelectedStage] = useRecoilState(selectedStageState);

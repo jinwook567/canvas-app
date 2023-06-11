@@ -1,9 +1,9 @@
 import { partial, pick, pipe, equals } from 'ramda';
 import { useSetRecoilState } from 'recoil';
-import { stagesState } from '../../../recoil/editor/atoms';
-import { Shape, Stage } from '../../../utils/editor/node';
-import { getResizeScale } from '../../../utils/editor/scale';
-import S from '../../../utils/editor/stages';
+import { stagesState } from 'recoils/editor/atoms';
+import { Shape, Stage } from 'utils/editor/node';
+import { getResizeScale } from 'utils/editor/scale';
+import S from 'utils/editor/stages';
 
 function useAdd() {
   const setStages = useSetRecoilState(stagesState);
