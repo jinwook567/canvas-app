@@ -3,6 +3,8 @@ import {
   Group as KonvaGroup,
   Stage as KonvaStage,
   Text as KonvaText,
+  Circle as KonvaCircle,
+  Rect as KonvaRect,
 } from 'react-konva';
 import { NodeConfig } from 'konva/lib/Node';
 import { IRect } from 'konva/lib/types';
@@ -12,10 +14,17 @@ import { TextConfig } from 'konva/lib/shapes/Text';
 import { ContainerConfig } from 'konva/lib/Container';
 import { clone, identity } from 'ramda';
 import { createUniqueId } from 'utils/unit';
-import { DefaultSize, GroupSize, TextSize, ShapeBounds } from 'utils/editor/size';
+import {
+  DefaultSize,
+  GroupSize,
+  TextSize,
+  ShapeBounds,
+} from 'utils/editor/size';
+import { CircleConfig } from 'konva/lib/shapes/Circle';
+import { RectConfig } from 'konva/lib/shapes/Rect';
 
-export type NodeType = 'image' | 'text' | 'group' | 'stage';
-export type Node = Image | Text | Group | Stage;
+export type NodeType = 'image' | 'text' | 'group' | 'stage' | 'circle' | 'rect';
+export type Node = Image | Text | Group | Stage | Circle | Rect;
 export type Shape = Exclude<Node, Stage>;
 
 export function isNode(node: unknown) {
@@ -26,11 +35,17 @@ export function hasChildren(node: Node): node is Group | Stage {
   return node instanceof Container;
 }
 
+export function isShape(node: Node): node is Shape {
+  return node.type !== 'stage';
+}
+
 export function nodeFactory(type: NodeType): Node;
 export function nodeFactory(type: 'image'): Image;
 export function nodeFactory(type: 'text'): Text;
 export function nodeFactory(type: 'group'): Group;
 export function nodeFactory(type: 'stage'): Stage;
+export function nodeFactory(type: 'circle'): Circle;
+export function nodeFactory(type: 'rect'): Rect;
 export function nodeFactory(type: NodeType): Node {
   switch (type) {
     case 'image':
@@ -44,6 +59,12 @@ export function nodeFactory(type: NodeType): Node {
 
     case 'stage':
       return new Stage(type);
+
+    case 'circle':
+      return new Circle(type);
+
+    case 'rect':
+      return new Rect(type);
 
     default:
       throw new Error('잘못된 type을 생성하려고 합니다.');
@@ -156,6 +177,26 @@ export class Group extends Container<GroupConfig> {
 
   get bounds(): ShapeBounds {
     return new GroupSize(this._config, this._children);
+  }
+}
+
+export class Circle extends Base<CircleConfig> {
+  get component() {
+    return KonvaCircle;
+  }
+
+  get bounds() {
+    return new DefaultSize(this._config);
+  }
+}
+
+export class Rect extends Base<RectConfig> {
+  get component() {
+    return KonvaRect;
+  }
+
+  get bounds() {
+    return new DefaultSize(this._config);
   }
 }
 
