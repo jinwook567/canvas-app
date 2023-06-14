@@ -1,18 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Grid, Link } from '@mui/material';
 import Konva from 'konva';
 import { pipe } from 'ramda';
-import { useRecoilValue } from 'recoil';
 import Layout from 'components/common/Layout';
-import useAdd from 'hooks/editor/stage/useAdd';
 import useDownload from 'hooks/editor/stage/useDownload';
 import useMultipleRef from 'hooks/useMultipleRef';
-import { stagesState } from 'recoils/editor/atoms';
-import { nodeFactory } from 'utils/editor/node';
 import Asset from 'pages/editor/_components/asset/Asset';
 import GlobalEffect from 'pages/editor/_components/GlobalEffect';
 import Header from 'pages/editor/_components/Header';
 import StageList from 'pages/editor/_components/StageList';
+import useCreateInitialStage from 'pages/editor/_components/StageList/useInitial';
 
 function Editor() {
   const { setRef, mapRef } = useMultipleRef<Konva.Layer | null>();
@@ -23,13 +20,7 @@ function Editor() {
     requestExport
   );
 
-  const stages = useRecoilValue(stagesState);
-  const { addStage } = useAdd();
-
-  useEffect(() => {
-    if (stages.length === 0)
-      addStage(nodeFactory('stage').map(() => ({ width: 500, height: 500 })));
-  }, [stages]);
+  const stages = useCreateInitialStage();
 
   return (
     <Layout>
