@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import GridViewIcon from '@mui/icons-material/GridView';
 import ImageIcon from '@mui/icons-material/Image';
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
+import InterestsIcon from '@mui/icons-material/Interests';
 import { Grid } from '@mui/material';
 import useTabs from 'components/common/Tabs/useTabs';
 import ImageAsset from 'pages/editor/_components/asset/ImageAsset';
 import TemplateAsset from 'pages/editor/_components/asset/TemplateAsset';
 import TextAsset from 'pages/editor/_components/asset/TextAsset';
+import FigureAsset from 'pages/editor/_components/asset/FigureAsset';
 import useSelect from 'hooks/editor/stage/useSelect';
 import useAdd from 'hooks/editor/node/useAdd';
 import { isShape, Node } from 'utils/editor/node';
@@ -47,6 +49,9 @@ function Asset() {
       tab: { label: '텍스트', icon: <FormatColorTextIcon /> },
       component: <TextAsset addAsset={addAsset} />,
     },
+    {
+      tab: { label: '도형', icon: <InterestsIcon /> },
+      component: <FigureAsset addAsset={addAsset} />,
     },
   ];
 
