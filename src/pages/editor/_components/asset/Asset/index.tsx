@@ -45,7 +45,8 @@ function Asset() {
     },
     {
       tab: { label: '텍스트', icon: <FormatColorTextIcon /> },
-      component: <TextAsset />,
+      component: <TextAsset addAsset={addAsset} />,
+    },
     },
   ];
 

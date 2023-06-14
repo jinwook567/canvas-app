@@ -1,14 +1,12 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import useAdd from 'hooks/editor/node/useAdd';
 import TextList from 'components/editor/TextList';
-import { selectedStageState } from 'recoils/editor/atoms';
-import { nodeFactory } from 'utils/editor/node';
+import { nodeFactory, Text } from 'utils/editor/node';
 
-function TextAsset() {
-  const { addNodeToStage } = useAdd();
-  const selectedStage = useRecoilValue(selectedStageState);
+type Props = {
+  addAsset: (asset: Text) => void;
+};
 
+function TextAsset({ addAsset }: Props) {
   return (
     <TextList
       items={[
@@ -18,11 +16,7 @@ function TextAsset() {
         { fontSize: 11, text: '작은 텍스트 추가하기' },
       ]}
       onClick={textConfig =>
-        selectedStage &&
-        addNodeToStage(
-          nodeFactory('text').map(() => textConfig),
-          selectedStage
-        )
+        addAsset(nodeFactory('text').map(() => textConfig))
       }
     />
   );
