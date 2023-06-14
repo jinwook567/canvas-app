@@ -1,39 +1,39 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
 import { Grid } from '@mui/material';
-import ImageList from 'components/editor/ImageList';
 import ImageUpload from 'components/editor/ImageUpload';
-import useAdd from 'hooks/editor/node/useAdd';
-import { selectedStageState } from 'recoils/editor/atoms';
-import { nodeFactory } from 'utils/editor/node';
+import { Image as ImageType, nodeFactory } from 'utils/editor/node';
+import Asset from 'components/editor/Asset';
+import Image from 'components/editor/Image';
 
 interface Props {
   items: { src: string }[];
   addItem: (src: string) => void;
+  addAsset: (shape: ImageType) => void;
 }
 
-function ImageAsset({ items, addItem }: Props) {
-  const selectedStage = useRecoilValue(selectedStageState);
-  const { addNodeToStage } = useAdd();
-
+function ImageAsset({ items, addItem, addAsset }: Props) {
   return (
     <Grid container flexDirection="column" alignItems="center" rowGap={3}>
       <ImageUpload onComplete={addItem} />
-      <ImageList
-        items={items}
-        onClick={image =>
-          selectedStage &&
-          addNodeToStage(
-            nodeFactory('image').map(() => ({
-              image,
-              width: image.width,
-              height: image.height,
-            })),
-            selectedStage
-          )
-        }
-        columns={2}
-      />
+      <Asset>
+        <Asset.Mansory>
+          {items.map((item, index) => (
+            <Image
+              key={index}
+              src={item.src}
+              onClick={image =>
+                addAsset(
+                  nodeFactory('image').map(() => ({
+                    image,
+                    width: image.width,
+                    height: image.height,
+                  }))
+                )
+              }
+            />
+          ))}
+        </Asset.Mansory>
+      </Asset>
     </Grid>
   );
 }
