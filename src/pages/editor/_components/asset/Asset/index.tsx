@@ -41,7 +41,7 @@ function Asset() {
     },
     {
       tab: { label: '템플릿', icon: <GridViewIcon /> },
-      component: <TemplateAsset />,
+      component: <TemplateAsset addAsset={addAsset} />,
     },
     {
       tab: { label: '텍스트', icon: <FormatColorTextIcon /> },

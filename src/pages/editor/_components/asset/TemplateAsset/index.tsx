@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { range } from 'ramda';
-import { useRecoilValue } from 'recoil';
-import useTransform from 'hooks/editor/stage/useTransform';
-import { selectedStageState } from 'recoils/editor/atoms';
-import TemplateList from 'components/editor/TemplateList';
-import { nodeFactory } from 'utils/editor/node';
+import { nodeFactory, Stage } from 'utils/editor/node';
+import Asset from 'components/editor/Asset';
+import PreviewStage from 'components/editor/PreviewStage';
+import DivSize from 'components/common/DivSize';
+import { Paper } from '@mui/material';
 
-function TemplateAsset() {
+type Props = {
+  addAsset: (asset: Stage) => void;
+};
+
+function TemplateAsset({ addAsset }: Props) {
   const texts = (n: number) =>
     range(0, n).map(num =>
       nodeFactory('text').map(() => ({
@@ -17,22 +21,37 @@ function TemplateAsset() {
       }))
     );
 
-  const templates = range(0, 3).map(num =>
-    nodeFactory('stage')
-      .map(() => ({ width: 500, height: 500 }))
-      .addChild(...texts(num + 7))
+  const templates = useMemo(
+    () =>
+      range(0, 3).map(num =>
+        nodeFactory('stage')
+          .map(() => ({ width: 500, height: 500 }))
+          .addChild(...texts(num + 7))
+      ),
+    []
   );
-  const { applyTemplate } = useTransform();
-  const selectedStage = useRecoilValue(selectedStageState);
 
   return (
-    <TemplateList
-      items={templates}
-      onClick={template =>
-        selectedStage && applyTemplate(template, selectedStage)
-      }
-    />
+    <Asset>
+      <Asset.Mansory>
+        {templates.map(stage => (
+          <DivSize key={stage.id} inherit>
+            {size => (
+              <Paper elevation={2} onClick={() => addAsset(stage)}>
+                <PreviewStage
+                  stage={stage}
+                  parentSize={{
+                    width: size.width,
+                    height: Math.max(size.width, size.height),
+                  }}
+                />
+              </Paper>
+            )}
+          </DivSize>
+        ))}
+      </Asset.Mansory>
+    </Asset>
   );
 }
 
-export default TemplateAsset;
+export default React.memo(TemplateAsset);
