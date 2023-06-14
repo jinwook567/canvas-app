@@ -7,11 +7,27 @@ import useTabs from 'components/common/Tabs/useTabs';
 import ImageAsset from 'pages/editor/_components/asset/ImageAsset';
 import TemplateAsset from 'pages/editor/_components/asset/TemplateAsset';
 import TextAsset from 'pages/editor/_components/asset/TextAsset';
+import useSelect from 'hooks/editor/stage/useSelect';
+import useAdd from 'hooks/editor/node/useAdd';
+import { isShape, Node } from 'utils/editor/node';
+import useTransform from 'hooks/editor/stage/useTransform';
 
 function Asset() {
   const [imageItems, setImageItems] = useState<{ src: string }[]>([
     { src: `${process.env.PUBLIC_URL}/yoda.jpg` },
   ]);
+
+  const { selectedStage } = useSelect();
+  const { addNodeToStage } = useAdd();
+  const { applyTemplate } = useTransform();
+
+  const addAsset = (node: Node) => {
+    if (selectedStage) {
+      if (isShape(node)) addNodeToStage(node, selectedStage);
+      else applyTemplate(node, selectedStage);
+    }
+  };
+
   const asset = [
     {
       tab: { label: '이미지', icon: <ImageIcon /> },
@@ -19,6 +35,7 @@ function Asset() {
         <ImageAsset
           items={imageItems}
           addItem={src => setImageItems(currentVal => [...currentVal, { src }])}
+          addAsset={addAsset}
         />
       ),
     },
