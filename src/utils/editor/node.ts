@@ -118,6 +118,12 @@ abstract class Container<T extends NodeConfig> extends Base<T> {
     return res;
   }
 
+  setChildren(f: (children: Shape[]) => Shape[]) {
+    const res = clone(this);
+    res._children = f(this.children);
+    return res;
+  }
+
   hasChild(child: Shape) {
     return !!this.children.find(c => c.equals(child));
   }
