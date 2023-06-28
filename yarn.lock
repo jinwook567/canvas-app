@@ -3557,6 +3557,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/prettier@npm:^2":
+  version: 2.7.3
+  resolution: "@types/prettier@npm:2.7.3"
+  checksum: 705384209cea6d1433ff6c187c80dcc0b95d99d5c5ce21a46a9a58060c527973506822e428789d842761e0280d25e3359300f017fbe77b9755bc772ab3dc2f83
+  languageName: node
+  linkType: hard
+
 "@types/prettier@npm:^2.1.5":
   version: 2.7.1
   resolution: "@types/prettier@npm:2.7.1"
@@ -5045,6 +5052,7 @@ __metadata:
     "@types/file-saver": ^2
     "@types/jest": ^29.2.4
     "@types/node": ^16.18.9
+    "@types/prettier": ^2
     "@types/ramda": ^0
     "@types/react": ^18.0.26
     "@types/react-dom": ^18.0.9
@@ -5065,6 +5073,7 @@ __metadata:
     jest: ^29.3.1
     jszip: ^3.10.1
     konva: ^8.3.14
+    prettier: ^2.8.8
     ramda: ^0.29.0
     react: ^18.2.0
     react-dom: ^18.2.0
@@ -11725,6 +11734,15 @@ __metadata:
   version: 1.1.2
   resolution: "prelude-ls@npm:1.1.2"
   checksum: c4867c87488e4a0c233e158e4d0d5565b609b105d75e4c05dc760840475f06b731332eb93cc8c9cecb840aa8ec323ca3c9a56ad7820ad2e63f0261dadcb154e4
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^2.8.8":
+  version: 2.8.8
+  resolution: "prettier@npm:2.8.8"
+  bin:
+    prettier: bin-prettier.js
+  checksum: b49e409431bf129dd89238d64299ba80717b57ff5a6d1c1a8b1a28b590d998a34e083fa13573bc732bb8d2305becb4c9a4407f8486c81fa7d55100eb08263cf8
   languageName: node
   linkType: hard
 
