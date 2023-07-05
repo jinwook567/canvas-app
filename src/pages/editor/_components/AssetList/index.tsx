@@ -14,11 +14,15 @@ export type Props = {
 
 function AssetList({ assets, addAsset }: Props) {
   return (
-    <Grid rowGap={20}>
+    <Grid rowGap={20} sx={{ width: '100%' }}>
       {assets.map(({ type, nodes, name }, index) => (
         <Asset key={index}>
+          {name && (
+            <Grid mb={1}>
+              <Typography variant="body1">{name}</Typography>
+            </Grid>
+          )}
           <RenderType type={type}>
-            {name && <Typography variant="h3">{name}</Typography>}
             {nodes.map((node, index) => (
               <AssetItem key={index} node={node} onClick={addAsset} />
             ))}
