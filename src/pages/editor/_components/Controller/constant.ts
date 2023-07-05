@@ -3,7 +3,12 @@ import { range } from 'ramda';
 import { nodeFactory } from 'utils/editor/node';
 
 export const imageAsset: Props['assets'] = [
-  { type: 'mansory', nodes: [`${process.env.PUBLIC_URL}/yoda.jpg`] },
+  {
+    type: 'mansory',
+    nodes: ['yoda.jpg', 'lion.png'].map(
+      pic => `${process.env.PUBLIC_URL}/${pic}`
+    ),
+  },
 ];
 
 const colors = ['#6869d6', '#E2E2E2'];
