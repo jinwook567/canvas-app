@@ -10,6 +10,7 @@ import GlobalEffect from 'pages/editor/_components/GlobalEffect';
 import Header from 'pages/editor/_components/Header';
 import StageList from 'pages/editor/_components/StageList';
 import useCreateInitialStage from 'pages/editor/_components/StageList/useInitial';
+import Controller from 'pages/editor/_components/Controller';
 
 function Editor() {
   const { setRef, mapRef } = useMultipleRef<Konva.Layer | null>();
@@ -31,7 +32,7 @@ function Editor() {
 
       <Layout.Main>
         <Grid lg={3} item>
-          <Asset />
+          <Controller />
         </Grid>
 
         <Grid item sx={{ flex: 1 }}>
