@@ -1,17 +1,18 @@
 /* eslint-disable no-nested-ternary */
 import { Grid, Typography } from '@mui/material';
 import Asset from 'components/editor/Asset';
-import AssetItem from 'pages/editor/_components/asset/AssetItem';
+import AssetItem from 'pages/editor/_components/AssetItem';
 import React from 'react';
 import { Node } from 'utils/editor/node';
 
 type UIType = 'horizontal' | 'vertical' | 'mansory';
 
-type Props = {
+export type Props = {
   assets: { type: UIType; nodes: (Node | string)[]; name?: string }[];
+  addAsset: (node: Node) => void;
 };
 
-function AssetList({ assets }: Props) {
+function AssetList({ assets, addAsset }: Props) {
   return (
     <Grid rowGap={20}>
       {assets.map(({ type, nodes, name }, index) => (
@@ -19,7 +20,7 @@ function AssetList({ assets }: Props) {
           <RenderType type={type}>
             {name && <Typography variant="h3">{name}</Typography>}
             {nodes.map((node, index) => (
-              <AssetItem key={index} node={node} onClick={() => {}} />
+              <AssetItem key={index} node={node} onClick={addAsset} />
             ))}
           </RenderType>
         </Asset>
@@ -39,7 +40,9 @@ function RenderType({ children, type }: RenderTypeProps) {
   ) : type === 'mansory' ? (
     <Asset.Mansory>{children}</Asset.Mansory>
   ) : (
-    <Grid rowGap={10}>{children}</Grid>
+    <Grid container flexDirection="column" alignItems="center" rowGap={2}>
+      {children}
+    </Grid>
   );
 }
 

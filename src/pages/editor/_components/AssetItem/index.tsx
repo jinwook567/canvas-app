@@ -87,7 +87,7 @@ function AssetFigure({ node }: Pick<Props, 'node'>) {
 function AssetText({ node }: Pick<Props, 'node'>) {
   const textNode = node as Text;
   return (
-    <Typography fontSize={textNode.config.fontSize}>
+    <Typography fontSize={textNode.config.fontSize} color="primary">
       {textNode.config.text}
     </Typography>
   );
