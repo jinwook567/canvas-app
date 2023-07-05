@@ -2,18 +2,21 @@ import React, { createContext } from 'react';
 
 type Props = {
   show: boolean;
-  type: string;
+  selectedType: string;
   children: React.ReactNode;
 };
 
 const Context = createContext<string>('');
 
-function Controller({ show, type, children }: Props) {
+function Toggle({ show, selectedType, children }: Props) {
   if (!show) return null;
-  return <Context.Provider value={type}>{children}</Context.Provider>;
+  return <Context.Provider value={selectedType}>{children}</Context.Provider>;
 }
 
-type ItemProps = Omit<Props, 'show'>;
+type ItemProps = {
+  type: string;
+  children: React.ReactNode;
+};
 
 function Item({ type, children }: ItemProps) {
   return (
@@ -21,6 +24,6 @@ function Item({ type, children }: ItemProps) {
   );
 }
 
-Controller.Item = Item;
+Toggle.Item = Item;
 
-export default Controller;
+export default Toggle;
