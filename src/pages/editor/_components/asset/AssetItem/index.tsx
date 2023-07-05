@@ -1,0 +1,96 @@
+import React from 'react';
+import { Paper, Typography } from '@mui/material';
+import DivSize from 'components/common/DivSize';
+import Asset from 'components/editor/Asset';
+import PreviewShape from 'components/editor/PreviewShape';
+import PreviewStage from 'components/editor/PreviewStage';
+import useImage from 'use-image';
+import { Node, Stage, Shape, Text, nodeFactory } from 'utils/editor/node';
+
+type Props = {
+  node: Node | string;
+  onClick: (node: Node) => void;
+};
+
+function AssetItem({ node, onClick }: Props) {
+  if (typeof node === 'string')
+    return <AssetImage node={node} onClick={onClick} />;
+  return (
+    <Asset.Item onClick={() => onClick(node)}>
+      {node.type === 'text' ? (
+        <AssetText node={node} />
+      ) : node.type === 'stage' ? (
+        <AssetTemplate node={node} />
+      ) : (
+        <AssetFigure node={node} />
+      )}
+    </Asset.Item>
+  );
+}
+
+function AssetImage({ node, onClick }: Props) {
+  const src = node as string;
+  const [image] = useImage(src, 'anonymous');
+
+  return (
+    <Asset.Item
+      onClick={() =>
+        image &&
+        onClick(
+          nodeFactory('image').map(() => ({
+            image,
+            width: image.width,
+            height: image.height,
+          }))
+        )
+      }
+    >
+      <img src={src} alt="asset" style={{ width: '100%' }} />
+    </Asset.Item>
+  );
+}
+
+function AssetTemplate({ node }: Pick<Props, 'node'>) {
+  return (
+    <DivSize inherit>
+      {size => (
+        <Paper elevation={2}>
+          <PreviewStage
+            stage={node as Stage}
+            parentSize={{
+              width: size.width,
+              height: Math.max(size.width, size.height),
+            }}
+          />
+        </Paper>
+      )}
+    </DivSize>
+  );
+}
+
+function AssetFigure({ node }: Pick<Props, 'node'>) {
+  return (
+    <DivSize inherit>
+      {size => (
+        <PreviewShape
+          shape={node as Shape}
+          parentSize={{
+            width: size.width,
+            height: Math.max(size.width, size.height),
+          }}
+        />
+      )}
+    </DivSize>
+  );
+}
+
+function AssetText({ node }: Pick<Props, 'node'>) {
+  const textNode = node as Text;
+  return (
+    <Typography fontSize={textNode.config.fontSize}>
+      {textNode.config.text}
+    </Typography>
+  );
+}
+
+export default AssetItem;
