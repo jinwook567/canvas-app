@@ -15,6 +15,7 @@ import useSelect from 'hooks/editor/stage/useSelect';
 import useAdd from 'hooks/editor/node/useAdd';
 import useTransform from 'hooks/editor/stage/useTransform';
 import { isShape, Node } from 'utils/editor/node';
+import AssetUpload from 'pages/editor/_components/AssetUpload';
 
 function Controller() {
   const [selectedTab, setSelectedTab] =
@@ -38,18 +39,28 @@ function Controller() {
     }
   };
 
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const handleUpload = (uploadedImage: string) => {
+    setUploadedImages(uploadedImages => [...uploadedImages, uploadedImage]);
+  };
+
   return (
     <Grid container>
       <AssetTab selectedTab={selectedTab} onSelect={setSelectedTab} />
       <Grid flex={1} padding={2}>
         <Toggle selectedType={selectedTab} show>
           {assetList.map(assetData => (
-            <Grid key={assetData.type}>
-              <Toggle.Item key={assetData.type} type={assetData.type}>
-                <AssetList assets={assetData.assets} addAsset={addAsset} />
-              </Toggle.Item>
-            </Grid>
+            <Toggle.Item key={assetData.type} type={assetData.type}>
+              <AssetList assets={assetData.assets} addAsset={addAsset} />
+            </Toggle.Item>
           ))}
+          <Toggle.Item type="업로드">
+            <AssetUpload
+              onClick={addAsset}
+              uploadedAssets={uploadedImages}
+              onUpload={handleUpload}
+            />
+          </Toggle.Item>
         </Toggle>
       </Grid>
     </Grid>
