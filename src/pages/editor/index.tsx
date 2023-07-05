@@ -5,7 +5,6 @@ import { pipe } from 'ramda';
 import Layout from 'components/common/Layout';
 import useDownload from 'hooks/editor/stage/useDownload';
 import useMultipleRef from 'hooks/useMultipleRef';
-import Asset from 'pages/editor/_components/asset/Asset';
 import GlobalEffect from 'pages/editor/_components/GlobalEffect';
 import Header from 'pages/editor/_components/Header';
 import StageList from 'pages/editor/_components/StageList';
