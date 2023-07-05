@@ -28,6 +28,7 @@
     "@typescript-eslint/no-shadow": "off",
     "no-underscore-dangle": "off",
     "max-classes-per-file": "off",
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-nested-ternary": "off"
   }
 }
