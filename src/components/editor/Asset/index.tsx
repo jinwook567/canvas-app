@@ -20,7 +20,7 @@ function Horizontal({ children }: Props) {
 }
 
 function Mansory({ children }: { children: NonNullable<React.ReactNode> }) {
-  return <Masonry columns={2}>{children}</Masonry>;
+  return <Masonry columns={3}>{children}</Masonry>;
 }
 
 type ItemProps = {
