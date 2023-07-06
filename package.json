@@ -4,6 +4,9 @@
   "homepage": "https://jinwook567.github.io/canvas-app",
   "private": true,
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
+    "@dnd-kit/utilities": "^3.2.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/roboto": "^4.5.8",
@@ -21,8 +24,6 @@
     "konva": "^8.3.14",
     "ramda": "^0.29.0",
     "react": "^18.2.0",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
     "react-konva": "^18.2.3",
     "react-konva-utils": "^0.3.1",
