@@ -20,7 +20,7 @@ function useElementSize<T extends Element>() {
 
   useEffect(() => {
     const { current } = ref;
-    if (!current) return () => {};
+    if (!current) return;
 
     const observable = resizeObserver(current);
 

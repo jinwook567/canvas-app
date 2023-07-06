@@ -13,7 +13,7 @@ function HorizontalList({ children }: Props) {
   const [showRightArrow, setShowRightArrow] = useState(false);
 
   useEffect(() => {
-    if (!divRef.current) return () => {};
+    if (!divRef.current) return;
 
     const scroll$ = fromEvent<React.UIEvent<HTMLDivElement>>(
       divRef.current,
