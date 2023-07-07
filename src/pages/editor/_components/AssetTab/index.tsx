@@ -5,28 +5,39 @@ import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import InterestsIcon from '@mui/icons-material/Interests';
 import Tabs from 'components/common/Tabs';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { useRecoilState } from 'recoil';
+import { selectedTabState, tabValue } from 'recoils/editor/atoms';
 
-export type Props = {
-  selectedTab: '이미지' | '템플릿' | '텍스트' | '도형' | '업로드';
-  onSelect: (tab: Props['selectedTab']) => void;
-};
+function AssetTab() {
+  const [selectedTab, setSelectedTab] = useRecoilState(selectedTabState);
 
-function AssetTab({ selectedTab, onSelect }: Props) {
   const items = [
-    { label: '이미지', icon: <ImageIcon /> } as const,
-    { label: '템플릿', icon: <GridViewIcon /> } as const,
-    { label: '텍스트', icon: <FormatColorTextIcon /> } as const,
-    { label: '도형', icon: <InterestsIcon /> } as const,
-    { label: '업로드', icon: <CloudUploadIcon /> } as const,
+    { label: '이미지', icon: <ImageIcon />, value: tabValue.assetImage },
+    {
+      label: '템플릿',
+      icon: <GridViewIcon />,
+      value: tabValue.assetTemplate,
+    },
+    {
+      label: '텍스트',
+      icon: <FormatColorTextIcon />,
+      value: tabValue.assetText,
+    },
+    { label: '도형', icon: <InterestsIcon />, value: tabValue.assetFigure },
+    {
+      label: '업로드',
+      icon: <CloudUploadIcon />,
+      value: tabValue.assetUpload,
+    },
   ];
-  const index = items.findIndex(item => item.label === selectedTab);
+  const index = items.findIndex(item => item.value === selectedTab);
 
   return (
     <Tabs
-      items={items}
+      items={items.map(({ label, icon }) => ({ label, icon }))}
       selectedIndex={index}
       orientation="vertical"
-      onSelect={index => onSelect(items[index].label)}
+      onSelect={index => setSelectedTab(items[index].value)}
     />
   );
 }
