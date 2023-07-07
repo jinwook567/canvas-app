@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import { Grid, Typography } from '@mui/material';
 import Asset from 'components/editor/Asset';
 import AssetItem from 'pages/editor/_components/AssetItem';
