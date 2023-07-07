@@ -10,11 +10,8 @@ type Props = {
 
 function PreviewShape({ shape, parentSize }: Props) {
   const stage = nodeFactory('stage')
-    .map(() => ({
-      width: shape.bounds.width,
-      height: shape.bounds.height,
-    }))
-    .addChild(shape);
+    .map(() => shape.bounds.size)
+    .addChild(shape.map(config => ({ ...config, x: 0, y: 0 })));
 
   return <PreviewStage stage={stage} parentSize={parentSize} />;
 }
