@@ -9,6 +9,7 @@ import {
   closestCenter,
   UniqueIdentifier,
   DragEndEvent,
+  DragStartEvent,
 } from '@dnd-kit/core';
 
 import {
@@ -20,13 +21,21 @@ import {
 } from '@dnd-kit/sortable';
 import { Grid } from '@mui/material';
 
-type Props = {
-  items: UniqueIdentifier[];
-  setItems: (items: Props['items']) => void;
+type OnDragEnd<T extends { id: UniqueIdentifier }> = (
+  updater: (item: T[]) => T[]
+) => void;
+
+type Props<T extends { id: UniqueIdentifier }> = {
   children: React.ReactNode;
+  onDragStart?: (id: UniqueIdentifier) => void;
+  onDragEnd: OnDragEnd<T>;
 };
 
-function SortableDnd({ items, setItems, children }: Props) {
+function SortableDnd<T extends { id: UniqueIdentifier }>({
+  children,
+  onDragStart,
+  onDragEnd,
+}: Props<T>) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -38,23 +47,43 @@ function SortableDnd({ items, setItems, children }: Props) {
     const { active, over } = event;
 
     if (over && active.id !== over.id) {
-      const oldIndex = items.indexOf(active.id);
-      const newIndex = items.indexOf(over.id);
-      const newItem = arrayMove(items, oldIndex, newIndex);
-      setItems(newItem);
+      onDragEnd(items => {
+        const oldIndex = items.findIndex(item => item.id === active.id);
+        const newIndex = items.findIndex(item => item.id === over.id);
+
+        const newItem = arrayMove(items, oldIndex, newIndex);
+        return newItem;
+      });
     }
+  };
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    if (onDragStart) onDragStart(active.id);
   };
 
   return (
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        {children}
-      </SortableContext>
+      {children}
     </DndContext>
+  );
+}
+
+type ContextProps = {
+  items: UniqueIdentifier[];
+  children: React.ReactNode;
+};
+
+function Context({ items, children }: ContextProps) {
+  return (
+    <SortableContext items={items} strategy={verticalListSortingStrategy}>
+      {children}
+    </SortableContext>
   );
 }
 
@@ -85,6 +114,7 @@ function Item({ children, id }: ItemProps) {
   );
 }
 
+SortableDnd.Context = Context;
 SortableDnd.Item = Item;
 
 export default SortableDnd;
