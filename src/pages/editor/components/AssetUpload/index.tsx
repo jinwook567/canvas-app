@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid } from '@mui/material';
 import ImageUpload from 'components/editor/ImageUpload';
-import AssetList from 'pages/editor/_components/AssetList';
+import AssetList from 'pages/editor/components/AssetList';
 import { Node } from 'utils/editor/node';
 
 type Props = {

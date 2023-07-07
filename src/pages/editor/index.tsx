@@ -5,11 +5,11 @@ import { pipe } from 'ramda';
 import Layout from 'components/common/Layout';
 import useDownload from 'hooks/editor/stage/useDownload';
 import useMultipleRef from 'hooks/useMultipleRef';
-import GlobalEffect from 'pages/editor/_components/GlobalEffect';
-import Header from 'pages/editor/_components/Header';
-import StageList from 'pages/editor/_components/StageList';
-import useCreateInitialStage from 'pages/editor/_components/StageList/useInitial';
-import Controller from 'pages/editor/_components/Controller';
+import GlobalEffect from 'pages/editor/components/GlobalEffect';
+import Header from 'pages/editor/components/Header';
+import StageList from 'pages/editor/components/StageList';
+import useCreateInitialStage from 'pages/editor/components/StageList/useInitial';
+import Controller from 'pages/editor/components/Controller';
 
 function Editor() {
   const { setRef, mapRef } = useMultipleRef<Konva.Layer | null>();

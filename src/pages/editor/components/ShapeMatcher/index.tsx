@@ -2,7 +2,7 @@ import React from 'react';
 import Konva from 'konva';
 import { Shape, hasChildren, Text } from 'utils/editor/node';
 import KonvaMatcher from 'components/editor/KonvaMatcher';
-import TextareaProvider from 'pages/editor/_components/TextareaProvider';
+import TextareaProvider from 'pages/editor/components/TextareaProvider';
 
 type Props = {
   setRef: (node: Konva.Node | null) => void;

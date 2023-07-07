@@ -1,11 +1,11 @@
 import React from 'react';
 import Konva from 'konva';
-import ShapeList from 'pages/editor/_components/ShapeList';
+import ShapeList from 'pages/editor/components/ShapeList';
 import useElementSize from 'hooks/useElementSize';
-import Stage from 'pages/editor/_components/Stage';
-import * as Styled from 'pages/editor/_components/StageList/styles';
-import StageControlBar from 'pages/editor/_components/StageControlBar';
-import ShapeControlBar from 'pages/editor/_components/ShapeControlBar';
+import Stage from 'pages/editor/components/Stage';
+import * as Styled from 'pages/editor/components/StageList/styles';
+import StageControlBar from 'pages/editor/components/StageControlBar';
+import ShapeControlBar from 'pages/editor/components/ShapeControlBar';
 import TransformableLayer from 'components/editor/TransformableLayer';
 import useTransform from 'hooks/editor/node/useTransform';
 import { Stage as StageType } from 'utils/editor/node';

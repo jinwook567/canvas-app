@@ -1,4 +1,4 @@
-import { Props } from 'pages/editor/_components/AssetList';
+import { Props } from 'pages/editor/components/AssetList';
 import { range } from 'ramda';
 import { nodeFactory } from 'utils/editor/node';
 
@@ -11,22 +11,11 @@ export const imageAsset: Props['assets'] = [
   },
 ];
 
-const colors = ['#6869d6', '#E2E2E2'];
-
 export const figureAsset: Props['assets'] = [
   {
     type: 'mansory',
     nodes: [
-      ...colors.map(color =>
-        nodeFactory('circle').map(() => ({
-          fill: color,
-          width: 250,
-          height: 250,
-          x: 125,
-          y: 125,
-        }))
-      ),
-      ...colors.map(color =>
+      ...['#6869d6', '#E2E2E2'].map(color =>
         nodeFactory('rect').map(() => ({
           fill: color,
           width: 250,

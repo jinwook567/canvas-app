@@ -1,31 +1,30 @@
 import React, { useState } from 'react';
 import Toggle from 'components/common/Toggle';
 import { Grid } from '@mui/material';
-import AssetTab, {
-  Props as AssetTabProps,
-} from 'pages/editor/_components/AssetTab';
-import AssetList from 'pages/editor/_components/AssetList';
+import AssetTab from 'pages/editor/components/AssetTab';
+import AssetList from 'pages/editor/components/AssetList';
 import {
   figureAsset,
   imageAsset,
   templateAsset,
   textAsset,
-} from 'pages/editor/_components/Controller/constant';
+} from 'pages/editor/components/Controller/constant';
 import useSelect from 'hooks/editor/stage/useSelect';
 import useAdd from 'hooks/editor/node/useAdd';
 import useTransform from 'hooks/editor/stage/useTransform';
 import { isShape, Node } from 'utils/editor/node';
-import AssetUpload from 'pages/editor/_components/AssetUpload';
+import AssetUpload from 'pages/editor/components/AssetUpload';
+import { useRecoilValue } from 'recoil';
+import { selectedTabState, tabValue } from 'recoils/editor/atoms';
 
 function Controller() {
-  const [selectedTab, setSelectedTab] =
-    useState<AssetTabProps['selectedTab']>('이미지');
+  const selectedTab = useRecoilValue(selectedTabState);
 
   const assetList = [
-    { type: '이미지', assets: imageAsset },
-    { type: '템플릿', assets: templateAsset },
-    { type: '텍스트', assets: textAsset },
-    { type: '도형', assets: figureAsset },
+    { type: tabValue.assetImage, assets: imageAsset },
+    { type: tabValue.assetTemplate, assets: templateAsset },
+    { type: tabValue.assetText, assets: textAsset },
+    { type: tabValue.assetFigure, assets: figureAsset },
   ];
 
   const { selectedStage } = useSelect();
@@ -44,17 +43,19 @@ function Controller() {
     setUploadedImages(uploadedImages => [...uploadedImages, uploadedImage]);
   };
 
+  const selectedType = () => selectedTab;
+
   return (
     <Grid container>
-      <AssetTab selectedTab={selectedTab} onSelect={setSelectedTab} />
+      <AssetTab />
       <Grid flex={1} padding={2}>
-        <Toggle selectedType={selectedTab} show>
+        <Toggle selectedType={selectedType()} show>
           {assetList.map(assetData => (
             <Toggle.Item key={assetData.type} type={assetData.type}>
               <AssetList assets={assetData.assets} addAsset={addAsset} />
             </Toggle.Item>
           ))}
-          <Toggle.Item type="업로드">
+          <Toggle.Item type="asset-upload">
             <AssetUpload
               onClick={addAsset}
               uploadedAssets={uploadedImages}

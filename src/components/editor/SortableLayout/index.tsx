@@ -11,7 +11,7 @@ type Props = {
   items: Shape[];
 };
 
-function LayoutHandler({ onChange, items }: Props) {
+function SortableLayout({ onChange, items }: Props) {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 
   const handleSelect = (id: UniqueIdentifier) => {
@@ -70,4 +70,4 @@ function Item({ shape }: ItemProps) {
   );
 }
 
-export default LayoutHandler;
+export default SortableLayout;

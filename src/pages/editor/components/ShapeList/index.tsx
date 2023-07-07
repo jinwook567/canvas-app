@@ -5,9 +5,9 @@ import usePressedKey from 'hooks/editor/global/usePressedKey';
 import useSelect from 'hooks/editor/node/useSelect';
 import Selector from 'components/editor/Selector';
 import { Shape } from 'utils/editor/node';
-import TransformerUpdater from 'pages/editor/_components/TransformerUpdater';
-import SelectRuleApplier from 'pages/editor/_components/SelectRuleApplier';
-import ShapeMatcher from 'pages/editor/_components/ShapeMatcher';
+import TransformerUpdater from 'pages/editor/components/TransformerUpdater';
+import SelectRuleApplier from 'pages/editor/components/SelectRuleApplier';
+import ShapeMatcher from 'pages/editor/components/ShapeMatcher';
 
 type Props = {
   items: Shape[];

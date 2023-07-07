@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 import Asset from 'components/editor/Asset';
-import AssetItem from 'pages/editor/_components/AssetItem';
+import AssetItem from 'pages/editor/components/AssetItem';
 import React from 'react';
 import { Node } from 'utils/editor/node';
 
