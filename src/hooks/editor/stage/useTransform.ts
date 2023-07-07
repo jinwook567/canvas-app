@@ -10,8 +10,17 @@ function useTransform() {
     setStages(S.replace(stageToApply, template.duplicate()));
   }
 
+  function transformStage(stageToTransform: Stage) {
+    setStages(
+      S.map(stage =>
+        S.equals(stage, stageToTransform) ? stageToTransform : stage
+      )
+    );
+  }
+
   return {
     applyTemplate,
+    transformStage,
   };
 }
 
