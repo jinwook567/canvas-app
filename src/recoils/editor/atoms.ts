@@ -56,3 +56,19 @@ export const historyState = atom<HistoryState>({
   key: 'historyState',
   default: null,
 });
+
+export const tabValue = {
+  assetImage: 'asset-image' as const,
+  assetTemplate: 'asset-template' as const,
+  assetText: 'asset-text' as const,
+  assetFigure: 'asset-figure' as const,
+  assetUpload: 'asset-upload' as const,
+  handlerPosition: 'handler-position' as const,
+};
+
+type SelectedTabValue = (typeof tabValue)[keyof typeof tabValue];
+
+export const selectedTabState = atom<SelectedTabValue>({
+  key: 'selectedTab',
+  default: tabValue.assetImage,
+});
