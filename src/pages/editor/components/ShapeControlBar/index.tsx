@@ -20,7 +20,6 @@ function ShapeControlBar() {
   const canRemove = selectedNodes.length >= 1;
   const canUnGroup =
     selectedNodes.length === 1 && selectedNodes[0].type === 'group';
-  const canLocate = selectedNodes.length >= 1;
 
   const buttons = [
     {
@@ -37,9 +36,7 @@ function ShapeControlBar() {
     },
     {
       name: '위치',
-      onClick: canLocate
-        ? () => setSelectedTab(tabValue.handlerPosition)
-        : null,
+      onClick: () => setSelectedTab(tabValue.handlerPosition),
     },
   ];
 
