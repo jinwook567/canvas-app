@@ -2,7 +2,7 @@ import React from 'react';
 import { Layer } from 'react-konva';
 import KonvaMatcher from 'components/editor/KonvaMatcher';
 import ResponsiveStage from 'components/editor/ResponsiveStage';
-import { Stage } from 'utils/editor/node';
+import { hasChildren, Stage } from 'utils/editor/node';
 import { Size } from 'utils/editor/size';
 
 type Props = {
@@ -24,6 +24,7 @@ function PreviewStage({ stage, parentSize }: Props) {
             id={child.id}
             component={child.component}
             config={child.config}
+            childNodes={hasChildren(child) ? child.children : undefined}
           />
         ))}
       </Layer>
