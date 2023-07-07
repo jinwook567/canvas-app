@@ -6,7 +6,7 @@ type Props = {
   orientation?: TabsProps['orientation'];
   items: (TabProps & { label: string })[];
   onSelect: (index: number) => void;
-  selectedIndex: number;
+  selectedIndex: number | false;
 };
 
 function Tabs({ items, onSelect, orientation, selectedIndex }: Props) {

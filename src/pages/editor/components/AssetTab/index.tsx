@@ -35,7 +35,7 @@ function AssetTab() {
   return (
     <Tabs
       items={items.map(({ label, icon }) => ({ label, icon }))}
-      selectedIndex={index}
+      selectedIndex={index !== -1 && index}
       orientation="vertical"
       onSelect={index => setSelectedTab(items[index].value)}
     />
