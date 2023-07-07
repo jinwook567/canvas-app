@@ -107,7 +107,8 @@ function Item({ children, id }: ItemProps) {
       style={style}
       {...attributes}
       {...listeners}
-      sx={{ width: '100%' }}
+      width={1}
+      sx={{ cursor: 'grab' }}
     >
       {children}
     </Grid>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { DragOverlay, UniqueIdentifier } from '@dnd-kit/core';
-import { Paper } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import DivSize from 'components/common/DivSize';
 import SortableDnd from 'components/common/SortableDnd';
 import PreviewShape from 'components/editor/PreviewShape';
 import { Shape } from 'utils/editor/node';
+import DragIndicator from '@mui/icons-material/DragIndicator';
 
 type Props = {
   onChange: (itmes: Props['items']) => void;
@@ -56,16 +57,25 @@ function Item({ shape }: ItemProps) {
         mb: 1,
       }}
     >
-      <DivSize
-        inherit
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+      <Grid
+        container
+        sx={{ width: '100%', height: '100%' }}
+        alignItems="center"
       >
-        {size => <PreviewShape shape={shape} parentSize={size} />}
-      </DivSize>
+        <DragIndicator />
+        <Grid flex={1} height={1}>
+          <DivSize
+            inherit
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            {size => <PreviewShape shape={shape} parentSize={size} />}
+          </DivSize>
+        </Grid>
+      </Grid>
     </Paper>
   );
 }
