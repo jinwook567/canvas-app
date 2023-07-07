@@ -26,7 +26,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-function SortableDragDrop({ items, setItems, children }: Props) {
+function SortableDnd({ items, setItems, children }: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -85,6 +85,6 @@ function Item({ children, id }: ItemProps) {
   );
 }
 
-SortableDragDrop.Item = Item;
+SortableDnd.Item = Item;
 
-export default SortableDragDrop;
+export default SortableDnd;
