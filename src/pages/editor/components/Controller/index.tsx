@@ -16,6 +16,7 @@ import { isShape, Node } from 'utils/editor/node';
 import AssetUpload from 'pages/editor/components/AssetUpload';
 import { useRecoilValue } from 'recoil';
 import { selectedTabState, tabValue } from 'recoils/editor/atoms';
+import PositionHandler from 'pages/editor/components/PositionHandler';
 
 function Controller() {
   const selectedTab = useRecoilValue(selectedTabState);
@@ -61,6 +62,9 @@ function Controller() {
               uploadedAssets={uploadedImages}
               onUpload={handleUpload}
             />
+          </Toggle.Item>
+          <Toggle.Item type={tabValue.handlerPosition}>
+            <PositionHandler />
           </Toggle.Item>
         </Toggle>
       </Grid>
