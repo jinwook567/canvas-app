@@ -12,7 +12,7 @@ import { ShapeConfig } from 'konva/lib/Shape';
 import { GroupConfig } from 'konva/lib/Group';
 import { TextConfig } from 'konva/lib/shapes/Text';
 import { ContainerConfig } from 'konva/lib/Container';
-import { clone, identity } from 'ramda';
+import { clone, identity, omit } from 'ramda';
 import { createUniqueId } from 'utils/unit';
 import {
   DefaultSize,
@@ -90,13 +90,14 @@ abstract class Base<T extends NodeConfig> {
 
   map(f: (config: T) => T) {
     const res = clone(this);
-    res._config = f(clone(res._config));
+    const config = omit(['id'], res.config) as T;
+    res._config = f(clone(config));
     return res;
   }
 
   duplicate(): this {
     const node = nodeFactory(this.type) as unknown as this;
-    return node.map(() => this._config);
+    return node.map(() => this.config);
   }
 
   get config() {
