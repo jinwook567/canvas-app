@@ -1,4 +1,4 @@
-import { partial, pick, pipe, equals, identity } from 'ramda';
+import { partial, pick, pipe, equals } from 'ramda';
 import { useSetRecoilState } from 'recoil';
 import { stagesState } from 'recoils/editor/atoms';
 import { Shape, Stage } from 'utils/editor/node';
@@ -8,12 +8,19 @@ import S from 'utils/editor/stages';
 function useAdd() {
   const setStages = useSetRecoilState(stagesState);
 
-  const hasPos = (node: Shape) => node.config.x || node.config.y;
+  function addNodesToStage(nodes: Shape[], stage: Stage) {
+    setStages(
+      S.replace(
+        stage,
+        stage.addChild(...nodes.map(node => avoidSamePos(stage, node)))
+      )
+    );
+  }
 
   function addNodeToStage(node: Shape, stage: Stage) {
     const locate = pipe(
       partial(resize(0.35), [stage]),
-      hasPos(node) ? identity : partial(center, [stage]),
+      partial(center, [stage]),
       partial(avoidSamePos, [stage])
     );
 
@@ -22,6 +29,7 @@ function useAdd() {
 
   return {
     addNodeToStage,
+    addNodesToStage,
   };
 }
 
