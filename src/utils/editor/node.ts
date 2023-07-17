@@ -90,8 +90,7 @@ abstract class Base<T extends NodeConfig> {
 
   map(f: (config: T) => T) {
     const res = clone(this);
-    const config = omit(['id'], res.config) as T;
-    res._config = f(clone(config));
+    res._config = omit(['id'], f(clone(this.config))) as T;
     return res;
   }
 
