@@ -7,6 +7,8 @@ function usePressedKey(
 ) {
   const pressedKeyRef = useRef<{ [key in string]: boolean }>({});
 
+  const pressedKey = () => pressedKeyRef.current;
+
   const keyDown$ = fromEvent<KeyboardEvent>(window, 'keydown').pipe(
     map(e => ({ key: e.key, isPressed: true, e }))
   );
@@ -17,8 +19,9 @@ function usePressedKey(
 
   const key$ = merge(keyDown$, keyUp$);
 
-  const isKeyPressed = (...keys: string[]) =>
-    keys.every(key => pressedKeyRef.current[key]);
+  const isKeyPressed = (...targetKeys: string[]) =>
+    targetKeys.every(key => pressedKey()[key]) &&
+    (pressedKey().Shift ? targetKeys.includes('Shift') : true);
 
   useEffect(() => {
     const subscription = key$.subscribe(({ key, isPressed, e }) => {
