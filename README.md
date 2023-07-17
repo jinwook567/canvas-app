@@ -13,10 +13,16 @@ Supported Features
 - text(double-click to edit)
 - group and ungroup images
 - download images as png files
+- keyboard shortcuts
+  - command + x : cut
+  - command + c : copy
+  - command + v : paste
+  - command + d : duplicate
+  - command + g : group
+  - command + shift + g : ungroup
 
 Features to be supported in the future
 
 - mobile environment
-- keyboard shortcuts
 - save custom template
 - automatic positioning for images
