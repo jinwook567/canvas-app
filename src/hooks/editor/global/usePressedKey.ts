@@ -1,40 +1,46 @@
 import { useEffect, useRef } from 'react';
 import { fromEvent, merge } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
-function usePressedKey() {
-  const initialValue = {
-    Shift: false,
-    Control: false,
-  };
-
-  const pressedKeyRef = useRef<{ [key in string]: boolean }>(initialValue);
+function usePressedKey(
+  f?: (isSelected: (...keys: string[]) => boolean) => void
+) {
+  const pressedKeyRef = useRef<{ [key in string]: boolean }>({});
 
   const keyDown$ = fromEvent<KeyboardEvent>(window, 'keydown').pipe(
-    filter(e => pressedKeyRef.current[e.key] !== undefined),
-    map(e => ({ key: e.key, isPressed: true }))
+    map(e => ({ key: e.key, isPressed: true, e }))
   );
 
   const keyUp$ = fromEvent<KeyboardEvent>(window, 'keyup').pipe(
-    filter(e => pressedKeyRef.current[e.key] !== undefined),
-    map(e => ({ key: e.key, isPressed: false }))
+    map(e => ({ key: e.key, isPressed: false, e }))
   );
 
   const key$ = merge(keyDown$, keyUp$);
 
+  const isKeyPressed = (...keys: string[]) =>
+    keys.every(key => pressedKeyRef.current[key]);
+
   useEffect(() => {
-    const subscription = key$.subscribe(({ key, isPressed }) => {
+    const subscription = key$.subscribe(({ key, isPressed, e }) => {
+      if (key === 'Meta' && !isPressed) pressedKeyRef.current = {};
       pressedKeyRef.current[key] = isPressed;
+
+      if (f) {
+        f((...keys: string[]) => {
+          const allKeysPressed = isKeyPressed(...keys);
+          if (allKeysPressed) e.preventDefault();
+          return allKeysPressed;
+        });
+      }
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [f]);
 
   return {
-    isKeyPressed: (...keys: (keyof typeof initialValue)[]) =>
-      keys.every(key => pressedKeyRef.current[key]),
+    isKeyPressed,
   };
 }
 
