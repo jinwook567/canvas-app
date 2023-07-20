@@ -10,9 +10,9 @@ function LayoutHandler() {
   if (!selectedStage) return null;
   return (
     <SortableLayout
-      items={selectedStage.children}
+      items={selectedStage.children.reverse()}
       onChange={children =>
-        transformStage(selectedStage.setChildren(() => children))
+        transformStage(selectedStage.setChildren(() => children.reverse()))
       }
     />
   );
