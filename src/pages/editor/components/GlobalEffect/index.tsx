@@ -62,7 +62,18 @@ function useKeyboardShortCut() {
     ...controlKeys.map(ctrl => ({ key: [ctrl, 'Shift', 'g'], f: ungroup })),
   ];
 
+  const isKeyboardElementEvent = () => {
+    const keyboardEventElements = ['input', 'textarea', 'select'].map(str =>
+      str.toUpperCase()
+    );
+    return (
+      document.activeElement &&
+      keyboardEventElements.includes(document.activeElement.tagName)
+    );
+  };
+
   const keyboardEvent = (isSelected: (...keys: string[]) => boolean) => {
+    if (isKeyboardElementEvent()) return;
     shortCuts.forEach(({ key, f }) => {
       if (isSelected(...key)) f();
     });
