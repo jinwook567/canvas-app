@@ -20,6 +20,8 @@ Supported Features
   - command + d : duplicate
   - command + g : group
   - command + shift + g : ungroup
+  - command + z : back
+  - command + shift + z : foward
 
 Features to be supported in the future
 

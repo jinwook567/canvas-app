@@ -33,6 +33,7 @@ function useKeyboardShortCut() {
   const { addNodesToStage } = useAdd();
   const { selectedStage } = useSelect();
   const shapeGroup = useGroup();
+  const { historyBack, historyForward } = useHistory();
 
   const remove = () => removeNodes(selectedNodes);
   const copy = () => (copiedNodes.current = selectedNodes);
@@ -48,6 +49,8 @@ function useKeyboardShortCut() {
     selectedNodes.length === 1 &&
     selectedNodes[0].type === 'group' &&
     shapeGroup.ungroup(selectedNodes[0] as Group);
+  const back = () => historyBack();
+  const foward = () => historyForward();
 
   const controlKeys = ['Meta', 'Control'];
 
@@ -60,6 +63,8 @@ function useKeyboardShortCut() {
     ...controlKeys.map(ctrl => ({ key: [ctrl, 'd'], f: pipe(copy, paste) })),
     ...controlKeys.map(ctrl => ({ key: [ctrl, 'g'], f: group })),
     ...controlKeys.map(ctrl => ({ key: [ctrl, 'Shift', 'g'], f: ungroup })),
+    ...controlKeys.map(ctrl => ({ key: [ctrl, 'z'], f: back })),
+    ...controlKeys.map(ctrl => ({ key: [ctrl, 'Shift', 'z'], f: foward })),
   ];
 
   const isKeyboardElementEvent = () => {
