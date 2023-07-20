@@ -3,17 +3,18 @@ import { fromEvent, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 function usePressedKey(
+  element: HTMLElement,
   f?: (isSelected: (...keys: string[]) => boolean) => void
 ) {
   const pressedKeyRef = useRef<{ [key in string]: boolean }>({});
 
   const pressedKey = () => pressedKeyRef.current;
 
-  const keyDown$ = fromEvent<KeyboardEvent>(window, 'keydown').pipe(
+  const keyDown$ = fromEvent<KeyboardEvent>(element, 'keydown').pipe(
     map(e => ({ key: e.key, isPressed: true, e }))
   );
 
-  const keyUp$ = fromEvent<KeyboardEvent>(window, 'keyup').pipe(
+  const keyUp$ = fromEvent<KeyboardEvent>(element, 'keyup').pipe(
     map(e => ({ key: e.key, isPressed: false, e }))
   );
 

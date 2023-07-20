@@ -20,7 +20,7 @@ type Props = {
 
 function ShapeList({ items, updateTransformer }: Props) {
   const { isSelected, appendSelect, changeSelect, deselect } = useSelect();
-  const { isKeyPressed } = usePressedKey();
+  const { isKeyPressed } = usePressedKey(document.body);
 
   const select = (item: Shape) =>
     isKeyPressed('Shift') ? appendSelect(item) : changeSelect(item);

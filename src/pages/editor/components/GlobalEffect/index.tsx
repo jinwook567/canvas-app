@@ -84,7 +84,7 @@ function useKeyboardShortCut() {
     });
   };
 
-  usePressedKey(keyboardEvent);
+  usePressedKey(document.body, keyboardEvent);
 }
 
 export default GlobalEffect;
