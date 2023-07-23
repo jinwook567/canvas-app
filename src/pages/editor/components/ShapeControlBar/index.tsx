@@ -41,18 +41,7 @@ function ShapeControlBar() {
   ];
 
   return (
-    <Grid
-      padding={1}
-      columnGap={1}
-      container
-      sx={{
-        background: 'white',
-        width: 1,
-        position: 'sticky',
-        top: 0,
-        zIndex: 999,
-      }}
-    >
+    <Grid columnGap={1} container>
       {buttons.map(({ name, onClick }, index) => (
         <ControlButton name={name} onClick={onClick} key={index} />
       ))}
