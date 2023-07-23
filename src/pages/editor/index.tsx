@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid, Link } from '@mui/material';
 import Konva from 'konva';
 import { pipe } from 'ramda';
-import Layout from 'components/common/Layout';
 import useDownload from 'hooks/editor/stage/useDownload';
 import useMultipleRef from 'hooks/useMultipleRef';
 import GlobalEffect from 'pages/editor/components/GlobalEffect';
@@ -10,6 +9,9 @@ import Header from 'pages/editor/components/Header';
 import StageList from 'pages/editor/components/StageList';
 import useCreateInitialStage from 'pages/editor/components/StageList/useInitial';
 import Controller from 'pages/editor/components/Controller';
+import * as Styled from './index.styles';
+import AssetTab from 'pages/editor/components/AssetTab';
+import ShapeControlBar from 'pages/editor/components/ShapeControlBar';
 
 function Editor() {
   const { setRef, mapRef } = useMultipleRef<Konva.Layer | null>();
@@ -23,26 +25,35 @@ function Editor() {
   const stages = useCreateInitialStage();
 
   return (
-    <Layout>
+    <Styled.Container>
       <GlobalEffect />
-      <Layout.Header>
+      <Styled.Header>
         <Header onRequestExport={exportZip} />
-      </Layout.Header>
+      </Styled.Header>
 
-      <Layout.Main>
-        <Grid lg={3} item>
-          <Controller />
+      <Styled.Main>
+        <Grid lg={3} container item>
+          <AssetTab />
+          <Grid flex={1} padding={2}>
+            <Controller />
+          </Grid>
         </Grid>
 
-        <Grid item sx={{ flex: 1 }}>
-          <StageList setRef={setRef} items={stages} />
-        </Grid>
-      </Layout.Main>
+        <Grid flex={1}>
+          <Styled.CanvasSection>
+            <Styled.StickyContainer>
+              <ShapeControlBar />
+            </Styled.StickyContainer>
 
-      <Layout.Footer>
+            <StageList setRef={setRef} items={stages} />
+          </Styled.CanvasSection>
+        </Grid>
+      </Styled.Main>
+
+      <Styled.Footer>
         <Link href="https://github.com/jinwook567/canvas-app">canvas-app</Link>
-      </Layout.Footer>
-    </Layout>
+      </Styled.Footer>
+    </Styled.Container>
   );
 }
 

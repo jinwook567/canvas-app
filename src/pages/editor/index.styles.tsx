@@ -9,7 +9,6 @@ export const Header = styled(Grid)`
 export const Main = styled(Grid)`
   flex: 1;
   display: flex;
-  background: yellow;
 `;
 
 export function CanvasSection({ children }: { children: React.ReactNode }) {
@@ -43,4 +42,13 @@ export const Container = styled(Grid)`
   height: 100vh;
   display: flex;
   flex-direction: column;
+`;
+
+export const StickyContainer = styled(Grid)`
+  background: white;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  padding: ${({ theme }) => theme.spacing(1)};
 `;
