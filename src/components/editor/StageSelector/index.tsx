@@ -1,3 +1,4 @@
+import { Grid } from '@mui/material';
 import React, { useEffect } from 'react';
 
 type Props = {
@@ -14,11 +15,7 @@ function StageSelector({ onSelect, onDeselect, children }: Props) {
     };
   }, []);
 
-  return (
-    <div onClick={onSelect} role="presentation">
-      {children}
-    </div>
-  );
+  return <Grid onClick={onSelect}>{children}</Grid>;
 }
 
 export default StageSelector;
