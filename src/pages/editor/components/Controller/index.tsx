@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import Toggle from 'components/common/Toggle';
-import { Grid } from '@mui/material';
-import AssetTab from 'pages/editor/components/AssetTab';
 import AssetList from 'pages/editor/components/AssetList';
 import {
   figureAsset,
@@ -47,28 +45,23 @@ function Controller() {
   const selectedType = () => selectedTab;
 
   return (
-    <Grid container>
-      <AssetTab />
-      <Grid flex={1} padding={2}>
-        <Toggle selectedType={selectedType()} show>
-          {assetList.map(assetData => (
-            <Toggle.Item key={assetData.type} type={assetData.type}>
-              <AssetList assets={assetData.assets} addAsset={addAsset} />
-            </Toggle.Item>
-          ))}
-          <Toggle.Item type="asset-upload">
-            <AssetUpload
-              onClick={addAsset}
-              uploadedAssets={uploadedImages}
-              onUpload={handleUpload}
-            />
-          </Toggle.Item>
-          <Toggle.Item type={tabValue.handlerPosition}>
-            <PositionHandler />
-          </Toggle.Item>
-        </Toggle>
-      </Grid>
-    </Grid>
+    <Toggle selectedType={selectedType()} show>
+      {assetList.map(assetData => (
+        <Toggle.Item key={assetData.type} type={assetData.type}>
+          <AssetList assets={assetData.assets} addAsset={addAsset} />
+        </Toggle.Item>
+      ))}
+      <Toggle.Item type="asset-upload">
+        <AssetUpload
+          onClick={addAsset}
+          uploadedAssets={uploadedImages}
+          onUpload={handleUpload}
+        />
+      </Toggle.Item>
+      <Toggle.Item type={tabValue.handlerPosition}>
+        <PositionHandler />
+      </Toggle.Item>
+    </Toggle>
   );
 }
 
