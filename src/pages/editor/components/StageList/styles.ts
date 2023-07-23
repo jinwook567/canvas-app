@@ -1,15 +1,9 @@
-import styled from '@emotion/styled';
-import { Grid as MuiGrid } from '@mui/material';
+import { Grid, styled } from '@mui/material';
 
-export const Grid = styled(MuiGrid)`
+export const Container = styled(Grid)`
   width: 100%;
-  background: lightgray;
-  padding-bottom: 20px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
-  max-height: 90vh;
-  overflow-x: hidden;
-  overflow-y: auto;
   align-items: center;
 `;

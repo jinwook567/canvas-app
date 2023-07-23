@@ -1,16 +1,14 @@
 import React from 'react';
 import Konva from 'konva';
-import ShapeList from 'pages/editor/components/ShapeList';
 import useElementSize from 'hooks/useElementSize';
 import Stage from 'pages/editor/components/Stage';
 import * as Styled from 'pages/editor/components/StageList/styles';
 import StageControlBar from 'pages/editor/components/StageControlBar';
-import ShapeControlBar from 'pages/editor/components/ShapeControlBar';
-import TransformableLayer from 'components/editor/TransformableLayer';
-import useTransform from 'hooks/editor/node/useTransform';
 import { Stage as StageType } from 'utils/editor/node';
 import StageSelector from 'components/editor/StageSelector';
 import useSelect from 'hooks/editor/stage/useSelect';
+import ShapesLayer from 'pages/editor/components/ShapesLayer';
+import { Box, Grid } from '@mui/material';
 
 type Props = {
   setRef: (id: string, node: Konva.Layer | null) => void;
@@ -19,7 +17,6 @@ type Props = {
 
 function StageList({ setRef, items }: Props) {
   const { size, ref } = useElementSize<HTMLDivElement>();
-  const { transformNodes } = useTransform();
   const { selectStage } = useSelect();
 
   const handleStageDeselect =
@@ -34,14 +31,13 @@ function StageList({ setRef, items }: Props) {
     };
 
   return (
-    <Styled.Grid ref={ref} rowGap={3}>
-      <ShapeControlBar />
+    <Styled.Container ref={ref}>
       {items.map((stage, index) => {
         const prevStage = items[index - 1];
         const nextStage = items[index + 1];
 
         return (
-          <div key={stage.id}>
+          <Grid key={stage.id} mt={2} mb={2}>
             <StageControlBar
               stage={stage}
               prevStage={prevStage}
@@ -58,25 +54,18 @@ function StageList({ setRef, items }: Props) {
                 parentSize={size}
                 parentRatio={0.65}
               >
-                <TransformableLayer
+                <ShapesLayer
+                  items={stage.children}
                   setRef={layer => setRef(stage.id, layer)}
-                  onTransform={transformNodes}
-                >
-                  {({ attachNode, detachNode }) => (
-                    <ShapeList
-                      updateTransformer={(konvaNode, id, isSelected) =>
-                        isSelected ? attachNode(konvaNode) : detachNode(id)
-                      }
-                      items={stage.children}
-                    />
-                  )}
-                </TransformableLayer>
+                />
               </Stage>
             </StageSelector>
-          </div>
+          </Grid>
         );
       })}
-    </Styled.Grid>
+
+      <Box component="hr" mt={2} />
+    </Styled.Container>
   );
 }
 
