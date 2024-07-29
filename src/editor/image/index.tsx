@@ -2,19 +2,18 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import { ImageConfig, ImageElement } from 'editor/image/service';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'utils/ref';
-import { convertShape } from 'editor/shape';
+import { convertEvent, convertShape, ShapeEvents } from 'editor/shape';
 
-function Image(
-  { source, ...args }: ImageConfig,
-  ref: ForwardedRef<ImageElement>
-) {
+type Props = ImageConfig & ShapeEvents;
+
+function Image({ source, ...args }: Props, ref: ForwardedRef<ImageElement>) {
   return (
     <ReactKonva.Image
       image={source}
-      {...args}
+      {...convertEvent(args)}
       ref={node => node && setRef(ref, convertShape(node))}
     />
   );
 }
 
-export default forwardRef<ImageElement, ImageConfig>(Image);
+export default forwardRef<ImageElement, Props>(Image);
