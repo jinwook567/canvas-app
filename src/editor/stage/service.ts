@@ -1,14 +1,18 @@
-import { Layer } from 'editor/layer/service';
-import { Node } from 'editor/node';
+import { LayerConfig } from 'editor/layer/service';
+import { NodeElement } from 'editor/node';
 
-export type Stage = { width: number; height: number; layers: Layer[] };
+export type StageConfig = {
+  width: number;
+  height: number;
+  layers: LayerConfig[];
+};
 
-export type StageNode = Node;
+export type StageElement = NodeElement;
 
-export function layers(stage: Stage) {
+export function layers(stage: StageConfig) {
   return stage.layers;
 }
 
-export function setChildren(layers: Stage['layers'], stage: Stage) {
+export function setChildren(layers: StageConfig['layers'], stage: StageConfig) {
   return { ...stage, layers };
 }

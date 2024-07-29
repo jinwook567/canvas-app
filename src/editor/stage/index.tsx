@@ -2,7 +2,7 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { HasChildren } from 'utils/type-utils';
 import { setRef } from 'utils/ref';
-import { StageNode } from 'editor/stage/service';
+import { StageElement } from 'editor/stage/service';
 import { convertNode } from 'editor/node';
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 
 function Stage(
   { width, height, children }: HasChildren<Props>,
-  ref: ForwardedRef<StageNode>
+  ref: ForwardedRef<StageElement>
 ) {
   return (
     <ReactKonva.Stage
@@ -25,4 +25,4 @@ function Stage(
   );
 }
 
-export default forwardRef<StageNode, HasChildren<Props>>(Stage);
+export default forwardRef<StageElement, HasChildren<Props>>(Stage);

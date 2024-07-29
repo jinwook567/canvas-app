@@ -1,12 +1,12 @@
 import Konva from 'konva';
 
-export type Node = {
+export type NodeElement = {
   base64: (
     options?: Partial<{ x: number; y: number; pixelRatio: number }>
   ) => string;
 };
 
-export function convertNode(node: Konva.Node): Node {
+export function convertNode(node: Konva.Node): NodeElement {
   return {
     base64: options => node.toDataURL(options),
   };

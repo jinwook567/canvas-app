@@ -1,13 +1,13 @@
-import { Node } from 'editor/node';
+import { NodeElement } from 'editor/node';
 
-export type Layer = { visible?: boolean; lock?: boolean; shapes: [] };
+export type LayerConfig = { visible?: boolean; lock?: boolean; shapes: [] };
 
-export type LayerNode = Node;
+export type LayerElement = NodeElement;
 
-export function shapes(layer: Layer) {
+export function shapes(layer: LayerConfig) {
   return layer.shapes;
 }
 
-export function setShapes(shapes: Layer['shapes'], layer: Layer) {
+export function setShapes(shapes: LayerConfig['shapes'], layer: LayerConfig) {
   return { ...layer, shapes };
 }

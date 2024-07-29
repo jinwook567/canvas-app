@@ -1,4 +1,4 @@
-import { LayerNode } from 'editor/layer/service';
+import { LayerElement } from 'editor/layer/service';
 import { convertNode } from 'editor/node';
 import React, { ForwardedRef } from 'react';
 import * as Konva from 'react-konva';
@@ -12,7 +12,7 @@ type Props = {
 
 function Layer(
   { visible, lock, children }: HasChildren<Props>,
-  ref: ForwardedRef<LayerNode>
+  ref: ForwardedRef<LayerElement>
 ) {
   return (
     <Konva.Layer
@@ -25,4 +25,4 @@ function Layer(
   );
 }
 
-export default React.forwardRef<LayerNode, HasChildren<Props>>(Layer);
+export default React.forwardRef<LayerElement, HasChildren<Props>>(Layer);
