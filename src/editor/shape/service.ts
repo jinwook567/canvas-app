@@ -19,8 +19,8 @@ export function convertShape(shape: Konva.Shape): ShapeElement {
 }
 
 export type ShapeEvents = {
-  onChange: (config: ShapeConfig) => void;
-  onClick: (config: ShapeConfig) => void;
+  onChange?: (config: ShapeConfig) => void;
+  onClick?: (config: ShapeConfig) => void;
 };
 
 export function convertEvent<T extends ShapeEvents>(
@@ -30,9 +30,9 @@ export function convertEvent<T extends ShapeEvents>(
 
   return {
     ...rest,
-    onDragEnd: e => onChange(elementInfo(e.target)),
-    onTransformEnd: e => onChange(elementInfo(e.target)),
-    onClick: e => onClick(elementInfo(e.target)),
+    onDragEnd: e => onChange && onChange(elementInfo(e.target)),
+    onTransformEnd: e => onChange && onChange(elementInfo(e.target)),
+    onClick: e => onClick && onClick(elementInfo(e.target)),
   };
 }
 
