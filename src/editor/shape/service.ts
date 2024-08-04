@@ -54,3 +54,14 @@ export function component<T extends keyof ShapePackage>(
 ): ShapePackage[T]['component'] {
   return shapePackage[type].component;
 }
+
+type ShapePackageConfigBase<T extends keyof ShapePackage> = Omit<
+  Parameters<ShapePackage[T]['component']>[0],
+  keyof ShapeEvents
+>;
+
+export type ShapePackageConfig = keyof ShapePackage extends infer K
+  ? K extends keyof ShapePackage
+    ? ShapePackageConfigBase<K>
+    : never
+  : never;

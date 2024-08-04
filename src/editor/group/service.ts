@@ -1,9 +1,9 @@
 import { NodeElement } from 'editor/node';
-import { ShapeConfig } from 'editor/shape/service';
+import { ShapeConfig, ShapePackageConfig } from 'editor/shape/service';
 
 export type GroupConfig = Omit<ShapeConfig, 'width' | 'height'> & {
   type: 'group';
-  shapes: [];
+  shapes: ShapePackageConfig[];
 };
 
 export type GroupElement = NodeElement;
