@@ -2,7 +2,7 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import { ImageConfig, ImageElement } from 'editor/image/service';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'utils/ref';
-import { convertEvent, convertShape, ShapeEvents } from 'editor/shape';
+import { convertEvent, convertShape, ShapeEvents } from 'editor/shape/service';
 
 type Props = ImageConfig & ShapeEvents;
 

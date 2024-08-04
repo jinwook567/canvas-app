@@ -1,4 +1,4 @@
-import { ShapeConfig, ShapeElement } from 'editor/shape';
+import { ShapeConfig, ShapeElement } from 'editor/shape/service';
 
 export type ImageConfig = {
   type: 'image';

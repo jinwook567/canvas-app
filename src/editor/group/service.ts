@@ -1,5 +1,5 @@
 import { NodeElement } from 'editor/node';
-import { ShapeConfig } from 'editor/shape';
+import { ShapeConfig } from 'editor/shape/service';
 
 export type GroupConfig = Omit<ShapeConfig, 'width' | 'height'> & {
   type: 'group';
