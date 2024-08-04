@@ -1,6 +1,7 @@
 import Konva from 'konva';
 import { convertNode, NodeElement } from 'editor/node';
 import { KonvaNodeEvents } from 'react-konva';
+import * as shapePackage from 'editor/shape/package';
 
 export type ShapeConfig = {
   width: number;
@@ -44,4 +45,12 @@ function elementInfo(shape: Konva.Node): ShapeConfig {
     scaleX: shape.scaleX(),
     scaleY: shape.scaleY(),
   };
+}
+
+type ShapePackage = typeof shapePackage;
+
+export function component<T extends keyof ShapePackage>(
+  type: T
+): ShapePackage[T]['component'] {
+  return shapePackage[type].component;
 }
