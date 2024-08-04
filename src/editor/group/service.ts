@@ -2,6 +2,7 @@ import { NodeElement } from 'editor/node';
 import { ShapeConfig } from 'editor/shape';
 
 export type GroupConfig = Omit<ShapeConfig, 'width' | 'height'> & {
+  type: 'group';
   shapes: [];
 };
 

@@ -5,8 +5,9 @@ import React, { ForwardedRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'utils/ref';
 import { HasChildren } from 'utils/type-utils';
+import { omit } from 'utils/unit';
 
-type Props = Omit<GroupConfig, 'shapes'> & ShapeEvents;
+type Props = GroupConfig & ShapeEvents;
 
 function Group(
   { children, ...args }: HasChildren<Props>,
@@ -14,7 +15,7 @@ function Group(
 ) {
   return (
     <ReactKonva.Group
-      {...convertEvent(args)}
+      {...convertEvent(omit(args, 'shapes'))}
       ref={node => node && setRef(ref, convertNode(node))}
     >
       {children}
