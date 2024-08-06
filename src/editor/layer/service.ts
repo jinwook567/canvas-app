@@ -1,6 +1,11 @@
 import { NodeElement } from 'editor/node';
+import { ShapePackageConfig } from 'editor/shape/service';
 
-export type LayerConfig = { visible?: boolean; lock?: boolean; shapes: [] };
+export type LayerConfig = {
+  visible?: boolean;
+  lock?: boolean;
+  shapes: ShapePackageConfig[];
+};
 
 export type LayerElement = NodeElement;
 
