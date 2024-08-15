@@ -13,6 +13,6 @@ export function layers(stage: StageConfig) {
   return stage.layers;
 }
 
-export function setChildren(layers: StageConfig['layers'], stage: StageConfig) {
+export function setLayers(layers: StageConfig['layers'], stage: StageConfig) {
   return { ...stage, layers };
 }
