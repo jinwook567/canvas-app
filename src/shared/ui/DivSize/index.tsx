@@ -7,6 +7,9 @@ type Props = {
   inherit?: boolean;
 };
 
+/**
+ * @deprecated use useElementSize
+ */
 function DivSize({ style, children, inherit }: Props) {
   const { size, ref } = useElementSize<HTMLDivElement>();
 
