@@ -1,7 +1,7 @@
 import Konva from 'konva';
 import useSelect from 'hooks/editor/stage/useSelect';
 import useSelectShape from 'hooks/editor/node/useSelect';
-import Maybe from 'utils/maybe';
+import { Maybe } from 'shared/lib';
 import { useEffect } from 'react';
 import { Shape } from 'utils/editor/node';
 

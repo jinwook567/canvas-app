@@ -2,7 +2,7 @@ import React, { ForwardedRef } from 'react';
 import { ShapeEvents, convertEvent } from 'editor/shape/service';
 import { SquareConfig, SquareElement } from 'editor/square/service';
 import * as ReactKonva from 'react-konva';
-import { setRef } from 'utils/ref';
+import { setRef } from 'shared/lib';
 import { convertNode } from 'editor/node';
 
 type Props = SquareConfig & ShapeEvents;

@@ -3,9 +3,7 @@ import { convertNode } from 'editor/node';
 import { ShapeEvents, convertEvent } from 'editor/shape/service';
 import React, { ForwardedRef } from 'react';
 import * as ReactKonva from 'react-konva';
-import { setRef } from 'utils/ref';
-import { HasChildren } from 'utils/type-utils';
-import { omit } from 'utils/unit';
+import { setRef, HasChildren, omit } from 'shared/lib';
 
 type Props = GroupConfig & ShapeEvents;
 

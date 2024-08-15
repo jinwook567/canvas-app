@@ -1,7 +1,6 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import * as ReactKonva from 'react-konva';
-import { HasChildren } from 'utils/type-utils';
-import { setRef } from 'utils/ref';
+import { setRef, HasChildren } from 'shared/lib';
 import { StageElement } from 'editor/stage/service';
 import { convertNode } from 'editor/node';
 

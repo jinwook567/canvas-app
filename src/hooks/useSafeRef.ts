@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import Maybe from 'utils/maybe';
+import { Maybe } from 'shared/lib';
 
 type SetRef<T> = (node: T) => void;
 type MapRef<T> = <P>(

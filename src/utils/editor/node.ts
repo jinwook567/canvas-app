@@ -13,7 +13,7 @@ import { GroupConfig } from 'konva/lib/Group';
 import { TextConfig } from 'konva/lib/shapes/Text';
 import { ContainerConfig } from 'konva/lib/Container';
 import { clone, identity, omit } from 'ramda';
-import { createUniqueId } from 'utils/unit';
+import { createUniqueId } from 'shared/lib';
 import {
   DefaultSize,
   GroupSize,
