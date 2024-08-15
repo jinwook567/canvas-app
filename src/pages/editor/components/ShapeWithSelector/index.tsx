@@ -5,7 +5,7 @@ import useSelect from 'hooks/editor/node/useSelect';
 import { Shape } from 'utils/editor/node';
 import Selector from 'components/editor/Selector';
 import ShapeMatcher from 'pages/editor/components/ShapeMatcher';
-import useSafeRef from 'hooks/useSafeRef';
+import { useSafeRef } from 'shared/dom';
 import useApplySelectRules from 'pages/editor/components/ShapeWithSelector/selectRule';
 
 type Props = {

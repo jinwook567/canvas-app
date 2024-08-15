@@ -3,7 +3,7 @@ import { Grid, Link } from '@mui/material';
 import Konva from 'konva';
 import { pipe } from 'ramda';
 import useDownload from 'hooks/editor/stage/useDownload';
-import useMultipleRef from 'hooks/useMultipleRef';
+import { useMultipleRef } from 'shared/dom';
 import GlobalEffect from 'pages/editor/components/GlobalEffect';
 import Header from 'pages/editor/components/Header';
 import StageList from 'pages/editor/components/StageList';

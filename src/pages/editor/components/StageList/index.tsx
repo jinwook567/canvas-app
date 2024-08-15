@@ -1,6 +1,6 @@
 import React from 'react';
 import Konva from 'konva';
-import useElementSize from 'hooks/useElementSize';
+import { useElementSize } from 'shared/dom';
 import Stage from 'pages/editor/components/Stage';
 import * as Styled from 'pages/editor/components/StageList/styles';
 import StageControlBar from 'pages/editor/components/StageControlBar';

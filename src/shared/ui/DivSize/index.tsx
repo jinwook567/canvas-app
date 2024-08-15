@@ -1,5 +1,5 @@
 import React from 'react';
-import useElementSize from 'hooks/useElementSize';
+import { useElementSize } from 'shared/dom';
 
 type Props = {
   style?: React.CSSProperties;
