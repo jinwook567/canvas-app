@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 import App from './App';
 import './index.css';
-import DebugObserver from './components/common/DebugObserver';
+import { DebugObserver } from './shared/ui';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper, Typography } from '@mui/material';
-import DivSize from 'components/common/DivSize';
+import { DivSize } from 'shared/ui';
 import Asset from 'components/editor/Asset';
 import PreviewShape from 'components/editor/PreviewShape';
 import PreviewStage from 'components/editor/PreviewStage';

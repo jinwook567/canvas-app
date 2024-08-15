@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { DragOverlay, UniqueIdentifier } from '@dnd-kit/core';
 import { Grid, Paper } from '@mui/material';
-import DivSize from 'components/common/DivSize';
-import SortableDnd from 'components/common/SortableDnd';
+import { DivSize, SortableDnd } from 'shared/ui';
 import PreviewShape from 'components/editor/PreviewShape';
 import { Shape } from 'utils/editor/node';
 import DragIndicator from '@mui/icons-material/DragIndicator';

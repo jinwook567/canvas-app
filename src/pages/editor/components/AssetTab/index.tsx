@@ -3,7 +3,7 @@ import GridViewIcon from '@mui/icons-material/GridView';
 import ImageIcon from '@mui/icons-material/Image';
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import InterestsIcon from '@mui/icons-material/Interests';
-import Tabs from 'components/common/Tabs';
+import { Tabs } from 'shared/ui';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useRecoilState } from 'recoil';
 import { selectedTabState, tabValue } from 'recoils/editor/atoms';

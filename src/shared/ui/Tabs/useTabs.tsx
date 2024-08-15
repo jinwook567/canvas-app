@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TabsProps } from '@mui/material/Tabs';
 import { TabProps } from '@mui/material/Tab';
-import Tabs from 'components/common/Tabs';
+import Tabs from 'shared/ui/Tabs';
 
 type Props = {
   orientation?: TabsProps['orientation'];

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Toggle from 'components/common/Toggle';
+import { Toggle } from 'shared/ui';
 import AssetList from 'pages/editor/components/AssetList';
 import {
   figureAsset,

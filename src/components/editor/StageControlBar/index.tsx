@@ -3,7 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import IconButtonList from 'components/common/IconButtonList';
+import { IconButtonList } from 'shared/ui';
 
 type Props = {
   onAppendStage: () => void;

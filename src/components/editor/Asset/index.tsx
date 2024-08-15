@@ -1,7 +1,7 @@
 import React from 'react';
 import Masonry from '@mui/lab/Masonry';
 import * as Styled from 'components/editor/Asset/styles';
-import HorizontalList from 'components/common/HorizontalList';
+import { HorizontalList } from 'shared/ui';
 
 type Props = {
   children: React.ReactNode;

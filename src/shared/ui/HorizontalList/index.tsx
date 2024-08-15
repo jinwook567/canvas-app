@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { fromEvent } from 'rxjs';
-import { LeftArrow, RightArrow } from 'components/common/HorizontalList/Arrow';
+import { LeftArrow, RightArrow } from 'shared/ui/HorizontalList/Arrow';
 import * as Styled from './styles';
 
 type Props = {
