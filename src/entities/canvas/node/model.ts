@@ -6,7 +6,7 @@ export type NodeElement = {
   ) => string;
 };
 
-export function convertNode(node: Konva.Node): NodeElement {
+export function toNodeElement(node: Konva.Node): NodeElement {
   return {
     base64: options => node.toDataURL(options),
   };

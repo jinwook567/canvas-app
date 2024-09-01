@@ -1,5 +1,5 @@
-import { LayerElement } from 'editor/layer/service';
-import { convertNode } from 'editor/node';
+import { LayerElement } from 'entities/canvas/layer/model';
+import { toNodeElement } from 'entities/canvas/node/model';
 import React, { ForwardedRef } from 'react';
 import * as Konva from 'react-konva';
 import { setRef, HasChildren } from 'shared/lib';
@@ -17,7 +17,7 @@ function Layer(
     <Konva.Layer
       visible={visible}
       listening={!lock}
-      ref={node => node && setRef(ref, convertNode(node))}
+      ref={node => node && setRef(ref, toNodeElement(node))}
     >
       {children}
     </Konva.Layer>

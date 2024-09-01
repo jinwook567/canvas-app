@@ -1,8 +1,15 @@
 import React, { ForwardedRef, forwardRef } from 'react';
-import { ImageConfig, ImageElement } from 'editor/image/service';
+import {
+  ImageConfig,
+  ImageElement,
+} from 'entities/canvas/shape/plugin/image/model';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'shared/lib';
-import { convertEvent, convertShape, ShapeEvents } from 'editor/shape/service';
+import {
+  adaptShapeEvents,
+  toShapeElement,
+  ShapeEvents,
+} from 'entities/canvas/shape/core/model';
 
 type Props = ImageConfig & ShapeEvents;
 
@@ -10,8 +17,8 @@ function Image({ source, ...args }: Props, ref: ForwardedRef<ImageElement>) {
   return (
     <ReactKonva.Image
       image={source}
-      {...convertEvent(args)}
-      ref={node => node && setRef(ref, convertShape(node))}
+      {...adaptShapeEvents(args)}
+      ref={node => node && setRef(ref, toShapeElement(node))}
     />
   );
 }

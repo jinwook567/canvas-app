@@ -1,4 +1,4 @@
-import { ShapeConfig, ShapeElement } from 'editor/shape/service';
+import { ShapeConfig, ShapeElement } from 'entities/canvas/shape/core/model';
 
 export type ImageConfig = {
   type: 'image';

@@ -1,10 +1,10 @@
-import { NodeElement } from 'editor/node';
-import { ShapePackageConfig } from 'editor/shape/service';
+import { NodeElement } from 'entities/canvas/node/model';
+import { PackageConfig } from 'entities/canvas/shape/plugin/package';
 
 export type LayerConfig = {
   visible?: boolean;
   lock?: boolean;
-  shapes: ShapePackageConfig[];
+  shapes: PackageConfig[];
 };
 
 export type LayerElement = NodeElement;

@@ -1,6 +1,12 @@
-import { GroupConfig, GroupElement } from 'editor/group/service';
-import { convertNode } from 'editor/node';
-import { ShapeEvents, convertEvent } from 'editor/shape/service';
+import {
+  GroupConfig,
+  GroupElement,
+} from 'entities/canvas/shape/plugin/group/model';
+import { toNodeElement } from 'entities/canvas/node/model';
+import {
+  ShapeEvents,
+  adaptShapeEvents,
+} from 'entities/canvas/shape/core/model';
 import React, { ForwardedRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { setRef, HasChildren, omit } from 'shared/lib';
@@ -13,8 +19,8 @@ function Group(
 ) {
   return (
     <ReactKonva.Group
-      {...convertEvent(omit(args, 'shapes'))}
-      ref={node => node && setRef(ref, convertNode(node))}
+      {...adaptShapeEvents(omit(args, 'shapes'))}
+      ref={node => node && setRef(ref, toNodeElement(node))}
     >
       {children}
     </ReactKonva.Group>

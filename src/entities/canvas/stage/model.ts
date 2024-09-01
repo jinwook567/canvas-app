@@ -1,5 +1,5 @@
-import { LayerConfig } from 'editor/layer/service';
-import { NodeElement } from 'editor/node';
+import { LayerConfig } from 'entities/canvas/layer/model';
+import { NodeElement } from 'entities/canvas/node/model';
 
 export type StageConfig = {
   width: number;
