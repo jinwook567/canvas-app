@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid, Link } from '@mui/material';
 import Konva from 'konva';
 import { pipe } from 'ramda';
-import useDownload from 'hooks/editor/stage/useDownload';
 import { useMultipleRef } from 'shared/dom';
 import GlobalEffect from 'pages/editor/components/GlobalEffect';
 import Header from 'pages/editor/components/Header';
@@ -12,14 +11,19 @@ import Controller from 'pages/editor/components/Controller';
 import * as Styled from './index.styles';
 import AssetTab from 'pages/editor/components/AssetTab';
 import ShapeControlBar from 'pages/editor/components/ShapeControlBar';
+import { saveBase64 } from 'shared/lib';
 
 function Editor() {
   const { setRef, mapRef } = useMultipleRef<Konva.Layer | null>();
-  const { requestExport } = useDownload();
 
   const exportZip = pipe(
-    () => mapRef((id, node) => ({ url: node.toDataURL(), name: id })),
-    requestExport
+    () =>
+      mapRef((id, node) => ({
+        base64: node.toDataURL(),
+        name: id,
+        format: 'png' as const,
+      })),
+    saveBase64
   );
 
   const stages = useCreateInitialStage();
