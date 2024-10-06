@@ -1,5 +1,9 @@
 import Konva from 'konva';
-import { toNodeElement, NodeElement } from 'entities/canvas/node/model';
+import {
+  toNodeElement,
+  NodeElement,
+  NodeConfig,
+} from 'entities/canvas/node/model';
 import { KonvaNodeEvents } from 'react-konva';
 
 export type ShapeConfig = {
@@ -9,7 +13,7 @@ export type ShapeConfig = {
   y: number;
   scaleX: number;
   scaleY: number;
-};
+} & NodeConfig;
 
 export type ShapeElement = NodeElement;
 
@@ -43,5 +47,6 @@ function toShapeConfig(shape: Konva.Node): ShapeConfig {
     y: shape.y(),
     scaleX: shape.scaleX(),
     scaleY: shape.scaleY(),
+    id: shape.id(),
   };
 }

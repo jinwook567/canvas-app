@@ -4,26 +4,21 @@ import {
   PackageName,
   Config,
 } from 'entities/canvas/shape/plugin/package';
-import { shapes } from 'entities/canvas/shape/plugin/group/model';
 import { ShapeElement, ShapeEvents } from 'entities/canvas/shape/core/model';
 
-type Props<T extends PackageName> = Config<T> & ShapeEvents;
-
-function isGroup<T extends PackageName>(
-  args: Props<T>
-): args is Props<'group'> {
-  return args.type === 'group';
-}
+export type Props<T extends PackageName> = T extends 'group'
+  ? Config<'group'> & { children: Props<T>[] }
+  : Config<T>;
 
 function Shape<T extends PackageName>(
-  args: Props<T>,
+  args: Props<T> & ShapeEvents,
   ref: ForwardedRef<ShapeElement>
 ) {
-  if (isGroup(args)) {
+  if (args.type == 'group') {
     const GroupComponent = component(args.type);
     return (
       <GroupComponent {...args} ref={ref}>
-        {shapes(args).map((shape, index) => (
+        {args.children.map((shape, index) => (
           <Shape {...shape} key={index} />
         ))}
       </GroupComponent>
@@ -31,9 +26,9 @@ function Shape<T extends PackageName>(
   }
 
   const Component = component(args.type) as ForwardRefExoticComponent<
-    Config<T>
+    Config<T> & ShapeEvents
   >;
-  return <Component {...args} ref={ref} />;
+  return <Component {...(args as Config<T> & ShapeEvents)} ref={ref} />;
 }
 
 export default React.forwardRef(Shape);

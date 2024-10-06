@@ -1,11 +1,13 @@
 import { LayerConfig } from 'entities/canvas/layer/model';
-import { NodeElement } from 'entities/canvas/node/model';
+import { NodeConfig, NodeElement } from 'entities/canvas/node/model';
 
 export type StageConfig = {
   width: number;
   height: number;
-  layers: LayerConfig[];
-};
+  layers: LayerConfig['id'][];
+} & NodeConfig;
+
+export type Stages = StageConfig['id'][];
 
 export type StageElement = NodeElement;
 

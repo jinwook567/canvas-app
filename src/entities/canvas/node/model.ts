@@ -1,5 +1,9 @@
 import Konva from 'konva';
 
+export type NodeConfig = {
+  id: string;
+};
+
 export type NodeElement = {
   base64: (
     options?: Partial<{ x: number; y: number; pixelRatio: number }>
