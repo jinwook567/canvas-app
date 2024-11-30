@@ -50,7 +50,7 @@ const center = (stage: Stage, node: Shape): Shape =>
   }));
 
 const avoidSamePos = (stage: Stage, node: Shape): Shape => {
-  const properties = ['x', 'y', 'actualWidth', 'actualHeight'];
+  const properties = ['x', 'y', 'actualWidth', 'actualHeight'] as const
 
   const hasSamePosChild =
     stage.filterChild(child =>

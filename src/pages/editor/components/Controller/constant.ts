@@ -6,7 +6,7 @@ export const imageAsset: Props['assets'] = [
   {
     type: 'mansory',
     nodes: ['yoda.jpg', 'lion.png'].map(
-      pic => `${process.env.PUBLIC_URL}/${pic}`
+      pic => `/${pic}`
     ),
   },
 ];

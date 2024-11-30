@@ -26,8 +26,8 @@ function Shape<T extends keyof ShapePackage>(args: Props<T>) {
     );
   }
 
-  const Component = component(args.type) as ForwardRefExoticComponent<Props<T>>;
-  return <Component {...args} />;
+  const Component = component(args.type) as ForwardRefExoticComponent<Props<T>>
+  return <Component {...args as any} />;
 }
 
 export default Shape;
