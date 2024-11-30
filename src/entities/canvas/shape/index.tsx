@@ -28,7 +28,7 @@ function Shape<T extends PackageName>(
   const Component = component(args.type) as ForwardRefExoticComponent<
     Config<T> & ShapeEvents
   >;
-  return <Component {...(args as Config<T> & ShapeEvents)} ref={ref} />;
+  return <Component {...(args as any)} ref={ref} />;
 }
 
 export default React.forwardRef(Shape);
