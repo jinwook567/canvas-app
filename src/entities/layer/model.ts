@@ -1,4 +1,4 @@
-import { NodeConfig, NodeElement } from 'entities/canvas/node/model';
+import { NodeConfig, NodeElement } from 'entities/node/model';
 import { ShapeConfig } from 'entities/canvas/shape/core/model';
 
 export type LayerConfig = {

@@ -1,9 +1,5 @@
 import Konva from 'konva';
-import {
-  toNodeElement,
-  NodeElement,
-  NodeConfig,
-} from 'entities/canvas/node/model';
+import { toNodeElement, NodeElement, NodeConfig } from 'entities/node/model';
 import { KonvaNodeEvents } from 'react-konva';
 
 export type ShapeConfig = {

@@ -2,7 +2,7 @@ import {
   GroupConfig,
   GroupElement,
 } from 'entities/canvas/shape/plugin/group/model';
-import { toNodeElement } from 'entities/canvas/node/model';
+import { toNodeElement } from 'entities/node/model';
 import {
   ShapeEvents,
   adaptShapeEvents,

@@ -1,4 +1,4 @@
-import { NodeElement } from 'entities/canvas/node/model';
+import { NodeElement } from 'entities/node/model';
 import { ShapeConfig } from 'entities/canvas/shape/core/model';
 
 type Id = ShapeConfig['id'];

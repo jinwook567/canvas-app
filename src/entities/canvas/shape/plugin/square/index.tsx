@@ -9,7 +9,7 @@ import {
 } from 'entities/canvas/shape/plugin/square/model';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'shared/lib';
-import { toNodeElement } from 'entities/canvas/node/model';
+import { toNodeElement } from 'entities/node/model';
 
 type Props = SquareConfig & ShapeEvents;
 
