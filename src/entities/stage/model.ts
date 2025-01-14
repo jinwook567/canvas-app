@@ -1,4 +1,4 @@
-import { LayerConfig } from 'entities/canvas/layer/model';
+import { LayerConfig } from 'entities/layer/model';
 import { NodeConfig, NodeElement } from 'entities/canvas/node/model';
 
 export type StageConfig = {

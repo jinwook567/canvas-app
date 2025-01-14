@@ -13,6 +13,18 @@ export type Layers = {
 
 export type LayerElement = NodeElement;
 
-export function setShapes(shapes: LayerConfig['shapes'], layer: LayerConfig) {
-  return { ...layer, shapes };
+export function visible(layer: LayerConfig) {
+  return layer.visible ?? true;
+}
+
+export function lock(layer: LayerConfig) {
+  return layer.lock ?? false;
+}
+
+export function shapes(layer: LayerConfig) {
+  return layer.shapes;
+}
+
+export function makeConfig(config: LayerConfig) {
+  return { ...config };
 }

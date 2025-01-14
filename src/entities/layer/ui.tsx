@@ -1,4 +1,4 @@
-import { LayerElement } from 'entities/canvas/layer/model';
+import { LayerElement } from 'entities/layer/model';
 import { toNodeElement } from 'entities/canvas/node/model';
 import React, { ForwardedRef } from 'react';
 import * as Konva from 'react-konva';
