@@ -7,8 +7,6 @@ export type StageConfig = {
   layers: LayerConfig['id'][];
 } & NodeConfig;
 
-export type Stages = StageConfig['id'][];
-
 export type StageElement = NodeElement;
 
 export function layers(stage: StageConfig) {
