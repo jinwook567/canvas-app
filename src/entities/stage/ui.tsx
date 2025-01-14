@@ -1,7 +1,7 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { setRef, HasChildren } from 'shared/lib';
-import { StageElement } from 'entities/canvas/stage/model';
+import { StageElement } from 'entities/stage/model';
 import { toNodeElement } from 'entities/canvas/node/model';
 
 type Props = {

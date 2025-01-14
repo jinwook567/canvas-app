@@ -15,6 +15,14 @@ export function layers(stage: StageConfig) {
   return stage.layers;
 }
 
-export function setLayers(layers: StageConfig['layers'], stage: StageConfig) {
-  return { ...stage, layers };
+export function width(stage: StageConfig) {
+  return stage.width;
+}
+
+export function height(stage: StageConfig) {
+  return stage.height;
+}
+
+export function makeConfig(config: StageConfig) {
+  return { ...config };
 }

@@ -2,11 +2,11 @@ import { LayerConfig } from 'entities/canvas/layer/model';
 import { Shapes } from 'entities/canvas/shape/model';
 import { GroupConfig } from 'entities/canvas/shape/plugin/group/model';
 
-export { default as Stage } from 'entities/canvas/stage';
+export { default as Stage } from 'entities/stage';
 export { default as Layer } from 'entities/canvas/layer';
 export { default as Shape } from 'entities/canvas/shape';
 export * from 'entities/canvas/layer/model';
-export * from 'entities/canvas/stage/model';
+export * from 'entities/stage/model';
 export * from 'entities/canvas/shape/model';
 
 export function shapes(container: GroupConfig | LayerConfig) {
