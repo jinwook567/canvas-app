@@ -1,15 +1,8 @@
 import React, { ForwardedRef, forwardRef } from 'react';
-import {
-  ImageConfig,
-  ImageElement,
-} from 'entities/canvas/shape/plugin/image/model';
+import { ImageConfig, ImageElement } from './model';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'shared/lib';
-import {
-  adaptShapeEvents,
-  toShapeElement,
-  ShapeEvents,
-} from 'entities/canvas/shape/core/model';
+import { adaptShapeEvents, toShapeElement, ShapeEvents } from 'shared/canvas';
 
 type Props = ImageConfig & ShapeEvents;
 

@@ -1,2 +1,2 @@
-export { default as Layer } from 'entities/layer/ui';
-export * from 'entities/layer/model';
+export { default as Layer } from './ui';
+export * from './model';

@@ -1,15 +1,11 @@
-import { NodeConfig, NodeElement } from 'entities/node/model';
-import { ShapeConfig } from 'entities/canvas/shape/core/model';
+import { NodeConfig, NodeElement, ShapeConfig } from 'shared/canvas';
 
 export type LayerConfig = {
+  type: 'layer';
   visible?: boolean;
   lock?: boolean;
   shapes: ShapeConfig['id'][];
 } & NodeConfig;
-
-export type Layers = {
-  [key: LayerConfig['id']]: LayerConfig;
-};
 
 export type LayerElement = NodeElement;
 
@@ -25,6 +21,6 @@ export function shapes(layer: LayerConfig) {
   return layer.shapes;
 }
 
-export function makeConfig(config: LayerConfig) {
-  return { ...config };
+export function makeConfig(config: Omit<LayerConfig, 'type'>) {
+  return { ...config, type: 'layer' };
 }

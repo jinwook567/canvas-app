@@ -1,2 +1,2 @@
-export { default as Stage } from 'entities/stage/ui';
-export * from 'entities/stage/model';
+export { default as Stage } from './ui';
+export * from './model';

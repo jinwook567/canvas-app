@@ -1,12 +1,5 @@
-import {
-  GroupConfig,
-  GroupElement,
-} from 'entities/canvas/shape/plugin/group/model';
-import { toNodeElement } from 'entities/node/model';
-import {
-  ShapeEvents,
-  adaptShapeEvents,
-} from 'entities/canvas/shape/core/model';
+import { GroupConfig, GroupElement } from './model';
+import { toNodeElement, ShapeEvents, adaptShapeEvents } from 'shared/canvas';
 import React, { ForwardedRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { setRef, HasChildren, omit } from 'shared/lib';
