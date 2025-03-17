@@ -7,10 +7,6 @@ export type ImageConfig = {
 
 export type ImageElement = ShapeElement;
 
-export function makeConfig(config: Omit<ImageConfig, 'type'>) {
-  return { ...config, type: 'image' };
-}
-
 export function source(config: ImageConfig) {
   return config.source;
 }

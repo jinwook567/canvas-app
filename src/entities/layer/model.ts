@@ -1,26 +1,18 @@
-import { NodeConfig, NodeElement, ShapeConfig } from 'shared/canvas';
+import {
+  NodeConfig,
+  NodeElement,
+  ControlConfig,
+  ShapeConfig,
+} from 'shared/canvas';
 
-export type LayerConfig = {
+export type LayerConfig<Child extends ShapeConfig> = {
   type: 'layer';
-  visible?: boolean;
-  lock?: boolean;
-  shapes: ShapeConfig['id'][];
-} & NodeConfig;
+  shapes: Child[];
+} & NodeConfig &
+  ControlConfig;
 
 export type LayerElement = NodeElement;
 
-export function visible(layer: LayerConfig) {
-  return layer.visible ?? true;
-}
-
-export function lock(layer: LayerConfig) {
-  return layer.lock ?? false;
-}
-
-export function shapes(layer: LayerConfig) {
+export function shapes<Child extends ShapeConfig>(layer: LayerConfig<Child>) {
   return layer.shapes;
-}
-
-export function makeConfig(config: Omit<LayerConfig, 'type'>) {
-  return { ...config, type: 'layer' };
 }

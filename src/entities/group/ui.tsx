@@ -1,13 +1,18 @@
 import { GroupConfig, GroupElement } from './model';
-import { toNodeElement, ShapeEvents, adaptShapeEvents } from 'shared/canvas';
+import {
+  toNodeElement,
+  ShapeEvents,
+  adaptShapeEvents,
+  ShapeConfig,
+} from 'shared/canvas';
 import React, { ForwardedRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { setRef, HasChildren, omit } from 'shared/lib';
 
-type Props = GroupConfig & ShapeEvents;
+type Props<Child extends ShapeConfig> = GroupConfig<Child> & ShapeEvents;
 
-function Group(
-  { children, ...args }: HasChildren<Props>,
+function Group<Child extends ShapeConfig>(
+  { children, ...args }: HasChildren<Props<Child>>,
   ref: ForwardedRef<GroupElement>
 ) {
   return (
@@ -20,4 +25,4 @@ function Group(
   );
 }
 
-export default React.forwardRef<GroupElement, HasChildren<Props>>(Group);
+export default React.forwardRef(Group);

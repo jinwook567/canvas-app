@@ -1,16 +1,13 @@
 import React, { ForwardedRef, forwardRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { setRef, HasChildren } from 'shared/lib';
-import { StageElement } from 'entities/stage/model';
-import { toNodeElement } from 'shared/canvas';
+import { ShapeConfig, toNodeElement } from 'shared/canvas';
+import { StageConfig, StageElement } from './model';
 
-type Props = {
-  width: number;
-  height: number;
-};
+type Props<Child extends ShapeConfig> = StageConfig<Child>;
 
-function Stage(
-  { width, height, children }: HasChildren<Props>,
+function Stage<Child extends ShapeConfig>(
+  { width, height, children }: HasChildren<Props<Child>>,
   ref: ForwardedRef<StageElement>
 ) {
   return (
@@ -24,4 +21,4 @@ function Stage(
   );
 }
 
-export default forwardRef<StageElement, HasChildren<Props>>(Stage);
+export default forwardRef(Stage);

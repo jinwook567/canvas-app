@@ -1,16 +1,13 @@
-import { LayerElement } from 'entities/layer/model';
-import { toNodeElement } from 'shared/canvas';
+import { LayerConfig, LayerElement } from './model';
+import { ShapeConfig, toNodeElement } from 'shared/canvas';
 import React, { ForwardedRef } from 'react';
 import * as Konva from 'react-konva';
 import { setRef, HasChildren } from 'shared/lib';
 
-type Props = {
-  visible?: boolean;
-  lock?: boolean;
-};
+type Props<Child extends ShapeConfig> = LayerConfig<Child>;
 
-function Layer(
-  { visible, lock, children }: HasChildren<Props>,
+function Layer<Child extends ShapeConfig>(
+  { visible, lock, children }: HasChildren<Props<Child>>,
   ref: ForwardedRef<LayerElement>
 ) {
   return (
@@ -24,4 +21,4 @@ function Layer(
   );
 }
 
-export default React.forwardRef<LayerElement, HasChildren<Props>>(Layer);
+export default React.forwardRef(Layer);

@@ -1,27 +1,19 @@
-import { LayerConfig } from 'entities/layer/model';
-import { NodeConfig, NodeElement } from 'shared/canvas'
+import {
+  NodeConfig,
+  NodeElement,
+  DimensionsConfig,
+  ShapeConfig,
+} from 'shared/canvas';
+import { LayerConfig } from 'entities/layer';
 
-export type StageConfig = {
-  type: 'stage'
-  width: number;
-  height: number;
-  layers: LayerConfig['id'][];
-} & NodeConfig;
+export type StageConfig<Child extends ShapeConfig> = {
+  type: 'stage';
+  layers: LayerConfig<Child>[];
+} & NodeConfig &
+  DimensionsConfig;
 
 export type StageElement = NodeElement;
 
-export function layers(stage: StageConfig) {
+export function layers<Child extends ShapeConfig>(stage: StageConfig<Child>) {
   return stage.layers;
-}
-
-export function width(stage: StageConfig) {
-  return stage.width;
-}
-
-export function height(stage: StageConfig) {
-  return stage.height;
-}
-
-export function makeConfig(config: Omit<StageConfig, 'type'>) {
-  return { ...config, type: 'stage' };
 }

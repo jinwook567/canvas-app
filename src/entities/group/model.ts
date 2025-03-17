@@ -1,18 +1,24 @@
-import { NodeElement, ShapeConfig } from 'shared/canvas';
+import {
+  NodeConfig,
+  NodeElement,
+  ShapeConfig,
+  TransformConfig,
+} from 'shared/canvas';
 
-type Id = ShapeConfig['id'];
-
-export type GroupConfig = Omit<ShapeConfig, 'width' | 'height'> & {
+export type GroupConfig<Child extends ShapeConfig> = {
   type: 'group';
-  shapes: Id[];
-};
+  shapes: Child[];
+} & NodeConfig &
+  TransformConfig;
 
 export type GroupElement = NodeElement;
 
-export function makeConfig(config: Omit<GroupConfig, 'type'>) {
-  return { ...config, type: 'group' };
+export function shapes<Child extends ShapeConfig>(config: GroupConfig<Child>) {
+  return config.shapes;
 }
 
-export function shapes(config: GroupConfig) {
-  return config.shapes;
+export function isGroup<Child extends ShapeConfig>(config: {
+  type: string;
+}): config is GroupConfig<Child> {
+  return config.type === 'group';
 }
