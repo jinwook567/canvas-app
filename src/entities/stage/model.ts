@@ -1,12 +1,7 @@
-import {
-  NodeConfig,
-  NodeElement,
-  DimensionsConfig,
-  ShapeConfig,
-} from 'shared/canvas';
+import { NodeConfig, NodeElement, DimensionsConfig } from 'shared/canvas';
 import { LayerConfig } from 'entities/layer';
 
-export type StageConfig<Child extends ShapeConfig> = {
+export type StageConfig<Child> = {
   type: 'stage';
   layers: LayerConfig<Child>[];
 } & NodeConfig &
@@ -14,6 +9,6 @@ export type StageConfig<Child extends ShapeConfig> = {
 
 export type StageElement = NodeElement;
 
-export function layers<Child extends ShapeConfig>(stage: StageConfig<Child>) {
+export function layers<Child>(stage: StageConfig<Child>) {
   return stage.layers;
 }

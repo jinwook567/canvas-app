@@ -1,11 +1,6 @@
-import {
-  NodeConfig,
-  NodeElement,
-  ControlConfig,
-  ShapeConfig,
-} from 'shared/canvas';
+import { NodeConfig, NodeElement, ControlConfig } from 'shared/canvas';
 
-export type LayerConfig<Child extends ShapeConfig> = {
+export type LayerConfig<Child> = {
   type: 'layer';
   shapes: Child[];
 } & NodeConfig &
@@ -13,6 +8,6 @@ export type LayerConfig<Child extends ShapeConfig> = {
 
 export type LayerElement = NodeElement;
 
-export function shapes<Child extends ShapeConfig>(layer: LayerConfig<Child>) {
+export function shapes<Child>(layer: LayerConfig<Child>) {
   return layer.shapes;
 }

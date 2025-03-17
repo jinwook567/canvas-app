@@ -1,12 +1,12 @@
 import { LayerConfig, LayerElement } from './model';
-import { ShapeConfig, toNodeElement } from 'shared/canvas';
+import { toNodeElement } from 'shared/canvas';
 import React, { ForwardedRef } from 'react';
 import * as Konva from 'react-konva';
 import { setRef, HasChildren } from 'shared/lib';
 
-type Props<Child extends ShapeConfig> = LayerConfig<Child>;
+type Props<Child> = LayerConfig<Child>;
 
-function Layer<Child extends ShapeConfig>(
+function Layer<Child>(
   { visible, lock, children }: HasChildren<Props<Child>>,
   ref: ForwardedRef<LayerElement>
 ) {
