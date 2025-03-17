@@ -4,6 +4,10 @@ export type NodeConfig = {
   id: string;
 };
 
+export function id(config: NodeConfig) {
+  return config.id;
+}
+
 export type NodeElement = {
   base64: (
     options?: Partial<{ x: number; y: number; pixelRatio: number }>

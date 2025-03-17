@@ -7,9 +7,33 @@ export type ShapeConfig = {
   height: number;
   x: number;
   y: number;
-  scaleX: number;
-  scaleY: number;
+  scaleX?: number;
+  scaleY?: number;
 } & NodeConfig;
+
+export function width(config: ShapeConfig) {
+  return config.width;
+}
+
+export function height(config: ShapeConfig) {
+  return config.height;
+}
+
+export function x(config: ShapeConfig) {
+  return config.x;
+}
+
+export function y(config: ShapeConfig) {
+  return config.y;
+}
+
+export function scaleX(config: ShapeConfig) {
+  return config.scaleX ?? 1;
+}
+
+export function scaleY(config: ShapeConfig) {
+  return config.scaleY ?? 1;
+}
 
 export type ShapeElement = NodeElement;
 
