@@ -3,7 +3,7 @@ import useAdd from 'hooks/editor/stage/useAdd';
 import useRemove from 'hooks/editor/stage/useRemove';
 import useSelect from 'hooks/editor/stage/useSelect';
 import { nodeFactory, Stage } from 'utils/editor/node';
-import ControlBar from 'components/editor/StageControlBar';
+import ControlBar from 'entities/stage/ui/Panel';
 
 type Props = {
   stage: Stage;
@@ -18,15 +18,15 @@ function StageControlBar({ stage, prevStage, nextStage }: Props) {
 
   return (
     <ControlBar
-      onAppendStage={() =>
+      onCreate={() =>
         addStage(
           nodeFactory('stage').map(() => stage.config),
           stage
         )
       }
-      onDeleteStage={() => removeStage(stage)}
-      onSelectDown={nextStage && (() => selectStage(nextStage))}
-      onSelectUp={prevStage && (() => selectStage(prevStage))}
+      onDelete={() => removeStage(stage)}
+      onNext={nextStage && (() => selectStage(nextStage))}
+      onPrev={prevStage && (() => selectStage(prevStage))}
     />
   );
 }

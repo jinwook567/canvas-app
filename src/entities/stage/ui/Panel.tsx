@@ -6,61 +6,40 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { IconButtonList } from 'shared/ui';
 
 type Props = {
-  onAppendStage: () => void;
-  onDeleteStage: () => void;
-  onSelectDown?: () => void;
-  onSelectUp?: () => void;
+  onCreate: () => void;
+  onDelete: () => void;
+  onNext?: () => void;
+  onPrev?: () => void;
 };
 
-function StageControlBar({
-  onAppendStage,
-  onDeleteStage,
-  onSelectDown,
-  onSelectUp,
-}: Props) {
-  const handleAppendStage = () => {
-    onAppendStage();
-  };
-
-  const handleDeleteStage = () => {
-    onDeleteStage();
-  };
-
-  const handleSelectUp = () => {
-    if (onSelectUp) onSelectUp();
-  };
-
-  const handleSelectDown = () => {
-    if (onSelectDown) onSelectDown();
-  };
-
+function Panel({ onCreate, onDelete, onNext, onPrev }: Props) {
   return (
     <IconButtonList
       items={[
         {
           icon: <KeyboardArrowUpIcon fontSize="small" />,
           buttonProps: {
-            onClick: handleSelectUp,
-            disabled: !onSelectUp,
+            onClick: () => onPrev?.(),
+            disabled: !onPrev,
           },
         },
         {
           icon: <KeyboardArrowDownIcon fontSize="small" />,
           buttonProps: {
-            onClick: handleSelectDown,
-            disabled: !onSelectDown,
+            onClick: () => onNext?.(),
+            disabled: !onNext,
           },
         },
         {
           icon: <AddCircleOutlineIcon fontSize="small" />,
           buttonProps: {
-            onClick: handleAppendStage,
+            onClick: onCreate,
           },
         },
         {
           icon: <DeleteIcon fontSize="small" />,
           buttonProps: {
-            onClick: handleDeleteStage,
+            onClick: onDelete,
           },
         },
       ]}
@@ -68,4 +47,4 @@ function StageControlBar({
   );
 }
 
-export default StageControlBar;
+export default Panel;

@@ -2,7 +2,7 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { setRef, HasChildren } from 'shared/lib';
 import { toNodeElement } from 'shared/canvas';
-import { StageConfig, StageElement } from './model';
+import { StageConfig, StageElement } from '../model';
 
 type Props<Child> = StageConfig<Child>;
 
