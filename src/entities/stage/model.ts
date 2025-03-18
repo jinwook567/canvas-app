@@ -1,9 +1,8 @@
 import { NodeConfig, NodeElement, DimensionsConfig } from 'shared/canvas';
-import { LayerConfig } from 'entities/layer';
 
 export type StageConfig<Child> = {
   type: 'stage';
-  layers: LayerConfig<Child>[];
+  layers: Child[];
 } & NodeConfig &
   DimensionsConfig;
 
