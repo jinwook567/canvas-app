@@ -14,6 +14,7 @@
     "@mui/lab": "^5.0.0-alpha.117",
     "@mui/material": "^5.11.2",
     "file-saver": "^2.0.5",
+    "jotai": "^2.12.2",
     "jszip": "^3.10.1",
     "konva": "^8.3.14",
     "ramda": "^0.29.0",
