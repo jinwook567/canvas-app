@@ -23,3 +23,11 @@ export const omit = <T, K extends keyof T>(
   });
   return newObj;
 };
+
+export const zipmap = <
+  const T extends ReadonlyArray<readonly [PropertyKey, unknown]>
+>(
+  a: T
+) => {
+  return Object.fromEntries(a) as { [K in T[number] as K[0]]: K[1] };
+};
