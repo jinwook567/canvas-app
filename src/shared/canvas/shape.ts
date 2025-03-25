@@ -30,7 +30,7 @@ export function adaptShapeEvents<T extends ShapeEvents>(
   };
 }
 
-function toShapeConfig(shape: Konva.Node): ShapeConfig {
+export function toShapeConfig(shape: Konva.Node): ShapeConfig {
   return {
     width: shape.width(),
     height: shape.height(),
