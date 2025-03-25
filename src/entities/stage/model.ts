@@ -2,12 +2,12 @@ import { NodeConfig, NodeElement, DimensionsConfig } from 'shared/canvas';
 
 export type StageConfig<Child> = {
   type: 'stage';
-  layers: Child[];
+  elements: Child[];
 } & NodeConfig &
   DimensionsConfig;
 
 export type StageElement = NodeElement;
 
-export function layers<Child>(stage: StageConfig<Child>) {
-  return stage.layers;
+export function elements<Child>(stage: StageConfig<Child>) {
+  return stage.elements;
 }

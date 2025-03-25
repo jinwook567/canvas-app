@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { Id, Workspace, level, get, getParent } from './core';
+import { Id, Workspace, level, get, getParent, isChildren } from './core';
 
 export type Ids = Set<Id>;
 
@@ -10,7 +10,7 @@ const getParentByLevel = (
   config: Workspace[Id],
   targetLevel: number
 ): Workspace[Id] | null => {
-  if (!config.parent) return null;
+  if (!isChildren(config)) return null;
 
   const parent = getParent(workspace, config);
   return level(parent.type) === targetLevel

@@ -2,14 +2,14 @@ import { NodeConfig, NodeElement, TransformConfig } from 'shared/canvas';
 
 export type GroupConfig<Child> = {
   type: 'group';
-  shapes: Child[];
+  elements: Child[];
 } & NodeConfig &
   TransformConfig;
 
 export type GroupElement = NodeElement;
 
-export function shapes<Child>(config: GroupConfig<Child>) {
-  return config.shapes;
+export function elements<Child>(config: GroupConfig<Child>) {
+  return config.elements;
 }
 
 export function isGroup<Child>(config: {

@@ -3,8 +3,9 @@ import {
   Config as ContainerConfig,
   Type as ContainerType,
   types as containerTypes,
+  elementTypes,
+  Item,
 } from 'features/container';
-import { Config as SceneConfig } from 'features/scene';
 import {
   Config as ShapeConfig,
   Type as ShapeType,
@@ -16,13 +17,9 @@ import { omit, zipmap } from 'shared/lib';
 export type Id = NodeConfig['id'];
 
 export type Root = { type: 'root'; children: Id[]; id: Id; parent: null };
-export type Scene = Omit<SceneConfig, 'layers'> & {
-  children: Id[];
-  parent: Id;
-};
 export type Container<T extends ContainerType> = Omit<
   ContainerConfig<T>,
-  'shapes'
+  'elements'
 > & {
   children: Id[];
   parent: Id;
@@ -30,42 +27,72 @@ export type Container<T extends ContainerType> = Omit<
 export type Shape<T extends ShapeType> = ShapeConfig<T> & { parent: Id };
 
 export type Workspace = {
-  [key: Id]: Root | Scene | Container<ContainerType> | Shape<ShapeType>;
+  [key: Id]: Root | Container<ContainerType> | Shape<ShapeType>;
 };
 
+type Types = Workspace[Id]['type'];
+
 export const hierarchy = {
-  root: ['stage'],
-  stage: ['layer'],
-  layer: [...containerTypes.filter(type => type !== 'layer'), ...shapeTypes],
-  ...zipmap(
-    containerTypes
-      .filter(type => type !== 'layer')
-      .map(type => [type, [...shapeTypes, type]])
-  ),
+  root: ['stage' as const],
+
+  ...(zipmap(containerTypes.map(type => [type, elementTypes(type)])) as {
+    [K in ContainerType]: Item<K>['elementTypes'];
+  }),
+
   ...zipmap(shapeTypes.map(type => [type, []])),
-} as const;
+} satisfies { [K in Types]: Types[] };
 
 export const level = (type: Workspace[Id]['type']): number => {
   return 1 + Math.max(...hierarchy[type].filter(l => l !== type).map(level));
 };
 
-type Child<T extends Workspace[Id]> = T extends Root
-  ? Scene
-  : T extends Scene
-  ? Container<'layer'>
-  : T extends Container<ContainerType>
-  ? Container<'group'> | Shape<ShapeType>
+type Hierarchy = typeof hierarchy;
+
+type ByType<T extends Types> = T extends 'root'
+  ? Root
+  : T extends ContainerType
+  ? Container<T>
+  : T extends ShapeType
+  ? Shape<T>
   : never;
-type HasChildren = Workspace[Id] extends infer A
-  ? A extends { children: Id[] }
-    ? A
+
+type Child<T extends Types> = Hierarchy[T][number] extends infer A
+  ? A extends Types
+    ? ByType<A>
     : never
   : never;
-type HasParent = Workspace[Id] extends infer A
-  ? A extends { parent: Id }
-    ? A
+
+type Parent<T extends Types> = Types extends infer A
+  ? A extends Types
+    ? T extends Hierarchy[A][number]
+      ? ByType<A>
+      : never
     : never
   : never;
+
+type ParentTypes = Types extends infer A
+  ? A extends Types
+    ? Child<A> extends never
+      ? never
+      : A
+    : never
+  : never;
+
+type ChildrenTypes = Types extends infer A
+  ? A extends Types
+    ? Parent<A> extends never
+      ? never
+      : A
+    : never
+  : never;
+
+export const isChildren = (
+  config: Workspace[Id]
+): config is ByType<ChildrenTypes> => config.parent !== null;
+
+export const isParent = (
+  config: Workspace[Id]
+): config is ByType<ParentTypes> => hierarchy[config.type].length > 0;
 
 export const workspaceAtom = atom<Workspace>({});
 
@@ -74,12 +101,14 @@ export const get = <T extends Workspace, P extends keyof T>(
   id: P
 ) => workspace[id];
 
-export const getParent = (workspace: Workspace, config: HasParent) =>
-  workspace[config.parent] as HasChildren;
-
-export const getChildren = <T extends HasChildren>(
+export const getParent = <T extends ChildrenTypes>(
   workspace: Workspace,
-  config: T
+  config: ByType<T>
+) => workspace[config.parent] as Parent<T>;
+
+export const getChildren = <T extends ParentTypes>(
+  workspace: Workspace,
+  config: ByType<T>
 ) => {
   return config.children.map(id => get(workspace, id)) as Child<T>[];
 };
@@ -91,7 +120,7 @@ export const update = (workspace: Workspace, config: Workspace[Id]) => {
 export const remove = (workspace: Workspace, config: Workspace[Id]) => {
   const rest = omit(workspace, config.id);
 
-  if (config.parent) {
+  if (isChildren(config)) {
     const parent = getParent(workspace, config);
     return update(rest, {
       ...parent,
@@ -100,48 +129,44 @@ export const remove = (workspace: Workspace, config: Workspace[Id]) => {
   } else return rest;
 };
 
-export const insert = <T extends HasChildren>(
+export const insert = <
+  T extends ParentTypes,
+  P extends ByType<T>,
+  U extends Child<P['type']>
+>(
   workspace: Workspace,
-  parent: T,
-  config: Child<T>,
+  parent: P,
+  config: U,
   order: (children: Id[], id: Id) => Id[] = (children, id) => [...children, id]
 ) => {
   return update(
     update(workspace, {
       ...parent,
-      children: order(parent.children, config.id),
+      children: order(parent.children, (config as Child<ParentTypes>).id),
     }),
     config
   );
 };
 
-export const isContainer = (
-  config: Workspace[Id]
-): config is Container<ContainerType> =>
-  containerTypes.some(type => type === config.type);
+export type Config<T extends ChildrenTypes> = T extends ContainerType
+  ? ContainerConfig<T>
+  : T extends ShapeType
+  ? ShapeConfig<T>
+  : never;
 
-type Config<T extends HasParent> = T extends Scene
-  ? SceneConfig
-  : T['type'] extends ContainerType
-  ? ContainerConfig<T['type']>
-  : T;
-
-export const isScene = (config: Workspace[Id]): config is Scene =>
-  config.type === 'stage';
-
-export const tree = <T extends HasChildren>(
+export const tree = <
+  T extends ParentTypes,
+  P extends ByType<T>,
+  U extends Child<P['type']>
+>(
   workspace: Workspace,
-  root: T
-): Config<Child<T>>[] => {
-  return getChildren(workspace, root).map(child => {
-    if (isContainer(child) || isScene(child)) {
-      const name = isContainer(child) ? 'shapes' : 'layers';
-      return {
-        ...omit(child, 'parent', 'children'),
-        [name]: tree(workspace, child),
-      };
-    } else {
-      return child;
-    }
-  }) as Config<Child<T>>[];
-};
+  root: P
+): Config<U['type']>[] =>
+  getChildren(workspace, root).map(child =>
+    isParent(child)
+      ? {
+          ...omit(child, 'parent', 'children'),
+          elements: tree(workspace, child),
+        }
+      : omit(child, 'parent')
+  ) as Config<U['type']>[];

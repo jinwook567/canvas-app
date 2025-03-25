@@ -1,27 +1,25 @@
-import React, { ForwardedRef } from 'react';
-import { Type, Config, get } from './model';
+import React, { ForwardedRef, ReactNode } from 'react';
+import { Type, Config, get, Item } from './model';
 import { NodeElement, ShapeEvents } from 'shared/canvas';
-import { Shape } from 'features/shape';
 
-type Props<T extends Type> = T extends 'layer'
-  ? Config<T>
-  : Config<T> & ShapeEvents;
+type Props<T extends Type> = T extends 'group'
+  ? Config<T> & ShapeEvents
+  : Config<T>;
 
 function Container<T extends Type>(
-  props: Props<T>,
+  props: Props<T> & {
+    children: (arg: {
+      elements: Item<T>['elements'];
+      Element: Item<T>['Element'];
+    }) => ReactNode;
+  },
   ref: ForwardedRef<NodeElement>
 ) {
-  const { Component, shapes } = get(props.type)(props);
+  const { Component, elements, Element } = get(props.type)(props);
 
   return (
     <Component {...props} ref={ref}>
-      {shapes.map(shape =>
-        shape.type === 'group' ? (
-          <Container key={shape.id} {...shape} />
-        ) : (
-          <Shape key={shape.id} {...shape} />
-        )
-      )}
+      {props.children({ elements, Element })}
     </Component>
   );
 }
