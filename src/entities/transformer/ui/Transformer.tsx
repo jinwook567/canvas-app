@@ -1,11 +1,11 @@
-import React, { ForwardedRef } from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import {
   TransformerConfig,
   UpdateConfig,
   TransformerElement,
   toUpdateConfig,
   toTransformerElement,
-} from './model';
+} from '../model';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'shared/lib';
 
@@ -30,4 +30,4 @@ function Transformer(
   );
 }
 
-export default Transformer;
+export default forwardRef(Transformer);

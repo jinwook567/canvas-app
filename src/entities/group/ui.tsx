@@ -12,7 +12,7 @@ function Group<Child>(
 ) {
   return (
     <ReactKonva.Group
-      {...adaptShapeEvents(omit(args, 'shapes'))}
+      {...adaptShapeEvents(omit(args, 'elements'))}
       ref={node => node && setRef(ref, toNodeElement(node))}
     >
       {children}

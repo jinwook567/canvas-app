@@ -13,11 +13,13 @@ export type NodeElement = {
     options?: Partial<{ x: number; y: number; pixelRatio: number }>
   ) => string;
   _raw: Konva.Node;
+  id: string;
 };
 
 export function toNodeElement(node: Konva.Node): NodeElement {
   return {
     base64: options => node.toDataURL(options),
     _raw: node,
+    id: node.id(),
   };
 }
