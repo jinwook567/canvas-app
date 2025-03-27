@@ -1,4 +1,5 @@
-import { NodeConfig, NodeElement, ControlConfig } from 'shared/canvas';
+import Konva from 'konva';
+import { NodeConfig, ControlConfig, ContainerElement } from 'shared/canvas';
 
 export type LayerConfig<Child> = {
   type: 'layer';
@@ -6,7 +7,7 @@ export type LayerConfig<Child> = {
 } & NodeConfig &
   ControlConfig;
 
-export type LayerElement = NodeElement;
+export type LayerElement = ContainerElement;
 
 export function elements<Child>(layer: LayerConfig<Child>) {
   return layer.elements;

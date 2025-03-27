@@ -1,6 +1,6 @@
-import React, { ForwardedRef, ReactNode } from 'react';
+import React, { ElementRef, ForwardedRef, ReactNode } from 'react';
 import { Type, Config, get, Item } from './model';
-import { NodeElement, ShapeEvents } from 'shared/canvas';
+import { ContainerElement, NodeElement, ShapeEvents } from 'shared/canvas';
 
 type Props<T extends Type> = T extends 'group'
   ? Config<T> & ShapeEvents
@@ -13,7 +13,7 @@ function Container<T extends Type>(
       Element: Item<T>['Element'];
     }) => ReactNode;
   },
-  ref: ForwardedRef<NodeElement>
+  ref: ForwardedRef<ContainerElement>
 ) {
   const { Component, elements, Element } = get(props.type)(props);
 

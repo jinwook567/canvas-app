@@ -1,5 +1,9 @@
 import { GroupConfig, GroupElement } from './model';
-import { toNodeElement, ShapeEvents, adaptShapeEvents } from 'shared/canvas';
+import {
+  ShapeEvents,
+  adaptShapeEvents,
+  toContainerElement,
+} from 'shared/canvas';
 import React, { ForwardedRef } from 'react';
 import * as ReactKonva from 'react-konva';
 import { setRef, HasChildren, omit } from 'shared/lib';
@@ -13,7 +17,7 @@ function Group<Child>(
   return (
     <ReactKonva.Group
       {...adaptShapeEvents(omit(args, 'elements'))}
-      ref={node => node && setRef(ref, toNodeElement(node))}
+      ref={node => node && setRef(ref, toContainerElement(node))}
     >
       {children}
     </ReactKonva.Group>
