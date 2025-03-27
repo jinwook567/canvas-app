@@ -1,4 +1,4 @@
-import React, { ForwardedRef } from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { GroupElement, Group, elements } from 'entities/group';
 import { Shape } from 'features/shape';
 import { GroupChild } from './types';
@@ -15,4 +15,4 @@ function Element(config: GroupChild, ref: ForwardedRef<GroupElement>) {
   );
 }
 
-export default Element;
+export default forwardRef(Element);

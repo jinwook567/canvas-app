@@ -15,6 +15,7 @@ function Square(
       cornerRadius={cornerRadius}
       {...adaptShapeEvents(args)}
       ref={node => node && setRef(ref, toNodeElement(node))}
+      fill={'green'}
     />
   );
 }

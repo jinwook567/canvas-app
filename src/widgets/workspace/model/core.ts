@@ -26,11 +26,25 @@ export type Container<T extends ContainerType> = Omit<
 };
 export type Shape<T extends ShapeType> = ShapeConfig<T> & { parent: Id };
 
+type Containers = ContainerType extends infer A
+  ? A extends ContainerType
+    ? Container<A>
+    : never
+  : never;
+
+type Shapes = ShapeType extends infer A
+  ? A extends ShapeType
+    ? Shape<A>
+    : never
+  : never;
+
 export type Workspace = {
-  [key: Id]: Root | Container<ContainerType> | Shape<ShapeType>;
+  [key: Id]: Root | Containers | Shapes;
 };
 
-type Types = Workspace[Id]['type'];
+export type U = Workspace[Id];
+
+export type Types = Workspace[Id]['type'];
 
 export const hierarchy = {
   root: ['stage' as const],
@@ -46,9 +60,9 @@ export const level = (type: Workspace[Id]['type']): number => {
   return 1 + Math.max(...hierarchy[type].filter(l => l !== type).map(level));
 };
 
-type Hierarchy = typeof hierarchy;
+export type Hierarchy = typeof hierarchy;
 
-type ByType<T extends Types> = T extends 'root'
+export type ByType<T extends Types> = T extends 'root'
   ? Root
   : T extends ContainerType
   ? Container<T>
@@ -56,13 +70,13 @@ type ByType<T extends Types> = T extends 'root'
   ? Shape<T>
   : never;
 
-type Child<T extends Types> = Hierarchy[T][number] extends infer A
+export type Child<T extends Types> = Hierarchy[T][number] extends infer A
   ? A extends Types
     ? ByType<A>
     : never
   : never;
 
-type Parent<T extends Types> = Types extends infer A
+export type Parent<T extends Types> = Types extends infer A
   ? A extends Types
     ? T extends Hierarchy[A][number]
       ? ByType<A>
@@ -70,7 +84,7 @@ type Parent<T extends Types> = Types extends infer A
     : never
   : never;
 
-type ParentTypes = Types extends infer A
+export type ParentTypes = Types extends infer A
   ? A extends Types
     ? Child<A> extends never
       ? never
@@ -78,7 +92,7 @@ type ParentTypes = Types extends infer A
     : never
   : never;
 
-type ChildrenTypes = Types extends infer A
+export type ChildrenTypes = Types extends infer A
   ? A extends Types
     ? Parent<A> extends never
       ? never
@@ -93,6 +107,9 @@ export const isChildren = (
 export const isParent = (
   config: Workspace[Id]
 ): config is ByType<ParentTypes> => hierarchy[config.type].length > 0;
+
+export const isLeaf = (config: Workspace[Id]): config is Shapes =>
+  shapeTypes.some(type => type === config.type);
 
 export const workspaceAtom = atom<Workspace>({});
 
@@ -161,12 +178,16 @@ export const tree = <
 >(
   workspace: Workspace,
   root: P
-): Config<U['type']>[] =>
-  getChildren(workspace, root).map(child =>
-    isParent(child)
-      ? {
-          ...omit(child, 'parent', 'children'),
-          elements: tree(workspace, child),
-        }
-      : omit(child, 'parent')
-  ) as Config<U['type']>[];
+): { elements: (Config<U['type']> & U)[] } & P => {
+  return {
+    ...root,
+    elements: getChildren(workspace, root).map(child =>
+      isParent(child)
+        ? {
+            ...child,
+            elements: tree(workspace, child),
+          }
+        : child
+    ) as (Config<U['type']> & U)[],
+  };
+};

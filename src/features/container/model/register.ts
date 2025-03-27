@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { createElement, forwardRef } from 'react';
 import { Group, GroupConfig, elements as groupElements } from 'entities/group';
 import { Layer, LayerConfig, elements as layerElements } from 'entities/layer';
 import { withPartial } from 'shared/ui';
@@ -16,15 +16,18 @@ export const group = (config: GroupConfig<GroupChild>) => ({
   Component: withPartial(Group, config),
   elements: groupElements(config),
   elementTypes: groupElementTypes,
-  Element: forwardRef(GroupElement),
+  Element: GroupElement,
 });
 
 export const layer = (config: LayerConfig<LayerChild>) => ({
   config,
   Component: withPartial(LayerComponent, config),
+  // elements: layerElements(config).filter(
+  //   config => config.type !== 'transformer'
+  // ),
   elements: layerElements(config),
   elementTypes: groupElementTypes,
-  Element: forwardRef(GroupElement),
+  Element: GroupElement,
 });
 
 export const stage = (config: StageConfig<LayerConfig<LayerChild>>) => ({
@@ -32,5 +35,5 @@ export const stage = (config: StageConfig<LayerConfig<LayerChild>>) => ({
   Component: withPartial(Stage, config),
   elements: stageElements(config),
   elementTypes: ['layer' as const],
-  Element: (config: LayerConfig<LayerChild>) => layer(config).Component,
+  Element: LayerComponent,
 });

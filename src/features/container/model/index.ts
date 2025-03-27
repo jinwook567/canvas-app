@@ -1,3 +1,4 @@
+import { ForwardRefExoticComponent } from 'react';
 import * as table from './register';
 
 export type Type = keyof typeof table;
@@ -14,3 +15,14 @@ export const elementTypes = <T extends Type>(type: T) =>
   get(type)({ type } as Config<T>).elementTypes as Item<T>['elementTypes'];
 
 export const types = Object.keys(table) as Type[];
+
+export const isContainer = (config: {
+  type: string;
+}): config is Config<Type> => {
+  return types.some(type => type === config.type);
+};
+
+export const getElement = <T extends Type>(config: Config<T>) =>
+  get(config.type)(config).Element as ForwardRefExoticComponent<
+    Item<T>['elements'][number]
+  >;

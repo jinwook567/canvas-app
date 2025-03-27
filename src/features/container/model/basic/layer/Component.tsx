@@ -1,5 +1,6 @@
 import React, {
   ForwardedRef,
+  forwardRef,
   PropsWithChildren,
   useEffect,
   useImperativeHandle,
@@ -70,4 +71,4 @@ function Component(
   );
 }
 
-export default Component;
+export default forwardRef(Component);

@@ -9,6 +9,8 @@ import StageSelector from 'components/editor/StageSelector';
 import useSelect from 'hooks/editor/stage/useSelect';
 import ShapesLayer from 'pages/editor/components/ShapesLayer';
 import { Box, Grid } from '@mui/material';
+import { Workspace } from 'widgets/workspace/model';
+import Tree from 'widgets/workspace/ui/Tree';
 
 type Props = {
   setRef: (id: string, node: Konva.Layer | null) => void;
@@ -30,9 +32,45 @@ function StageList({ setRef, items }: Props) {
       }
     };
 
+  const root = {
+    type: 'root' as const,
+    id: 'canvas',
+    children: ['1'],
+    parent: null,
+  };
+
+  const workspace: Workspace = {
+    canvas: root,
+    '1': {
+      type: 'stage',
+      id: '1',
+      children: ['3'],
+      parent: 'canvas',
+      width: 500,
+      height: 500,
+    },
+    '2': {
+      type: 'square',
+      id: '2',
+      width: 300,
+      height: 500,
+      x: 100,
+      y: 100,
+      parent: '3',
+    },
+    '3': {
+      type: 'layer',
+      id: '3',
+      children: ['2'],
+      parent: '1',
+    },
+  };
+
   return (
     <Styled.Container ref={ref}>
-      {items.map((stage, index) => {
+      <Tree workspace={workspace} root={root} />
+
+      {/* {items.map((stage, index) => {
         const prevStage = items[index - 1];
         const nextStage = items[index + 1];
 
@@ -62,7 +100,7 @@ function StageList({ setRef, items }: Props) {
             </StageSelector>
           </Grid>
         );
-      })}
+      })} */}
 
       <Box component="hr" mt={2} />
     </Styled.Container>
