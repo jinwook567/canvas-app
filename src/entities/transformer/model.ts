@@ -17,7 +17,8 @@ export type TransformerConfig = {
   rotate: boolean;
   flip: boolean;
   rule?: (prev: UpdateConfig, next: UpdateConfig) => UpdateConfig;
-};
+  elements: NodeConfig['id'][];
+} & NodeConfig;
 
 export type TransformerElement = {
   update: (updater: (elements: ShapeElement[]) => ShapeElement[]) => void;
