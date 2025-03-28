@@ -1,10 +1,19 @@
-import React, { createElement, forwardRef } from 'react';
 import { Group, GroupConfig, elements as groupElements } from 'entities/group';
-import { Layer, LayerConfig, elements as layerElements } from 'entities/layer';
+import { LayerConfig, elements as layerElements, Layer } from 'entities/layer';
 import { withPartial } from 'shared/ui';
-import { Type, types } from 'features/shape';
+import { Type, types, Config } from 'features/shape';
 import { Stage, StageConfig, elements as stageElements } from 'entities/stage';
-import { GroupElement, GroupChild, LayerChild, LayerComponent } from './basic';
+import {
+  TransformLayerConfig,
+  TransformLayer,
+  toLayer,
+} from './derived/transformLayer';
+
+interface Container<T> extends GroupConfig<T | Container<T>> {}
+
+export type Child<T> = T | Container<T>;
+
+export type GroupChild = Child<Config<Type>>;
 
 const groupElementTypes = [...types, 'group'] satisfies (
   | Type
@@ -16,24 +25,25 @@ export const group = (config: GroupConfig<GroupChild>) => ({
   Component: withPartial(Group, config),
   elements: groupElements(config),
   elementTypes: groupElementTypes,
-  Element: GroupElement,
 });
 
-export const layer = (config: LayerConfig<LayerChild>) => ({
+export const layer = (config: LayerConfig<GroupChild>) => ({
   config,
-  Component: withPartial(LayerComponent, config),
-  // elements: layerElements(config).filter(
-  //   config => config.type !== 'transformer'
-  // ),
+  Component: withPartial(Layer, config),
   elements: layerElements(config),
   elementTypes: groupElementTypes,
-  Element: GroupElement,
 });
 
-export const stage = (config: StageConfig<LayerConfig<LayerChild>>) => ({
+export const transformLayer = (config: TransformLayerConfig<GroupChild>) => ({
+  config,
+  Component: withPartial(TransformLayer, config),
+  elements: layerElements(toLayer(config)),
+  elementTypes: groupElementTypes,
+});
+
+export const stage = (config: StageConfig<LayerConfig<GroupChild>>) => ({
   config,
   Component: withPartial(Stage, config),
   elements: stageElements(config),
-  elementTypes: ['layer' as const],
-  Element: LayerComponent,
+  elementTypes: ['layer' as const, 'transformLayer' as const],
 });

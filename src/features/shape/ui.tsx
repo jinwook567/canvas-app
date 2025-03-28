@@ -1,4 +1,4 @@
-import React, { ForwardedRef } from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { Config, get, Type } from './model';
 import { ShapeEvents, ShapeElement } from 'shared/canvas';
 
@@ -12,4 +12,4 @@ function Shape<T extends Type>(
   return <Component {...props} ref={ref} />;
 }
 
-export default Shape;
+export default forwardRef(Shape);

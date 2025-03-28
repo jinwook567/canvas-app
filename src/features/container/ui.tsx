@@ -1,39 +1,20 @@
-import React, {
-  ComponentProps,
-  ComponentType,
-  ForwardedRef,
-  ForwardRefExoticComponent,
-  ReactNode,
-} from 'react';
-import { Type, Config, get, Item, getElement } from './model';
-import { ContainerElement, ShapeEvents } from 'shared/canvas';
+import React, { ComponentProps, ForwardedRef, forwardRef } from 'react';
+import { Type, Config, get, Item } from './model';
+import { ContainerElement } from 'shared/canvas';
 
-type Props<T extends Type> = T extends 'group'
-  ? Config<T> & ShapeEvents
-  : Config<T>;
-
-// type U<T extends Type> = Omit<
-//   ComponentProps<Item<T>['Component']>,
-//   'children'
-// > &
-//   Config<T>;
-// type K = U<'layer'>['onTransform'];
+type Props<T extends Type> = ComponentProps<Item<T>['Component']> & Config<T>;
 
 function Container<T extends Type>(
-  props: Props<T> & {
-    children: (arg: {
-      elements: Item<T>['elements'];
-      Element: ForwardRefExoticComponent<Item<T>['elements'][number]>;
-    }) => ReactNode;
-  },
+  props: Props<T>,
   ref: ForwardedRef<ContainerElement>
 ) {
-  const { Component, elements } = get(props.type)(props);
-  const Element = getElement(props);
+  const { Component } = get(props);
 
   return (
-    <Component {...props}>{props.children({ elements, Element })}</Component>
+    <Component {...props} ref={ref}>
+      {props.children}
+    </Component>
   );
 }
 
-export default Container;
+export default forwardRef(Container);

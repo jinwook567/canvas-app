@@ -1,4 +1,3 @@
-import Konva from 'konva';
 import { NodeConfig, ControlConfig, ContainerElement } from 'shared/canvas';
 
 export type LayerConfig<Child> = {

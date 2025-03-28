@@ -1,5 +1,6 @@
 import React, {
   ForwardedRef,
+  forwardRef,
   PropsWithChildren,
   useEffect,
   useImperativeHandle,
@@ -7,12 +8,20 @@ import React, {
 } from 'react';
 import { TransformLayerConfig, toLayer } from './model';
 import { Layer, LayerElement } from 'entities/layer';
-import { Transformer, TransformerElement } from 'entities/transformer';
+import {
+  Transformer,
+  TransformerElement,
+  UpdateConfig,
+  TransformerConfig,
+} from 'entities/transformer';
 import { useRefs } from 'shared/dom';
+import { NodeConfig } from 'shared/canvas';
 
-type Props<Child> = TransformLayerConfig<Child> & { onChange: () => void };
+type Props<Child extends NodeConfig> = TransformLayerConfig<Child> & {
+  onTransform?: (elements: Child[]) => void;
+};
 
-function TransformLayer<Child>(
+function TransformLayer<Child extends NodeConfig>(
   props: PropsWithChildren<Props<Child>>,
   ref: ForwardedRef<LayerElement>
 ) {
@@ -26,22 +35,36 @@ function TransformLayer<Child>(
     props.transformers.forEach(transformer => {
       const transformerRef = get(transformer.id);
       if (transformerRef) {
-        const nextNodes =
+        const nodes =
           layerRef.current?.children.filter(el =>
             transformer.elements.includes(el.id)
           ) ?? [];
-        transformerRef.update(() => nextNodes);
+        transformerRef.update(() => nodes);
       }
     });
   }, [props.transformers]);
 
+  const handleTransform = (
+    updateConfig: UpdateConfig,
+    transformerConfig: TransformerConfig
+  ) => {
+    if (props.onTransform) {
+      props.onTransform(
+        props.elements
+          .filter(element => transformerConfig.elements.includes(element.id))
+          .map(element => ({ ...element, ...updateConfig }))
+      );
+    }
+  };
+
   return (
-    <Layer {...toLayer(props)}>
+    <Layer {...toLayer(props)} ref={layerRef}>
       {props.children}
       {props.transformers.map(config => (
         <Transformer
           {...config}
-          onChange={props.onChange}
+          key={config.id}
+          onChange={updateConfig => handleTransform(updateConfig, config)}
           ref={node => node && update(config.id, node)}
         />
       ))}
@@ -49,4 +72,4 @@ function TransformLayer<Child>(
   );
 }
 
-export default TransformLayer;
+export default forwardRef(TransformLayer);

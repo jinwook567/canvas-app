@@ -5,7 +5,7 @@ import {
   TransformerElement,
   toUpdateConfig,
   toTransformerElement,
-} from '../model';
+} from './model';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'shared/lib';
 

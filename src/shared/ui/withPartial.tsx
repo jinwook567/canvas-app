@@ -1,19 +1,32 @@
-import React, { ComponentType } from 'react';
+import React, {
+  ForwardedRef,
+  forwardRef,
+  PropsWithoutRef,
+  ForwardRefExoticComponent,
+} from 'react';
 import { EmotionJSX } from '@emotion/react/dist/declarations/src/jsx-namespace';
 
 function withPartial<T, P extends Partial<T>>(
-  Component: ComponentType<T>,
+  Component: ForwardRefExoticComponent<T>,
   props1: P
 ) {
-  return function Wrapper(props2: Omit<T, keyof P>) {
+  function Wrapper<U>(
+    props2: PropsWithoutRef<Omit<T, keyof P>>,
+    ref: ForwardedRef<U>
+  ) {
     const props = {
       ...props1,
       ...props2,
-    } as unknown as EmotionJSX.LibraryManagedAttributes<typeof Component, T> &
-      EmotionJSX.IntrinsicAttributes;
+    } as unknown as EmotionJSX.LibraryManagedAttributes<
+      ForwardRefExoticComponent<T>,
+      T
+    > &
+      EmotionJSX.IntrinsicAttributes & { ref: ForwardedRef<U> };
 
-    return <Component {...props} />;
-  };
+    return <Component {...props} ref={ref} />;
+  }
+
+  return forwardRef(Wrapper);
 }
 
 export default withPartial;
