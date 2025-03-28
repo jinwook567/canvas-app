@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Konva from 'konva';
 import { useElementSize } from 'shared/dom';
 import Stage from 'pages/editor/components/Stage';
@@ -11,6 +11,9 @@ import ShapesLayer from 'pages/editor/components/ShapesLayer';
 import { Box, Grid } from '@mui/material';
 import { Workspace } from 'widgets/workspace/model';
 import Tree from 'widgets/workspace/ui/Tree';
+import { Container } from 'features/container';
+import { Square } from 'entities/square';
+import { LayerElement } from 'entities/layer';
 
 type Props = {
   setRef: (id: string, node: Konva.Layer | null) => void;
@@ -52,23 +55,39 @@ function StageList({ setRef, items }: Props) {
     '2': {
       type: 'square',
       id: '2',
-      width: 300,
-      height: 500,
+      width: 50,
+      height: 50,
       x: 100,
       y: 100,
+      parent: '3',
+    },
+    '4': {
+      type: 'square',
+      id: '4',
+      width: 100,
+      height: 100,
+      x: 200,
+      y: 200,
       parent: '3',
     },
     '3': {
       type: 'layer',
       id: '3',
-      children: ['2'],
+      children: ['2', '4'],
       parent: '1',
     },
   };
 
+  const layerRef = useRef<LayerElement>(null);
+  console.log(layerRef);
+
   return (
     <Styled.Container ref={ref}>
-      <Tree workspace={workspace} root={root} />
+      <Tree
+        workspace={workspace}
+        root={root}
+        selectedIds={new Set(['2', '4'])}
+      />
 
       {/* {items.map((stage, index) => {
         const prevStage = items[index - 1];

@@ -1,17 +1,13 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { ByType, Ids, ParentTypes, tree, Workspace } from '../model';
 import {
-  ByType,
-  Config,
-  Ids,
-  isParent,
-  ParentTypes,
-  tree,
-  Workspace,
-} from '../model';
-import { elements } from 'entities/layer';
-import { isContainer, Container, get, getElement } from 'features/container';
+  isContainer,
+  Container,
+  toTransformLayer,
+  Config as ContainerConfig,
+} from 'features/container';
 import { Shape } from 'features/shape';
-import { Square } from 'entities/square';
+import { ContainerElement } from 'shared/canvas';
 
 type Props = {
   workspace: Workspace;
@@ -21,82 +17,45 @@ type Props = {
   root: ByType<ParentTypes>;
 };
 
-function Tree({ workspace, onChange, selectedIds, onSelect, root }: Props) {
-  const t = tree(workspace, root);
-  console.log({ t });
-  const makeTransformable = (layer: Config<'layer'>): Config<'layer'> => {
-    return {
-      ...layer,
-      elements: selectedIds
-        ? [
-            ...elements(layer),
-            {
-              type: 'transformer',
-              ratio: 'fixed',
-              resize: true,
-              rotate: false,
-              flip: false,
-              elements: [...selectedIds.values()],
-              id: 'player1',
-            },
-          ]
-        : elements(layer),
-    };
-  };
+function Tree(props: Props) {
+  const { workspace, onChange, selectedIds, onSelect, root } = props;
+
+  const transformers = selectedIds
+    ? [
+        {
+          type: 'transformer' as const,
+          ratio: 'fixed' as const,
+          resize: true,
+          rotate: false,
+          flip: false,
+          elements: [...selectedIds.values()],
+          id: 'player1',
+        },
+      ]
+    : [];
+
+  const ref = useRef<ContainerElement>(null);
+
+  if (root.type === 'root') {
+    const k = tree(workspace, root);
+    return k.elements.map(el => (
+      <Tree key={el.id} {...{ ...props, root: el }} />
+    ));
+  }
+
+  const u = tree(workspace, root);
+  const config = u.type === 'layer' ? toTransformLayer(u, transformers) : u;
 
   return (
-    <>
-      {t.type === 'root' ? (
-        t.elements.map(el =>
-          isParent(el) ? (
-            <Tree
-              workspace={workspace}
-              onChange={onChange}
-              selectedIds={selectedIds}
-              root={el}
-            />
-          ) : (
-            <Shape {...el} />
-          )
+    <Container {...(config as ContainerConfig<(typeof u)['type']>)} ref={ref}>
+      {config.elements.map(el =>
+        isContainer(el) ? (
+          <Tree key={el.id} {...{ ...props, root: el }} />
+        ) : (
+          <Shape key={el.id} {...el} />
         )
-      ) : t.type === 'layer' ? (
-        <Container {...t} key={t.id}>
-          {({ elements, Element }) => (
-            <>
-              {elements.map(el => (
-                <Element {...el} key={el.id} />
-              ))}
-            </>
-          )}
-        </Container>
-      ) : isContainer(t) ? (
-        <Container {...t}>
-          {({Element, elements}) => <></>}
-          <Container/>
-      ) : (
-        <></>
       )}
-
-      {t
-        // .map(config =>
-        //   config.type === 'layer' ? makeTransformable(config) : config
-        // )
-        .map(config =>
-          isContainer(config) ? (
-            <Container {...config} key={config.id}>
-              {({ elements, Element }) => (
-                <>
-                  {elements.map(el => (
-                    <Element {...el} key={el.id} />
-                  ))}
-                </>
-              )}
-            </Container>
-          ) : (
-            <Shape {...config} key={config.id} />
-          )
-        )}
-    </>
+    </Container>
   );
 }
 
