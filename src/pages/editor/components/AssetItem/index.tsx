@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paper, Typography } from '@mui/material';
 import { DivSize } from 'shared/ui';
-import Asset from 'components/editor/Asset';
+import Gallery from 'shared/ui/Gallery';
 import PreviewShape from 'components/editor/PreviewShape';
 import PreviewStage from 'components/editor/PreviewStage';
 import useImage from 'use-image';
@@ -16,7 +16,7 @@ function AssetItem({ node, onClick }: Props) {
   if (typeof node === 'string')
     return <AssetImage node={node} onClick={onClick} />;
   return (
-    <Asset.Item onClick={() => onClick(node)}>
+    <Gallery.Item onClick={() => onClick(node)}>
       {node.type === 'text' ? (
         <AssetText node={node} />
       ) : node.type === 'stage' ? (
@@ -24,7 +24,7 @@ function AssetItem({ node, onClick }: Props) {
       ) : (
         <AssetFigure node={node} />
       )}
-    </Asset.Item>
+    </Gallery.Item>
   );
 }
 
@@ -33,7 +33,7 @@ function AssetImage({ node, onClick }: Props) {
   const [image] = useImage(src, 'anonymous');
 
   return (
-    <Asset.Item
+    <Gallery.Item
       onClick={() =>
         image &&
         onClick(
@@ -46,7 +46,7 @@ function AssetImage({ node, onClick }: Props) {
       }
     >
       <img src={src} alt="asset" style={{ width: '100%' }} />
-    </Asset.Item>
+    </Gallery.Item>
   );
 }
 

@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@mui/material';
-import Asset from 'components/editor/Asset';
+import Gallery from 'shared/ui/Gallery';
 import AssetItem from 'pages/editor/components/AssetItem';
 import React from 'react';
 import { Node } from 'utils/editor/node';
@@ -15,7 +15,7 @@ function AssetList({ assets, addAsset }: Props) {
   return (
     <Grid rowGap={20} sx={{ width: '100%' }}>
       {assets.map(({ type, nodes, name }, index) => (
-        <Asset key={index}>
+        <Gallery key={index}>
           {name && (
             <Grid mb={1}>
               <Typography variant="body1">{name}</Typography>
@@ -26,7 +26,7 @@ function AssetList({ assets, addAsset }: Props) {
               <AssetItem key={index} node={node} onClick={addAsset} />
             ))}
           </RenderType>
-        </Asset>
+        </Gallery>
       ))}
     </Grid>
   );
@@ -39,9 +39,9 @@ type RenderTypeProps = {
 
 function RenderType({ children, type }: RenderTypeProps) {
   return type === 'horizontal' ? (
-    <Asset.Horizontal>{children}</Asset.Horizontal>
+    <Gallery.Horizontal>{children}</Gallery.Horizontal>
   ) : type === 'mansory' ? (
-    <Asset.Mansory>{children}</Asset.Mansory>
+    <Gallery.Mansory>{children}</Gallery.Mansory>
   ) : (
     <Grid container flexDirection="column" alignItems="center" rowGap={2}>
       {children}

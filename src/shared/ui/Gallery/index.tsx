@@ -1,13 +1,13 @@
 import React from 'react';
 import Masonry from '@mui/lab/Masonry';
-import * as Styled from 'components/editor/Asset/styles';
+import * as Styled from 'shared/ui/Gallery/styles';
 import { HorizontalList } from 'shared/ui';
 
 type Props = {
   children: React.ReactNode;
 };
 
-function Asset({ children }: Props) {
+function Gallery({ children }: Props) {
   return <Styled.Container>{children}</Styled.Container>;
 }
 
@@ -32,8 +32,8 @@ function Item({ children, onClick }: ItemProps) {
   return <Styled.Button onClick={onClick}>{children}</Styled.Button>;
 }
 
-Asset.Horizontal = Horizontal;
-Asset.Mansory = Mansory;
-Asset.Item = Item;
+Gallery.Horizontal = Horizontal;
+Gallery.Mansory = Mansory;
+Gallery.Item = Item;
 
-export default Asset;
+export default Gallery;

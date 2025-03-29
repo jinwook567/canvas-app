@@ -8,3 +8,4 @@ export { default as Tabs } from './Tabs';
 export { default as Toggle } from './Toggle';
 export { default as withPartial } from './withPartial';
 export { default as Frame } from './Frame';
+export { default as Gallery } from './Gallery';
