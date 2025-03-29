@@ -166,9 +166,11 @@ export const insert = <
 };
 
 export type Config<T extends ChildrenTypes> = T extends ContainerType
-  ? ContainerConfig<T>
+  ? Container<T> & {
+      elements: Config<ContainerConfig<T>['elements'][number]['type']>[];
+    }
   : T extends ShapeType
-  ? ShapeConfig<T>
+  ? Shape<T>
   : never;
 
 export const tree = <
@@ -178,16 +180,11 @@ export const tree = <
 >(
   workspace: Workspace,
   root: P
-): { elements: (Config<U['type']> & U)[] } & P => {
+): { elements: Config<U['type']>[] } & P => {
   return {
     ...root,
     elements: getChildren(workspace, root).map(child =>
-      isParent(child)
-        ? {
-            ...child,
-            elements: tree(workspace, child),
-          }
-        : child
-    ) as (Config<U['type']> & U)[],
+      isParent(child) ? tree(workspace, child) : child
+    ) as Config<U['type']>[],
   };
 };
