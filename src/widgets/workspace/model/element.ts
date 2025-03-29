@@ -4,6 +4,7 @@ import {
   Type as ContainerType,
   toTransformLayer,
 } from 'features/container';
+import { Ids } from './select';
 
 export const toTransformable = <T extends ContainerType>(
   config: ContainerConfig<T>,
@@ -17,4 +18,16 @@ export const toTransformable = <T extends ContainerType>(
           isContainer(el) ? toTransformable(el, transformers) : el
         ),
       };
+};
+
+export const transformerConfigByIds = (ids: Ids) => {
+  return {
+    type: 'transformer' as const,
+    ratio: 'fixed' as const,
+    resize: true,
+    rotate: false,
+    flip: false,
+    elements: [...ids.values()],
+    id: 'player1',
+  };
 };

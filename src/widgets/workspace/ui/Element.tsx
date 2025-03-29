@@ -17,14 +17,16 @@ function Element({ config, onChange, onClick }: Props) {
   const shapeRef = useRef<ShapeElement>(null);
 
   const layerEvents = {
-    onTransform: (elements: Config[]) => onChange && onChange(elements),
+    onTransform: (elements: Config[]) => {
+      onChange && onChange(elements);
+    },
   };
   const groupEvents = {
     onClick: (element: Config) => onClick && onClick(element.id),
   };
 
   const containerEvents = {
-    ...(config.type === 'layer' ? layerEvents : {}),
+    ...(config.type === 'transformLayer' ? layerEvents : {}),
     ...(config.type === 'group' ? groupEvents : {}),
   };
 
@@ -35,7 +37,14 @@ function Element({ config, onChange, onClick }: Props) {
           {config.elements.map(element => (
             <Element
               key={element.id}
-              onChange={onChange}
+              onChange={
+                config.type === 'transformLayer' &&
+                config.transformers
+                  .flatMap(tr => tr.elements)
+                  .includes(element.id)
+                  ? undefined
+                  : onChange
+              }
               onClick={onClick}
               config={element}
             />
@@ -44,9 +53,9 @@ function Element({ config, onChange, onClick }: Props) {
       ) : (
         <Shape
           {...config}
-          onChange={configToUpdate =>
-            onChange && onChange([{ ...config, ...configToUpdate }])
-          }
+          onChange={configToUpdate => {
+            onChange && onChange([{ ...config, ...configToUpdate }]);
+          }}
           onClick={config => onClick && onClick(config.id)}
           ref={shapeRef}
         />

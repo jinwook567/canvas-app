@@ -3,6 +3,7 @@ import { NodeConfig, DimensionsConfig, ContainerElement } from 'shared/canvas';
 export type StageConfig<Child> = {
   type: 'stage';
   elements: Child[];
+  fill?: string;
 } & NodeConfig &
   DimensionsConfig;
 

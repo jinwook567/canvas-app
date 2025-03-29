@@ -7,7 +7,7 @@ import { StageConfig, StageElement } from '../model';
 type Props<Child> = StageConfig<Child>;
 
 function Stage<Child>(
-  { width, height, children }: HasChildren<Props<Child>>,
+  { width, height, fill, children }: HasChildren<Props<Child>>,
   ref: ForwardedRef<StageElement>
 ) {
   return (
@@ -15,6 +15,7 @@ function Stage<Child>(
       width={width}
       height={height}
       ref={node => node && setRef(ref, toContainerElement(node))}
+      style={{ background: fill ?? 'white' }}
     >
       {children}
     </ReactKonva.Stage>

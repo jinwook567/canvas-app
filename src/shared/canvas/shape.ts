@@ -24,9 +24,9 @@ export function adaptShapeEvents<T extends ShapeEvents>(
 
   return {
     ...rest,
-    onDragEnd: e => onChange && onChange(toShapeConfig(e.target)),
-    onTransformEnd: e => onChange && onChange(toShapeConfig(e.target)),
-    onClick: e => onClick && onClick(toShapeConfig(e.target)),
+    onDragEnd: e => onChange && onChange(toShapeConfig(e.currentTarget)),
+    onTransformEnd: e => onChange && onChange(toShapeConfig(e.currentTarget)),
+    onClick: e => onClick && onClick(toShapeConfig(e.currentTarget)),
   };
 }
 
