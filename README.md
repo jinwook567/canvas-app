@@ -10,16 +10,17 @@ Supported Features
 - multiple stages
 - select multiple images at once(shift+click)
 - history(redo, undo)
-- text(double-click to edit)
-- group and ungroup images
+  <!-- - text(double-click to edit) -->
+  <!-- - group and ungroup images -->
 - download images as png files
 - keyboard shortcuts
-  - command + x : cut
+  <!-- - command + x : cut
   - command + c : copy
   - command + v : paste
-  - command + d : duplicate
-  - command + g : group
-  - command + shift + g : ungroup
+  - command + d : duplicate -->
+  <!-- - command + g : group -->
+  <!-- - command + shift + g : ungroup -->
+  - backspace, delete: remove
   - command + z : back
   - command + shift + z : foward
 
