@@ -166,11 +166,9 @@ export const insert = <
 };
 
 export type Config<T extends ChildrenTypes> = T extends ContainerType
-  ? Container<T> & {
-      elements: Config<ContainerConfig<T>['elements'][number]['type']>[];
-    }
+  ? ContainerConfig<T>
   : T extends ShapeType
-  ? Shape<T>
+  ? ShapeConfig<T>
   : never;
 
 export const tree = <
@@ -187,4 +185,14 @@ export const tree = <
       isParent(child) ? tree(workspace, child) : child
     ) as Config<U['type']>[],
   };
+};
+
+export const giveHierarchy = <T extends ChildrenTypes>(
+  workspace: Workspace,
+  config: Config<T>
+): Config<T> & ByType<T> => {
+  const detail = get(workspace, config.id);
+  const children = isParent(detail) ? { children: detail.children } : {};
+  return { ...config, parent: detail.parent, ...children } as Config<T> &
+    ByType<T>;
 };

@@ -41,7 +41,11 @@ export const transformLayer = (config: TransformLayerConfig<GroupChild>) => ({
   elementTypes: groupElementTypes,
 });
 
-export const stage = (config: StageConfig<LayerConfig<GroupChild>>) => ({
+export const stage = (
+  config: StageConfig<
+    LayerConfig<GroupChild> | TransformLayerConfig<GroupChild>
+  >
+) => ({
   config,
   Component: withPartial(Stage, config),
   elements: stageElements(config),

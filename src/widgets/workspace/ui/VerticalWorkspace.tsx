@@ -10,6 +10,7 @@ import {
   ChildrenTypes,
   update,
   Id,
+  giveHierarchy,
 } from '../model';
 import { Type as ContainerType } from 'features/container';
 import { css } from '@emotion/react';
@@ -55,7 +56,9 @@ function VerticalWorkspace({
           config={config as Config<ChildrenTypes>}
           onChange={configs => {
             onChange(
-              configs.reduce((ws, config) => update(ws, config), workspace)
+              configs.reduce((ws, config) => {
+                return update(ws, giveHierarchy(ws, config));
+              }, workspace)
             );
           }}
           onClick={id => {

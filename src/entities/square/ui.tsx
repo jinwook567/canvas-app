@@ -7,7 +7,7 @@ import { toNodeElement, ShapeEvents, adaptShapeEvents } from 'shared/canvas';
 type Props = SquareConfig & ShapeEvents;
 
 function Square(
-  { cornerRadius, ...args }: Props,
+  { cornerRadius, fill, ...args }: Props,
   ref: ForwardedRef<SquareElement>
 ) {
   return (
@@ -15,7 +15,7 @@ function Square(
       cornerRadius={cornerRadius}
       {...adaptShapeEvents(args)}
       ref={node => node && setRef(ref, toNodeElement(node))}
-      fill={'green'}
+      fill={fill}
     />
   );
 }

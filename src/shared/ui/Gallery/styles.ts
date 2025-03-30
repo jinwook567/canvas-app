@@ -10,6 +10,7 @@ export const Button = styled(IconButton)`
   &:hover {
     background-color: transparent;
   }
+  width: fit-content;
 `;
 
 export const HorizontalContainer = styled(Grid)`
