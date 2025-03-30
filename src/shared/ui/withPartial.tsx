@@ -3,11 +3,12 @@ import React, {
   forwardRef,
   PropsWithoutRef,
   ForwardRefExoticComponent,
+  ComponentType,
 } from 'react';
 import { EmotionJSX } from '@emotion/react/dist/declarations/src/jsx-namespace';
 
 function withPartial<T, P extends Partial<T>>(
-  Component: ForwardRefExoticComponent<T>,
+  Component: ForwardRefExoticComponent<T> | ComponentType<T>,
   props1: P
 ) {
   function Wrapper<U>(

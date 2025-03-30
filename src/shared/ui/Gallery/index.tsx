@@ -25,7 +25,7 @@ function Mansory({ children }: { children: NonNullable<React.ReactNode> }) {
 
 type ItemProps = {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 function Item({ children, onClick }: ItemProps) {
