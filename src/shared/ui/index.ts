@@ -9,4 +9,3 @@ export { default as Toggle } from './Toggle';
 export { default as withPartial } from './withPartial';
 export { default as Frame } from './Frame';
 export { default as Gallery } from './Gallery';
-export { default as Tab } from './Tab';

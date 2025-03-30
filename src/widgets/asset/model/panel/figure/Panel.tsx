@@ -25,7 +25,7 @@ function FigurePanel({ onClick, items }: Props) {
     <Gallery>
       <Gallery.Mansory>
         {configs.map(config => (
-          <Gallery.Item onClick={() => onClick(config)}>
+          <Gallery.Item onClick={() => onClick(config)} key={config.id}>
             <Element
               config={previewConfig({ width: 80, height: 80 }, config)}
             />
