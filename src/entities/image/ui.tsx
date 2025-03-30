@@ -12,6 +12,7 @@ function Image({ source, ...args }: Props, ref: ForwardedRef<ImageElement>) {
       image={source}
       {...adaptShapeEvents(args)}
       ref={node => node && setRef(ref, toShapeElement(node))}
+      draggable
     />
   );
 }

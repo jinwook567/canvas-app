@@ -16,6 +16,7 @@ function Square(
       {...adaptShapeEvents(args)}
       ref={node => node && setRef(ref, toNodeElement(node))}
       fill={fill}
+      draggable
     />
   );
 }

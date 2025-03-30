@@ -15,7 +15,7 @@ import {
   TransformerConfig,
 } from 'entities/transformer';
 import { useRefs } from 'shared/dom';
-import { NodeConfig } from 'shared/canvas';
+import { NodeConfig, TransformConfig } from 'shared/canvas';
 
 type Props<Child extends NodeConfig> = TransformLayerConfig<Child> & {
   onTransform?: (elements: Child[]) => void;
@@ -45,7 +45,7 @@ function TransformLayer<Child extends NodeConfig>(
   }, [props.transformers]);
 
   const handleTransform = (
-    updateConfig: UpdateConfig,
+    updateConfig: TransformConfig,
     transformerConfig: TransformerConfig
   ) => {
     if (props.onTransform) {
@@ -64,7 +64,10 @@ function TransformLayer<Child extends NodeConfig>(
         <Transformer
           {...config}
           key={config.id}
-          onChange={updateConfig => handleTransform(updateConfig, config)}
+          onChange={updateConfig => {
+            console.log({ updateConfig });
+            handleTransform(updateConfig, config);
+          }}
           ref={node => node && update(config.id, node)}
         />
       ))}

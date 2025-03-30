@@ -8,9 +8,10 @@ import {
 } from './model';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'shared/lib';
+import { TransformConfig } from 'shared/canvas';
 
 type Props = TransformerConfig & {
-  onChange: (config: UpdateConfig) => void;
+  onChange: (config: TransformConfig) => void;
 };
 
 function Transformer(

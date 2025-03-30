@@ -25,7 +25,7 @@ export type TransformerElement = {
 };
 
 export function toUpdateConfig(shape: Konva.Node) {
-  return omit(toShapeConfig(shape), 'width', 'height');
+  return omit(toShapeConfig(shape), 'width', 'height', 'id');
 }
 
 export function toTransformerElement(

@@ -1,11 +1,20 @@
 import { atom } from 'jotai';
-import { Id, Workspace, level, get, getParent, isChildren } from './core';
+import {
+  Id,
+  Workspace,
+  level,
+  get,
+  getParent,
+  isChildren,
+  isParent,
+  types,
+} from './core';
 
 export type Ids = Set<Id>;
 
 export const ids = atom<Ids>(new Set<Id>());
 
-const getParentByLevel = (
+export const getParentByLevel = (
   workspace: Workspace,
   config: Workspace[Id],
   targetLevel: number
@@ -16,6 +25,29 @@ const getParentByLevel = (
   return level(parent.type) === targetLevel
     ? parent
     : getParentByLevel(workspace, parent, targetLevel);
+};
+
+const maxLevel = Math.max(...types.map(type => level(type)));
+
+export const getByLevel = (
+  workspace: Workspace,
+  config: Workspace[Id],
+  targetLv: number
+): Workspace[Id][] => {
+  const configLv = level(config.type);
+  if (targetLv > maxLevel || targetLv < 1) return [];
+
+  if (configLv === targetLv) {
+    return [config];
+  } else if (configLv > targetLv && isParent(config)) {
+    return config.children.flatMap(id =>
+      getByLevel(workspace, get(workspace, id), targetLv)
+    );
+  } else {
+    return isChildren(config)
+      ? getByLevel(workspace, getParent(workspace, config), targetLv)
+      : [];
+  }
 };
 
 export const singleSelect = (targetId: Id) => new Set([targetId]);

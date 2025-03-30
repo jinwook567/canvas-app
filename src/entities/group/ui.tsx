@@ -18,6 +18,7 @@ function Group<Child>(
     <ReactKonva.Group
       {...adaptShapeEvents(omit(args, 'elements'))}
       ref={node => node && setRef(ref, toContainerElement(node))}
+      draggable
     >
       {children}
     </ReactKonva.Group>

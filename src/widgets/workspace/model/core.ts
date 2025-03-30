@@ -4,6 +4,7 @@ import {
   Type as ContainerType,
   types as containerTypes,
   elementTypes,
+  isContainer,
   Item,
 } from 'features/container';
 import {
@@ -57,7 +58,7 @@ export const hierarchy = {
 } satisfies { [K in Types]: Types[] };
 
 export const level = (type: Workspace[Id]['type']): number => {
-  return 1 + Math.max(...hierarchy[type].filter(l => l !== type).map(level));
+  return 1 + Math.max(0, ...hierarchy[type].filter(l => l !== type).map(level));
 };
 
 export type Hierarchy = typeof hierarchy;
@@ -156,6 +157,7 @@ export const insert = <
   config: U,
   order: (children: Id[], id: Id) => Id[] = (children, id) => [...children, id]
 ) => {
+  console.log(parent, 'insert');
   return update(
     update(workspace, {
       ...parent,
@@ -195,4 +197,26 @@ export const giveHierarchy = <T extends ChildrenTypes>(
   const children = isParent(detail) ? { children: detail.children } : {};
   return { ...config, parent: detail.parent, ...children } as Config<T> &
     ByType<T>;
+};
+
+export const types = ['root' as const, ...containerTypes, ...shapeTypes];
+
+export const toWorkspace = (
+  config: Config<ChildrenTypes>,
+  parent: Id
+): Workspace => {
+  if (isContainer(config)) {
+    return config.elements.reduce(
+      (ws, el) => ({ ...ws, ...toWorkspace(el, config.id) }),
+      {
+        [config.id]: {
+          ...config,
+          parent,
+          children: config.elements.map(el => el.id),
+        },
+      } as Workspace
+    );
+  } else {
+    return { [config.id]: { ...config, parent } };
+  }
 };
