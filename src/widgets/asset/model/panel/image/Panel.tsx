@@ -1,7 +1,6 @@
 import React from 'react';
 import { Config } from 'features/shape';
-import { Gallery } from 'shared/ui';
-import Image from 'components/editor/Image';
+import { Gallery, Image } from 'shared/ui';
 import { createUniqueId } from 'shared/lib';
 
 type Props = {
