@@ -1,7 +1,7 @@
 import React, { ForwardedRef, forwardRef, useEffect, useRef } from 'react';
 import { Container, isContainer } from 'features/container';
 import { Shape } from 'features/shape';
-import { NodeElement } from 'shared/canvas';
+import { NodeElement, ShapeConfig } from 'shared/canvas';
 import { ChildrenTypes, Config as WsConfig } from '../model';
 import { setRef } from 'shared/lib';
 
@@ -22,13 +22,23 @@ function Element(
       onChange && onChange(elements);
     },
   };
-  const groupEvents = {
-    onClick: (element: Config) => onClick && onClick(element.id),
+
+  const handleChange = (updateConfig: ShapeConfig) => {
+    onChange && onChange([{ ...config, ...updateConfig }]);
+  };
+
+  const handleClick = (target: ShapeConfig) => {
+    onClick && onClick(target.id);
+  };
+
+  const shapeEvents = {
+    onChange: handleChange,
+    onClick: handleClick,
   };
 
   const containerEvents = {
     ...(config.type === 'transformLayer' ? layerEvents : {}),
-    ...(config.type === 'group' ? groupEvents : {}),
+    ...(config.type === 'group' ? shapeEvents : {}),
   };
 
   return (
@@ -51,19 +61,15 @@ function Element(
                   : onChange
               }
               onClick={onClick}
-              config={element}
+              config={{
+                ...element,
+                draggable: config.type !== 'group' && element.draggable,
+              }}
             />
           ))}
         </Container>
       ) : (
-        <Shape
-          {...config}
-          onChange={configToUpdate => {
-            onChange && onChange([{ ...config, ...configToUpdate }]);
-          }}
-          onClick={config => onClick && onClick(config.id)}
-          ref={ref}
-        />
+        <Shape {...config} {...shapeEvents} ref={ref} />
       )}
     </>
   );
