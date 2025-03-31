@@ -41,3 +41,13 @@ export function toShapeConfig(shape: Konva.Node): ShapeConfig {
     id: shape.id(),
   };
 }
+
+export function isShapeConfig(shape: object): shape is ShapeConfig {
+  return (
+    'width' in shape &&
+    'height' in shape &&
+    'x' in shape &&
+    'y' in shape &&
+    'id' in shape
+  );
+}

@@ -23,6 +23,7 @@ import {
   next,
 } from './history';
 import { isHotkeyPressed } from 'react-hotkeys-hook';
+import { reconcilePos } from './pos';
 
 function useControl(initialWs: Workspace) {
   const [workspace, setWorkspace] = useState(initialWs);
@@ -113,7 +114,7 @@ const insertBySelect = (
   ) as ByType<ParentTypes> | null;
   if (!parent) return ws;
 
-  const configWs = toWorkspace(config, parent.id);
+  const configWs = toWorkspace(reconcilePos(ws, parent, config), parent.id);
   return insert(
     { ...ws, ...configWs },
     parent,
