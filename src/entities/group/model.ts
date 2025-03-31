@@ -1,10 +1,16 @@
-import { ContainerElement, NodeConfig, TransformConfig } from 'shared/canvas';
+import {
+  ContainerElement,
+  ControlConfig,
+  NodeConfig,
+  TransformConfig,
+} from 'shared/canvas';
 
 export type GroupConfig<Child> = {
   type: 'group';
   elements: Child[];
 } & NodeConfig &
-  TransformConfig;
+  TransformConfig &
+  ControlConfig;
 
 export type GroupElement = ContainerElement;
 

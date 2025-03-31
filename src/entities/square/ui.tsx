@@ -2,7 +2,12 @@ import React, { ForwardedRef } from 'react';
 import { SquareConfig, SquareElement } from 'entities/square/model';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'shared/lib';
-import { toNodeElement, ShapeEvents, adaptShapeEvents } from 'shared/canvas';
+import {
+  toNodeElement,
+  ShapeEvents,
+  adaptShapeEvents,
+  adaptConfig,
+} from 'shared/canvas';
 
 type Props = SquareConfig & ShapeEvents;
 
@@ -13,10 +18,10 @@ function Square(
   return (
     <ReactKonva.Rect
       cornerRadius={cornerRadius}
+      {...adaptConfig(args)}
       {...adaptShapeEvents(args)}
       ref={node => node && setRef(ref, toNodeElement(node))}
       fill={fill}
-      draggable
     />
   );
 }

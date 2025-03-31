@@ -1,6 +1,7 @@
 import { GroupConfig, GroupElement } from './model';
 import {
   ShapeEvents,
+  adaptConfig,
   adaptShapeEvents,
   toContainerElement,
 } from 'shared/canvas';
@@ -16,9 +17,13 @@ function Group<Child>(
 ) {
   return (
     <ReactKonva.Group
+      {...omit(
+        adaptConfig({ ...args, width: 0, height: 0 }),
+        'width',
+        'height'
+      )}
       {...adaptShapeEvents(omit(args, 'elements'))}
       ref={node => node && setRef(ref, toContainerElement(node))}
-      draggable
     >
       {children}
     </ReactKonva.Group>

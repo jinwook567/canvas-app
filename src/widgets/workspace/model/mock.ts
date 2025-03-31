@@ -20,7 +20,7 @@ export const mockWs: Workspace = {
   layer1: {
     type: 'layer',
     id: 'layer1',
-    children: ['square1', 'square2', 'square3'],
+    children: ['square1', 'square2', 'group1'],
     parent: 'stage1',
   },
   square1: {
@@ -42,6 +42,14 @@ export const mockWs: Workspace = {
     y: 200,
     parent: 'layer1',
     fill: 'green',
+  },
+  group1: {
+    type: 'group',
+    id: 'group1',
+    x: 10,
+    y: 10,
+    parent: 'layer1',
+    children: ['square3'],
   },
   square3: {
     type: 'square',
