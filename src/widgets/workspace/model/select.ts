@@ -60,7 +60,7 @@ export const select = (workspace: Workspace, ids: Ids, targetId: Id) => {
   const idLv = level(get(workspace, id).type);
   const targetIdLv = level(get(workspace, targetId).type);
 
-  if (idLv === targetIdLv) {
+  if (Math.max(idLv, 2) === Math.max(targetIdLv, 2)) {
     if (
       getParentByLevel(workspace, get(workspace, id), idLv) ===
       getParentByLevel(workspace, get(workspace, targetId), idLv)
@@ -78,5 +78,5 @@ export const select = (workspace: Workspace, ids: Ids, targetId: Id) => {
 };
 
 export const deselect = (ids: Ids, targetId: Id) => {
-  return new Set(ids).delete(targetId);
+  return new Set([...ids].filter(id => id !== targetId));
 };

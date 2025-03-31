@@ -12,7 +12,7 @@ import {
   ByType,
   remove,
 } from './core';
-import { Ids, getByLevel } from './select';
+import { Ids, deselect, getByLevel, select, singleSelect } from './select';
 import {
   before,
   getWorkspace,
@@ -22,6 +22,7 @@ import {
   insertHistory,
   next,
 } from './history';
+import { isHotkeyPressed } from 'react-hotkeys-hook';
 
 function useControl(initialWs: Workspace) {
   const [workspace, setWorkspace] = useState(initialWs);
@@ -67,7 +68,15 @@ function useControl(initialWs: Workspace) {
   };
 
   const onSelect = (id: Id) => {
-    setSelectedIds(new Set([id]));
+    if (isHotkeyPressed('shift')) {
+      setSelectedIds(
+        selectedIds.has(id)
+          ? deselect(selectedIds, id)
+          : select(workspace, selectedIds, id)
+      );
+    } else {
+      setSelectedIds(singleSelect(id));
+    }
   };
 
   const onClearSelect = () => {
