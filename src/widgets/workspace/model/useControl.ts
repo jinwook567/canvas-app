@@ -33,42 +33,43 @@ function useControl(initialWs: Workspace) {
     counter: 0,
   });
 
-  const onChange = (ws: Workspace) => {
+  const handleChange = (ws: Workspace) => {
     setWorkspace(ws);
     setHistory(hs => insertHistory(hs, ws));
   };
 
-  const onInsert = (config: Config<ChildrenTypes>) => {
+  const handleInsert = (config: Config<ChildrenTypes>) => {
     if (selectedIds.size > 0) {
       const [first] = selectedIds;
-      onChange(insertBySelect(workspace, first, config));
+      handleChange(insertBySelect(workspace, first, config));
     } else {
       const stage = Object.values(workspace).find(c => c.type === 'stage');
-      if (stage) onChange(insertBySelect(workspace, stage.id, config));
+      if (stage) handleChange(insertBySelect(workspace, stage.id, config));
     }
+    setSelectedIds(singleSelect(config.id));
   };
 
-  const onRemove = () => {
+  const handleRemove = () => {
     const [...ids] = selectedIds;
-    onChange(ids.reduce((ws, id) => remove(ws, get(ws, id)), workspace));
+    handleChange(ids.reduce((ws, id) => remove(ws, get(ws, id)), workspace));
     setSelectedIds(new Set());
   };
 
-  const onUndo = () => {
+  const handleUndo = () => {
     if (hasBefore(history)) {
       setWorkspace(getWorkspace(before(history)));
       setHistory(before(history));
     }
   };
 
-  const onRedo = () => {
+  const handleRedo = () => {
     if (hasNext(history)) {
       setWorkspace(getWorkspace(next(history)));
       setHistory(next(history));
     }
   };
 
-  const onSelect = (id: Id) => {
+  const handleSelect = (id: Id) => {
     if (isHotkeyPressed('shift')) {
       setSelectedIds(
         selectedIds.has(id)
@@ -80,22 +81,20 @@ function useControl(initialWs: Workspace) {
     }
   };
 
-  const onClearSelect = () => {
+  const handleClearSelect = () => {
     setSelectedIds(new Set([]));
   };
 
   return {
-    onInsert,
-    onRemove,
+    insert: handleInsert,
+    remove: handleRemove,
     workspace,
-    setWorkspace,
     selectedIds,
-    setSelectedIds,
-    onChange,
-    onUndo,
-    onRedo,
-    onSelect,
-    onClearSelect,
+    change: handleChange,
+    undo: handleUndo,
+    redo: handleRedo,
+    select: handleSelect,
+    clearSelect: handleClearSelect,
   };
 }
 
@@ -121,5 +120,7 @@ const insertBySelect = (
     get(configWs, config.id) as ByType<ChildrenTypes>
   );
 };
+
+export type Control = ReturnType<typeof useControl>;
 
 export default useControl;

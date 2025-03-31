@@ -1,4 +1,5 @@
 import { Grid, styled } from '@mui/material';
+import { withPartial } from 'shared/ui';
 
 export const Header = styled(Grid)`
   padding: ${({ theme }) => theme.spacing(1)};
@@ -18,13 +19,13 @@ export const Footer = styled(Grid)`
   background: gray;
 `;
 
-export const Container = styled(Grid)`
+export const Layout = styled(Grid)`
   height: 100vh;
   display: flex;
   flex-direction: column;
 `;
 
-export const StickyContainer = styled(Grid)`
+export const Sticky = styled(Grid)`
   background: white;
   width: 100%;
   position: sticky;
@@ -32,6 +33,12 @@ export const StickyContainer = styled(Grid)`
   z-index: 999;
   padding: ${({ theme }) => theme.spacing(1)};
 `;
+
+export const AssetSection = withPartial(Grid, {
+  lg: 3,
+  container: true,
+  item: true,
+});
 
 export function CanvasSection({
   children,
@@ -41,7 +48,10 @@ export function CanvasSection({
   onClick?: () => void;
 }) {
   return (
-    <Grid sx={{ width: 1, height: 1, position: 'relative' }} onClick={onClick}>
+    <Grid
+      sx={{ width: 1, height: 1, position: 'relative', flex: 1 }}
+      onClick={onClick}
+    >
       <Grid
         sx={{
           width: 1,

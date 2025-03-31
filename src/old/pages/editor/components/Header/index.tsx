@@ -1,6 +1,6 @@
 import React from 'react';
 import useHistory from 'old/hooks/editor/global/useHistory';
-import HeadControlBar from 'old/components/editor/HeadControlBar';
+import TopControlBar from 'widgets/workspace/ui/TopControlBar';
 
 type Props = {
   onRequestExport: () => void;
@@ -17,13 +17,7 @@ function Header({ onRequestExport }: Props) {
     historyBack();
   };
 
-  return (
-    <HeadControlBar
-      onRedo={handleRedo}
-      onUndo={handleUndo}
-      onRequestExport={onRequestExport}
-    />
-  );
+  return null;
 }
 
 export default Header;
