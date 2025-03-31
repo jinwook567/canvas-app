@@ -12,10 +12,9 @@ import {
   Transformer,
   TransformerElement,
   UpdateConfig,
-  TransformerConfig,
 } from 'entities/transformer';
 import { useRefs } from 'shared/dom';
-import { NodeConfig, TransformConfig } from 'shared/canvas';
+import { NodeConfig } from 'shared/canvas';
 
 type Props<Child extends NodeConfig> = TransformLayerConfig<Child> & {
   onTransform?: (elements: Child[]) => void;
@@ -39,20 +38,18 @@ function TransformLayer<Child extends NodeConfig>(
           layerRef.current?.children.filter(el =>
             transformer.elements.includes(el.id)
           ) ?? [];
-        transformerRef.update(() => nodes);
+        transformerRef.update(nodes);
       }
     });
   }, [props.transformers]);
 
-  const handleTransform = (
-    updateConfig: TransformConfig,
-    transformerConfig: TransformerConfig
-  ) => {
+  const handleTransform = (updateConfigs: UpdateConfig[]) => {
     if (props.onTransform) {
       props.onTransform(
-        props.elements
-          .filter(element => transformerConfig.elements.includes(element.id))
-          .map(element => ({ ...element, ...updateConfig }))
+        updateConfigs.map(config => {
+          const element = props.elements.find(el => el.id === config.id)!;
+          return { ...element, ...config };
+        })
       );
     }
   };
@@ -64,9 +61,7 @@ function TransformLayer<Child extends NodeConfig>(
         <Transformer
           {...config}
           key={config.id}
-          onChange={updateConfig => {
-            handleTransform(updateConfig, config);
-          }}
+          onChange={handleTransform}
           ref={node => node && update(config.id, node)}
         />
       ))}

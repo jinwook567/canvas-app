@@ -21,22 +21,26 @@ export type TransformerConfig = {
 } & NodeConfig;
 
 export type TransformerElement = {
-  update: (updater: (elements: ShapeElement[]) => ShapeElement[]) => void;
+  update: (elements: ShapeElement[]) => void;
 };
 
-export function toUpdateConfig(shape: Konva.Node) {
-  return omit(toShapeConfig(shape), 'width', 'height', 'id');
+function toUpdateConfig(shape: Konva.Node) {
+  return omit(toShapeConfig(shape), 'width', 'height');
+}
+
+export function toUpdateConfigs(
+  transformer: Konva.Transformer
+): UpdateConfig[] {
+  return (transformer.nodes() || []).map(node => toUpdateConfig(node));
 }
 
 export function toTransformerElement(
   transformer: Konva.Transformer
 ): TransformerElement {
   return {
-    update: updater =>
-      transformer.nodes(
-        updater(transformer.nodes().map(toNodeElement)).map(
-          element => element._raw
-        )
-      ),
+    update: (elements: ShapeElement[]) => {
+      transformer.nodes(elements.map(el => el._raw));
+      transformer.getLayer()?.batchDraw();
+    },
   };
 }

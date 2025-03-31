@@ -1,17 +1,17 @@
 import React, { ForwardedRef, forwardRef } from 'react';
+import Konva from 'konva';
 import {
   TransformerConfig,
-  UpdateConfig,
   TransformerElement,
-  toUpdateConfig,
+  UpdateConfig,
   toTransformerElement,
+  toUpdateConfigs,
 } from './model';
 import * as ReactKonva from 'react-konva';
 import { setRef } from 'shared/lib';
-import { TransformConfig } from 'shared/canvas';
 
 type Props = TransformerConfig & {
-  onChange: (config: TransformConfig) => void;
+  onChange: (updateConfigs: UpdateConfig[]) => void;
 };
 
 function Transformer(
@@ -24,8 +24,12 @@ function Transformer(
       rotateEnabled={rotate}
       flipEnabled={flip}
       keepRatio={ratio === 'fixed'}
-      onTransformEnd={e => onChange(toUpdateConfig(e.target))}
-      onDragEnd={e => onChange(toUpdateConfig(e.target))}
+      onTransformEnd={e =>
+        onChange(toUpdateConfigs(e.currentTarget as Konva.Transformer))
+      }
+      onDragEnd={e =>
+        onChange(toUpdateConfigs(e.currentTarget as Konva.Transformer))
+      }
       ref={node => node && setRef(ref, toTransformerElement(node))}
     />
   );
