@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  ForwardedRef,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+} from 'react';
 import {
   Ids,
   Workspace,
@@ -15,6 +20,8 @@ import {
 import { Type as ContainerType } from 'features/container';
 import { css } from '@emotion/react';
 import Element from './Element';
+import { useRefs } from 'shared/dom';
+import { NodeElement } from 'shared/canvas';
 
 type Props = {
   workspace: Workspace;
@@ -24,19 +31,20 @@ type Props = {
   root: ByType<'root'>;
 };
 
-function VerticalWorkspace({
-  workspace,
-  onChange,
-  selectedIds,
-  onSelect,
-  root,
-}: Props) {
+function VerticalWorkspace(
+  { workspace, onChange, selectedIds, onSelect, root }: Props,
+  ref: ForwardedRef<() => NodeElement[]>
+) {
   const config = tree(workspace, root);
   const transformableConfigs = config.elements.map(config =>
     toTransformable(config as Config<ContainerType>, [
       transformerConfigByIds(selectedIds),
     ])
   );
+
+  const { update: updateRef, vals } = useRefs<NodeElement>();
+
+  useImperativeHandle(ref, () => vals);
 
   return (
     <div
@@ -64,10 +72,11 @@ function VerticalWorkspace({
           onClick={id => {
             onSelect(id);
           }}
+          ref={el => el && updateRef(config.id, el)}
         />
       ))}
     </div>
   );
 }
 
-export default VerticalWorkspace;
+export default forwardRef(VerticalWorkspace);

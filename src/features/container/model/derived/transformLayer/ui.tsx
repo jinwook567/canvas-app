@@ -65,7 +65,6 @@ function TransformLayer<Child extends NodeConfig>(
           {...config}
           key={config.id}
           onChange={updateConfig => {
-            console.log({ updateConfig });
             handleTransform(updateConfig, config);
           }}
           ref={node => node && update(config.id, node)}

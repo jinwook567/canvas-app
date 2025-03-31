@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { ForwardedRef, forwardRef, useEffect, useRef } from 'react';
 import { Container, isContainer } from 'features/container';
 import { Shape } from 'features/shape';
-import { ContainerElement, ShapeElement } from 'shared/canvas';
+import { NodeElement } from 'shared/canvas';
 import { ChildrenTypes, Config as WsConfig } from '../model';
+import { setRef } from 'shared/lib';
 
 type Config = WsConfig<ChildrenTypes>;
 
@@ -12,10 +13,10 @@ type Props = {
   onClick?: (id: Config['id']) => void;
 };
 
-function Element({ config, onChange, onClick }: Props) {
-  const containerRef = useRef<ContainerElement>(null);
-  const shapeRef = useRef<ShapeElement>(null);
-
+function Element(
+  { config, onChange, onClick }: Props,
+  ref: ForwardedRef<NodeElement>
+) {
   const layerEvents = {
     onTransform: (elements: Config[]) => {
       onChange && onChange(elements);
@@ -33,7 +34,11 @@ function Element({ config, onChange, onClick }: Props) {
   return (
     <>
       {isContainer(config) ? (
-        <Container {...config} {...containerEvents} ref={containerRef}>
+        <Container
+          {...config}
+          {...containerEvents}
+          ref={node => node && setRef(ref, node)}
+        >
           {config.elements.map(element => (
             <Element
               key={element.id}
@@ -57,11 +62,11 @@ function Element({ config, onChange, onClick }: Props) {
             onChange && onChange([{ ...config, ...configToUpdate }]);
           }}
           onClick={config => onClick && onClick(config.id)}
-          ref={shapeRef}
+          ref={ref}
         />
       )}
     </>
   );
 }
 
-export default Element;
+export default forwardRef(Element);

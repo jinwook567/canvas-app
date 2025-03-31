@@ -157,7 +157,6 @@ export const insert = <
   config: U,
   order: (children: Id[], id: Id) => Id[] = (children, id) => [...children, id]
 ) => {
-  console.log(parent, 'insert');
   return update(
     update(workspace, {
       ...parent,

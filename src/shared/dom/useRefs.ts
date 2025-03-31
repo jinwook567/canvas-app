@@ -18,7 +18,7 @@ function useRefs<T>() {
   };
 
   const vals = () => {
-    return ref.current.values();
+    return [...ref.current.values()];
   };
 
   return {

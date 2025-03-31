@@ -7,11 +7,12 @@ import { StageConfig, StageElement } from '../model';
 type Props<Child> = StageConfig<Child>;
 
 function Stage<Child>(
-  { width, height, fill, children }: HasChildren<Props<Child>>,
+  { width, height, fill, children, id }: HasChildren<Props<Child>>,
   ref: ForwardedRef<StageElement>
 ) {
   return (
     <ReactKonva.Stage
+      id={id}
       width={width}
       height={height}
       ref={node => node && setRef(ref, toContainerElement(node))}
