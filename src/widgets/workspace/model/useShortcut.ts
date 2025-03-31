@@ -1,21 +1,16 @@
 import { useHotkeys } from 'react-hotkeys-hook';
+import { Control } from './useControl';
 
 const controlKeys = ['meta', 'ctrl'];
 
-type Props = {
-  onRemove: () => void;
-  onUndo: () => void;
-  onRedo: () => void;
-};
-
-function useShortcut({ onRemove, onUndo, onRedo }: Props) {
+function useShortcut(control: Control) {
   const shortCuts = [
-    { key: 'backspace', f: onRemove },
-    { key: 'delete', f: onRemove },
-    ...controlKeys.map(ctrl => ({ key: `${ctrl}+z`, f: onUndo })),
+    { key: 'backspace', f: control.remove },
+    { key: 'delete', f: control.remove },
+    ...controlKeys.map(ctrl => ({ key: `${ctrl}+z`, f: control.undo })),
     ...controlKeys.map(ctrl => ({
       key: `${ctrl}+shift+z`,
-      f: onRedo,
+      f: control.redo,
     })),
   ];
 

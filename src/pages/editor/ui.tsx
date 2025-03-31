@@ -11,6 +11,7 @@ import {
   StickyControlBar,
   TopControlBar,
   useControl,
+  useShortcut,
   VerticalWorkspace,
 } from 'widgets/workspace';
 import { mockWs, root } from 'widgets/workspace/model/mock';
@@ -23,6 +24,7 @@ function Editor({}: Props) {
   const control = useControl(mockWs);
   const [selectedTab, setSelectedTab] = useState<'image' | 'figure'>('figure');
   const ref = useRef<() => NodeElement[]>(() => []);
+  useShortcut(control);
 
   return (
     <Layout>

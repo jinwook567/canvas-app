@@ -17,26 +17,10 @@ export const mockWs: Workspace = {
     width: 500,
     height: 500,
   },
-  // stage2: {
-  //   type: 'stage',
-  //   id: 'stage2',
-  //   children: ['layer1'],
-  //   parent: 'canvas',
-  //   width: 500,
-  //   height: 500,
-  // },
-  // stage3: {
-  //   type: 'stage',
-  //   id: 'stage3',
-  //   children: ['layer1'],
-  //   parent: 'canvas',
-  //   width: 500,
-  //   height: 500,
-  // },
   layer1: {
     type: 'layer',
     id: 'layer1',
-    children: ['square1', 'square2', 'group1'],
+    children: ['square1', 'square2', 'square3'],
     parent: 'stage1',
   },
   square1: {
@@ -59,14 +43,6 @@ export const mockWs: Workspace = {
     parent: 'layer1',
     fill: 'green',
   },
-  group1: {
-    type: 'group',
-    id: 'group1',
-    x: 10,
-    y: 10,
-    parent: 'layer1',
-    children: ['square3'],
-  },
   square3: {
     type: 'square',
     id: 'square3',
@@ -74,7 +50,7 @@ export const mockWs: Workspace = {
     height: 100,
     x: 200,
     y: 200,
-    parent: 'group1',
+    parent: 'layer1',
     fill: 'green',
   },
 };
