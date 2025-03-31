@@ -66,6 +66,14 @@ function useControl(initialWs: Workspace) {
     }
   };
 
+  const onSelect = (id: Id) => {
+    setSelectedIds(new Set([id]));
+  };
+
+  const onClearSelect = () => {
+    setSelectedIds(new Set([]));
+  };
+
   return {
     onInsert,
     onRemove,
@@ -76,6 +84,8 @@ function useControl(initialWs: Workspace) {
     onChange,
     onUndo,
     onRedo,
+    onSelect,
+    onClearSelect,
   };
 }
 
