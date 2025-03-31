@@ -13,25 +13,57 @@ import {
   remove,
 } from './core';
 import { Ids, getByLevel } from './select';
+import {
+  before,
+  getWorkspace,
+  hasBefore,
+  hasNext,
+  History,
+  insertHistory,
+  next,
+} from './history';
 
 function useControl(initialWs: Workspace) {
   const [workspace, setWorkspace] = useState(initialWs);
   const [selectedIds, setSelectedIds] = useState<Ids>(new Set());
+  const [history, setHistory] = useState<History>({
+    ws: [initialWs],
+    counter: 0,
+  });
+
+  const onChange = (ws: Workspace) => {
+    setWorkspace(ws);
+    setHistory(hs => insertHistory(hs, ws));
+  };
 
   const onInsert = (config: Config<ChildrenTypes>) => {
     if (selectedIds.size > 0) {
       const [first] = selectedIds;
-      setWorkspace(insertBySelect(workspace, first, config));
+      onChange(insertBySelect(workspace, first, config));
     } else {
       const stage = Object.values(workspace).find(c => c.type === 'stage');
-      if (stage) setWorkspace(insertBySelect(workspace, stage.id, config));
+      if (stage) onChange(insertBySelect(workspace, stage.id, config));
     }
   };
 
   const onRemove = () => {
     const [...ids] = selectedIds;
-    setWorkspace(ids.reduce((ws, id) => remove(ws, get(ws, id)), workspace));
+    onChange(ids.reduce((ws, id) => remove(ws, get(ws, id)), workspace));
     setSelectedIds(new Set());
+  };
+
+  const onUndo = () => {
+    if (hasBefore(history)) {
+      setWorkspace(getWorkspace(before(history)));
+      setHistory(before(history));
+    }
+  };
+
+  const onRedo = () => {
+    if (hasNext(history)) {
+      setWorkspace(getWorkspace(next(history)));
+      setHistory(next(history));
+    }
   };
 
   return {
@@ -41,6 +73,9 @@ function useControl(initialWs: Workspace) {
     setWorkspace,
     selectedIds,
     setSelectedIds,
+    onChange,
+    onUndo,
+    onRedo,
   };
 }
 
