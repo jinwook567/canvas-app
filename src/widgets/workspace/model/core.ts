@@ -1,4 +1,3 @@
-import { atom } from 'jotai';
 import {
   Config as ContainerConfig,
   Type as ContainerType,
@@ -111,8 +110,6 @@ export const isParent = (
 
 export const isLeaf = (config: Workspace[Id]): config is Shapes =>
   shapeTypes.some(type => type === config.type);
-
-export const workspaceAtom = atom<Workspace>({});
 
 export const get = <T extends Workspace, P extends keyof T>(
   workspace: T,

@@ -1,4 +1,3 @@
-import { atom } from 'jotai';
 import {
   Id,
   Workspace,
@@ -11,8 +10,6 @@ import {
 } from './core';
 
 export type Ids = Set<Id>;
-
-export const ids = atom<Ids>(new Set<Id>());
 
 export const getParentByLevel = (
   workspace: Workspace,

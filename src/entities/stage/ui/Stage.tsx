@@ -1,13 +1,13 @@
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { ForwardedRef, forwardRef, PropsWithChildren } from 'react';
 import * as ReactKonva from 'react-konva';
-import { setRef, HasChildren } from 'shared/lib';
+import { setRef } from 'shared/lib';
 import { toContainerElement } from 'shared/canvas';
 import { StageConfig, StageElement } from '../model';
 
 type Props<Child> = StageConfig<Child>;
 
 function Stage<Child>(
-  { width, height, fill, children, id }: HasChildren<Props<Child>>,
+  { width, height, fill, children, id }: PropsWithChildren<Props<Child>>,
   ref: ForwardedRef<StageElement>
 ) {
   return (

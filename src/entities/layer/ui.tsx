@@ -1,13 +1,13 @@
 import { LayerConfig, LayerElement } from './model';
 import { toContainerElement } from 'shared/canvas';
-import React, { ForwardedRef } from 'react';
+import React, { ForwardedRef, PropsWithChildren } from 'react';
 import * as Konva from 'react-konva';
-import { setRef, HasChildren } from 'shared/lib';
+import { setRef } from 'shared/lib';
 
 type Props<Child> = LayerConfig<Child>;
 
 function Layer<Child>(
-  { visible, lock, children, id }: HasChildren<Props<Child>>,
+  { visible, lock, children, id }: PropsWithChildren<Props<Child>>,
   ref: ForwardedRef<LayerElement>
 ) {
   return (
