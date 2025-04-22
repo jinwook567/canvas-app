@@ -1,12 +1,5 @@
 import { isShapeConfig, ShapeConfig } from 'shared/canvas';
-import {
-  Workspace,
-  Config,
-  ChildrenTypes,
-  get,
-  ParentTypes,
-  ByType,
-} from './core';
+import { Workspace, Config, HasParent, get, HasChildren, Node } from './core';
 
 const isSamePos = (config1: ShapeConfig, config2: ShapeConfig) => {
   return (
@@ -19,8 +12,8 @@ const isSamePos = (config1: ShapeConfig, config2: ShapeConfig) => {
 
 export const reconcilePos = (
   ws: Workspace,
-  parent: ByType<ParentTypes>,
-  config: Config<ChildrenTypes>
+  parent: Node<HasChildren>,
+  config: Config<HasParent>
 ) => {
   if (!isShapeConfig(config)) return config;
 

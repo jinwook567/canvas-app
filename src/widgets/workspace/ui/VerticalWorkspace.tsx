@@ -7,12 +7,12 @@ import React, {
 import {
   Ids,
   Workspace,
-  ByType,
+  Node,
   tree,
   toTransformable,
   transformerConfigByIds,
   Config,
-  ChildrenTypes,
+  HasParent,
   update,
   Id,
   giveHierarchy,
@@ -28,7 +28,7 @@ type Props = {
   onChange: (ws: Workspace) => void;
   selectedIds: Ids;
   onSelect: (id: Id) => void;
-  root: ByType<'root'>;
+  root: Node<'root'>;
 };
 
 function VerticalWorkspace(
@@ -61,7 +61,7 @@ function VerticalWorkspace(
       {transformableConfigs.map(config => (
         <Element
           key={config.id}
-          config={config as Config<ChildrenTypes>}
+          config={config as Config<HasParent>}
           onChange={configs => {
             onChange(
               configs.reduce((ws, config) => {

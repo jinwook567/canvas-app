@@ -3,13 +3,13 @@ import {
   Workspace,
   level,
   Config,
-  ChildrenTypes,
+  HasParent,
   Id,
   insert,
   get,
   toWorkspace,
-  ParentTypes,
-  ByType,
+  HasChildren,
+  Node,
   remove,
 } from './core';
 import { Ids, deselect, getByLevel, select, singleSelect } from './select';
@@ -38,7 +38,7 @@ function useControl(initialWs: Workspace) {
     setHistory(hs => insertHistory(hs, ws));
   };
 
-  const handleInsert = (config: Config<ChildrenTypes>) => {
+  const handleInsert = (config: Config<HasParent>) => {
     if (selectedIds.size > 0) {
       const [first] = selectedIds;
       handleChange(insertBySelect(workspace, first, config));
@@ -101,7 +101,7 @@ function useControl(initialWs: Workspace) {
 const insertBySelect = (
   ws: Workspace,
   selectedId: Id,
-  config: Config<ChildrenTypes>
+  config: Config<HasParent>
 ) => {
   const configLv = level(config.type);
   const selected = get(ws, selectedId);
@@ -110,14 +110,14 @@ const insertBySelect = (
 
   const parent = (
     parentLv === selectedLv ? selected : getByLevel(ws, selected, parentLv)[0]
-  ) as ByType<ParentTypes> | null;
+  ) as Node<HasChildren> | null;
   if (!parent) return ws;
 
   const configWs = toWorkspace(reconcilePos(ws, parent, config), parent.id);
   return insert(
     { ...ws, ...configWs },
     parent,
-    get(configWs, config.id) as ByType<ChildrenTypes>
+    get(configWs, config.id) as Node<HasParent>
   );
 };
 

@@ -2,10 +2,10 @@ import React, { ForwardedRef, forwardRef, useEffect, useRef } from 'react';
 import { Container, isContainer } from 'features/container';
 import { Shape } from 'features/shape';
 import { NodeElement, ShapeConfig } from 'shared/canvas';
-import { ChildrenTypes, Config as WsConfig } from '../model';
+import { HasParent, Config as WsConfig } from '../model';
 import { setRef } from 'shared/lib';
 
-type Config = WsConfig<ChildrenTypes>;
+type Config = WsConfig<HasParent>;
 
 type Props = {
   config: Config;

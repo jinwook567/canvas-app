@@ -26,25 +26,16 @@ export type Container<T extends ContainerType> = Omit<
 };
 export type Shape<T extends ShapeType> = ShapeConfig<T> & { parent: Id };
 
-type Containers = ContainerType extends infer A
-  ? A extends ContainerType
-    ? Container<A>
-    : never
-  : never;
+export type NodeType = 'root' | ContainerType | ShapeType;
+export type Node<Type extends NodeType> = Type extends ContainerType
+  ? Container<Type>
+  : Type extends ShapeType
+  ? Shape<Type>
+  : Root;
 
-type Shapes = ShapeType extends infer A
-  ? A extends ShapeType
-    ? Shape<A>
-    : never
-  : never;
-
-export type Workspace = {
-  [key: Id]: Root | Containers | Shapes;
+export type Workspace<Type extends NodeType = NodeType> = {
+  [key: Id]: Node<Type>;
 };
-
-export type U = Workspace[Id];
-
-export type Types = Workspace[Id]['type'];
 
 export const hierarchy = {
   root: ['stage' as const],
@@ -54,151 +45,116 @@ export const hierarchy = {
   }),
 
   ...zipmap(shapeTypes.map(type => [type, []])),
-} satisfies { [K in Types]: Types[] };
+} satisfies { [K in NodeType]: NodeType[] };
 
-export const level = (type: Workspace[Id]['type']): number => {
+export const level = (type: NodeType): number => {
   return 1 + Math.max(0, ...hierarchy[type].filter(l => l !== type).map(level));
 };
 
 export type Hierarchy = typeof hierarchy;
 
-export type ByType<T extends Types> = T extends 'root'
-  ? Root
-  : T extends ContainerType
-  ? Container<T>
-  : T extends ShapeType
-  ? Shape<T>
-  : never;
+export type Child<T extends NodeType> = Hierarchy[T][number];
+export type Parent<T extends NodeType> = {
+  [K in NodeType]: T extends Hierarchy[K][number] ? K : never;
+}[NodeType];
 
-export type Child<T extends Types> = Hierarchy[T][number] extends infer A
-  ? A extends Types
-    ? ByType<A>
-    : never
-  : never;
+export type HasChildren = {
+  [K in NodeType]: Child<K> extends never ? never : K;
+}[NodeType];
 
-export type Parent<T extends Types> = Types extends infer A
-  ? A extends Types
-    ? T extends Hierarchy[A][number]
-      ? ByType<A>
-      : never
-    : never
-  : never;
+export type HasParent = {
+  [K in NodeType]: Parent<K> extends never ? never : K;
+}[NodeType];
 
-export type ParentTypes = Types extends infer A
-  ? A extends Types
-    ? Child<A> extends never
-      ? never
-      : A
-    : never
-  : never;
+export const hasChildren = (node: Node<NodeType>): node is Node<HasChildren> =>
+  hierarchy[node.type].length > 0;
 
-export type ChildrenTypes = Types extends infer A
-  ? A extends Types
-    ? Parent<A> extends never
-      ? never
-      : A
-    : never
-  : never;
-
-export const isChildren = (
-  config: Workspace[Id]
-): config is ByType<ChildrenTypes> => config.parent !== null;
-
-export const isParent = (
-  config: Workspace[Id]
-): config is ByType<ParentTypes> => hierarchy[config.type].length > 0;
-
-export const isLeaf = (config: Workspace[Id]): config is Shapes =>
-  shapeTypes.some(type => type === config.type);
+export const hasParent = (node: Node<NodeType>): node is Node<HasParent> =>
+  node.parent !== null;
 
 export const get = <T extends Workspace, P extends keyof T>(
   workspace: T,
   id: P
 ) => workspace[id];
 
-export const getParent = <T extends ChildrenTypes>(
+export const getParent = <T extends HasParent>(
   workspace: Workspace,
-  config: ByType<T>
-) => workspace[config.parent] as Parent<T>;
+  node: Node<T>
+) => workspace[node.parent] as Node<Parent<T>>;
 
-export const getChildren = <T extends ParentTypes>(
+export const getChildren = <T extends HasChildren>(
   workspace: Workspace,
-  config: ByType<T>
-) => {
-  return config.children.map(id => get(workspace, id)) as Child<T>[];
-};
+  node: Node<T>
+) => node.children.map(id => get(workspace, id)) as Node<Child<T>>[];
 
-export const update = (workspace: Workspace, config: Workspace[Id]) => {
-  return { ...workspace, [config.id]: config };
-};
+export const update = (workspace: Workspace, node: Workspace[Id]) => ({
+  ...workspace,
+  [node.id]: node,
+});
 
-export const remove = (workspace: Workspace, config: Workspace[Id]) => {
-  const rest = omit(workspace, config.id);
+export const remove = (workspace: Workspace, node: Workspace[Id]) => {
+  const rest = omit(workspace, node.id);
 
-  if (isChildren(config)) {
-    const parent = getParent(workspace, config);
+  if (hasParent(node)) {
+    const parent = getParent(workspace, node);
     return update(rest, {
       ...parent,
-      children: parent.children.filter(id => id !== config.id),
+      children: parent.children.filter(id => id !== node.id),
     });
   } else return rest;
 };
 
 export const insert = <
-  T extends ParentTypes,
-  P extends ByType<T>,
-  U extends Child<P['type']>
+  P extends Node<HasChildren>,
+  U extends Node<Child<P['type']>>
 >(
   workspace: Workspace,
   parent: P,
-  config: U,
+  node: U,
   order: (children: Id[], id: Id) => Id[] = (children, id) => [...children, id]
 ) => {
   return update(
     update(workspace, {
       ...parent,
-      children: order(parent.children, (config as Child<ParentTypes>).id),
+      children: order(parent.children, node.id),
     }),
-    config
+    node
   );
 };
 
-export type Config<T extends ChildrenTypes> = T extends ContainerType
-  ? ContainerConfig<T>
-  : T extends ShapeType
-  ? ShapeConfig<T>
-  : never;
+export type Config<T extends ContainerType | ShapeType> =
+  T extends ContainerType
+    ? ContainerConfig<T>
+    : T extends ShapeType
+    ? ShapeConfig<T>
+    : never;
 
-export const tree = <
-  T extends ParentTypes,
-  P extends ByType<T>,
-  U extends Child<P['type']>
->(
+export const tree = <P extends Node<HasChildren>>(
   workspace: Workspace,
   root: P
-): { elements: Config<U['type']>[] } & P => {
+): { elements: Config<Child<P['type']>>[] } & P => {
   return {
     ...root,
     elements: getChildren(workspace, root).map(child =>
-      isParent(child) ? tree(workspace, child) : child
-    ) as Config<U['type']>[],
+      hasChildren(child) ? tree(workspace, child) : child
+    ) as unknown as Config<Child<P['type']>>[],
   };
 };
 
-export const giveHierarchy = <T extends ChildrenTypes>(
+export const giveHierarchy = <T extends HasParent>(
   workspace: Workspace,
   config: Config<T>
-): Config<T> & ByType<T> => {
+): Config<T> & Node<T> => {
   const detail = get(workspace, config.id);
-  const children = isParent(detail) ? { children: detail.children } : {};
+  const children = hasChildren(detail) ? { children: detail.children } : {};
   return { ...config, parent: detail.parent, ...children } as Config<T> &
-    ByType<T>;
+    Node<T>;
 };
 
 export const types = ['root' as const, ...containerTypes, ...shapeTypes];
 
 export const toWorkspace = (
-  config: Config<ChildrenTypes>,
+  config: Config<HasParent>,
   parent: Id
 ): Workspace => {
   if (isContainer(config)) {

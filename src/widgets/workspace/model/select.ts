@@ -4,8 +4,8 @@ import {
   level,
   get,
   getParent,
-  isChildren,
-  isParent,
+  hasParent,
+  hasChildren,
   types,
 } from './core';
 
@@ -16,7 +16,7 @@ export const getParentByLevel = (
   config: Workspace[Id],
   targetLevel: number
 ): Workspace[Id] | null => {
-  if (!isChildren(config)) return null;
+  if (!hasParent(config)) return null;
 
   const parent = getParent(workspace, config);
   return level(parent.type) === targetLevel
@@ -36,12 +36,12 @@ export const getByLevel = (
 
   if (configLv === targetLv) {
     return [config];
-  } else if (configLv > targetLv && isParent(config)) {
+  } else if (configLv > targetLv && hasChildren(config)) {
     return config.children.flatMap(id =>
       getByLevel(workspace, get(workspace, id), targetLv)
     );
   } else {
-    return isChildren(config)
+    return hasParent(config)
       ? getByLevel(workspace, getParent(workspace, config), targetLv)
       : [];
   }
