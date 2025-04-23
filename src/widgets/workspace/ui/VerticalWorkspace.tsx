@@ -1,23 +1,18 @@
-import React, {
-  ForwardedRef,
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import React, { ForwardedRef, forwardRef, useImperativeHandle } from 'react';
 import {
   Ids,
   Workspace,
   Node,
-  tree,
   toTransformable,
   transformerConfigByIds,
-  Config,
-  HasParent,
   update,
   Id,
-  giveHierarchy,
+  getChildren,
+  toConfig,
+  get,
+  HasParent,
+  toNode,
 } from '../model';
-import { Type as ContainerType } from 'features/container';
 import { css } from '@emotion/react';
 import Element from './Element';
 import { useRefs } from 'shared/dom';
@@ -35,12 +30,11 @@ function VerticalWorkspace(
   { workspace, onChange, selectedIds, onSelect, root }: Props,
   ref: ForwardedRef<() => NodeElement[]>
 ) {
-  const config = tree(workspace, root);
-  const transformableConfigs = config.elements.map(config =>
-    toTransformable(config as Config<ContainerType>, [
-      transformerConfigByIds(selectedIds),
-    ])
-  );
+  const configs = getChildren(workspace, root)
+    .map(node => toConfig(workspace, node))
+    .map(config =>
+      toTransformable(config, [transformerConfigByIds(selectedIds)])
+    );
 
   const { update: updateRef, vals } = useRefs<NodeElement>();
 
@@ -58,14 +52,16 @@ function VerticalWorkspace(
         gap: 30px;
       `}
     >
-      {transformableConfigs.map(config => (
+      {configs.map(config => (
         <Element
           key={config.id}
-          config={config as Config<HasParent>}
+          config={config}
           onChange={configs => {
+            console.log('iam called');
             onChange(
               configs.reduce((ws, config) => {
-                return update(ws, giveHierarchy(ws, config));
+                const node = get(ws, config.id) as Node<HasParent>;
+                return update(ws, toNode(config, node.parent));
               }, workspace)
             );
           }}

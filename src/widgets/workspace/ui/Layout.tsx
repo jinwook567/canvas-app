@@ -1,3 +1,4 @@
+import React from 'react';
 import { Grid, styled } from '@mui/material';
 import { withPartial } from 'shared/ui';
 

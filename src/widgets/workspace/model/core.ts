@@ -82,10 +82,10 @@ export const getParent = <T extends HasParent>(
   node: Node<T>
 ) => workspace[node.parent] as Node<Parent<T>>;
 
-export const getChildren = <T extends HasChildren>(
+export const getChildren = <T extends HasChildren, P extends Node<T>>(
   workspace: Workspace,
-  node: Node<T>
-) => node.children.map(id => get(workspace, id)) as Node<Child<T>>[];
+  node: P
+) => node.children.map(id => get(workspace, id) as Node<Child<P['type']>>);
 
 export const update = (workspace: Workspace, node: Workspace[Id]) => ({
   ...workspace,
@@ -122,53 +122,60 @@ export const insert = <
   );
 };
 
-export type Config<T extends ContainerType | ShapeType> =
-  T extends ContainerType
-    ? ContainerConfig<T>
-    : T extends ShapeType
-    ? ShapeConfig<T>
-    : never;
+export type ConfigType = ContainerType | ShapeType;
 
-export const tree = <P extends Node<HasChildren>>(
+export type Config<T extends ConfigType> = T extends ContainerType
+  ? ContainerConfig<T>
+  : T extends ShapeType
+  ? ShapeConfig<T>
+  : never;
+
+export const toConfig = <T extends ConfigType>(
   workspace: Workspace,
-  root: P
-): { elements: Config<Child<P['type']>>[] } & P => {
-  return {
-    ...root,
-    elements: getChildren(workspace, root).map(child =>
-      hasChildren(child) ? tree(workspace, child) : child
-    ) as unknown as Config<Child<P['type']>>[],
-  };
+  node: Node<T>
+): Config<T> => {
+  return (hasChildren(node)
+    ? {
+        ...omit(node, 'children', 'parent'),
+        elements: getChildren(workspace, node).map(child =>
+          toConfig(workspace, child)
+        ),
+      }
+    : omit(node, 'parent')) as unknown as Config<T>;
 };
 
-export const giveHierarchy = <T extends HasParent>(
-  workspace: Workspace,
-  config: Config<T>
-): Config<T> & Node<T> => {
-  const detail = get(workspace, config.id);
-  const children = hasChildren(detail) ? { children: detail.children } : {};
-  return { ...config, parent: detail.parent, ...children } as Config<T> &
-    Node<T>;
+export const toNode = <T extends ConfigType>(
+  config: Config<T>,
+  parent: Id
+): Node<T> => {
+  return (
+    isContainer(config)
+      ? {
+          ...omit(config, 'elements'),
+          parent,
+          children: config.elements.map(el => el.id),
+        }
+      : { ...config, parent }
+  ) as Node<T>;
 };
 
 export const types = ['root' as const, ...containerTypes, ...shapeTypes];
+
+export const mergeWs = (ws1: Workspace, ws2: Workspace): Workspace => ({
+  ...ws1,
+  ...ws2,
+});
 
 export const toWorkspace = (
   config: Config<HasParent>,
   parent: Id
 ): Workspace => {
-  if (isContainer(config)) {
-    return config.elements.reduce(
-      (ws, el) => ({ ...ws, ...toWorkspace(el, config.id) }),
-      {
-        [config.id]: {
-          ...config,
-          parent,
-          children: config.elements.map(el => el.id),
-        },
-      } as Workspace
-    );
-  } else {
-    return { [config.id]: { ...config, parent } };
-  }
+  const workspace: Workspace = { [config.id]: toNode(config, parent) };
+
+  return isContainer(config)
+    ? config.elements.reduce(
+        (ws, el) => mergeWs(ws, toWorkspace(el, config.id)),
+        workspace
+      )
+    : workspace;
 };

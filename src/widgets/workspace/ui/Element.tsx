@@ -1,11 +1,11 @@
-import React, { ForwardedRef, forwardRef, useEffect, useRef } from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { Container, isContainer } from 'features/container';
 import { Shape } from 'features/shape';
 import { NodeElement, ShapeConfig } from 'shared/canvas';
-import { HasParent, Config as WsConfig } from '../model';
+import { Config as WsConfig, ConfigType } from '../model';
 import { setRef } from 'shared/lib';
 
-type Config = WsConfig<HasParent>;
+type Config = WsConfig<ConfigType>;
 
 type Props = {
   config: Config;

@@ -28,7 +28,6 @@ function TopControlBar({ control, elements }: Props) {
       type: 'icon' as const,
       button: <DownloadIcon fontSize="small" sx={{ color: 'white' }} />,
       control: () => {
-        console.log(elements);
         const request = elements().map((el, index) => ({
           base64: el.base64(),
           name: `${index}`,
