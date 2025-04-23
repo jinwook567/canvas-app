@@ -40,14 +40,18 @@ export const previewConfig = (
     | ContainerConfig<Exclude<ContainerType, 'stage'>>
     | ShapeConfig<ShapeType>
 ): ContainerConfig<'stage'> => {
-  const el =
+  const layer =
     target.type === 'layer' || target.type === 'transformLayer'
       ? target
-      : { type: 'layer' as const, id: 'preview-layer', elements: [target] };
+      : {
+          type: 'layer' as const,
+          id: 'preview-layer',
+          elements: [target],
+        };
 
   return {
     type: 'stage',
-    elements: [el],
+    elements: [layer].map(el => ({ ...el, lock: true })),
     id: 'preview-stage',
     width: config.width,
     height: config.height,
