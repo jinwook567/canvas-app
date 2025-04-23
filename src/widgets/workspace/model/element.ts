@@ -6,7 +6,7 @@ import {
 } from 'features/container';
 import { Ids } from './select';
 import { DimensionsConfig } from 'shared/canvas';
-import { Config as ShapeConfig, Type as ShapeType } from 'features/shape';
+import { Config, ConfigType } from './core';
 
 export const toTransformable = <T extends ContainerType>(
   config: ContainerConfig<T>,
@@ -35,25 +35,23 @@ export const transformerConfigByIds = (ids: Ids) => {
 };
 
 export const previewConfig = (
-  config: DimensionsConfig,
-  target:
-    | ContainerConfig<Exclude<ContainerType, 'stage'>>
-    | ShapeConfig<ShapeType>
+  dimension: DimensionsConfig,
+  config: Config<Exclude<ConfigType, 'stage'>>
 ): ContainerConfig<'stage'> => {
   const layer =
-    target.type === 'layer' || target.type === 'transformLayer'
-      ? target
+    config.type === 'layer' || config.type === 'transformLayer'
+      ? config
       : {
           type: 'layer' as const,
           id: 'preview-layer',
-          elements: [target],
+          elements: [config],
         };
 
   return {
     type: 'stage',
     elements: [layer].map(el => ({ ...el, lock: true })),
     id: 'preview-stage',
-    width: config.width,
-    height: config.height,
+    width: dimension.width,
+    height: dimension.height,
   };
 };
