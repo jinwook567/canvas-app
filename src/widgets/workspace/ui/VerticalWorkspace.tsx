@@ -57,7 +57,6 @@ function VerticalWorkspace(
           key={config.id}
           config={config}
           onChange={configs => {
-            console.log('iam called');
             onChange(
               configs.reduce((ws, config) => {
                 const node = get(ws, config.id) as Node<HasParent>;
